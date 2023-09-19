@@ -1,0 +1,344 @@
+@startuml
+
+class Account {
+  -accountNumber: String
+  -balance: double
+  -creationDate: Date
+  -status: String
+  +getAccountNumber(): String
+  +getBalance(): double
+  +getCreationDate(): Date
+  +getStatus(): String
+}
+
+class CurrentAccount {
+  -overdraft: double
+  +getOverdraft(): double
+}
+
+class SavingsAccount {
+  -interestRate: double
+  +getInterestRate(): double
+}
+
+class Client {
+  -code: String
+  -nom: String
+  -prenom: String
+  -dateNaissance: Date
+  -telephone: String
+  -adresse: String
+  +getCode(): String
+  +getNom(): String
+  +getPrenom(): String
+  +getDateNaissance(): Date
+  +getTelephone(): String
+  +getAdresse(): String
+}
+
+class Employee {
+  -matricule: String
+  -nom: String
+  -prenom: String
+  -dateRecrutement: Date
+  -dateNaissance: Date
+  -email: String
+  -telephone: String
+  +getMatricule(): String
+  +getNom(): String
+  +getPrenom(): String
+  +getDateRecrutement(): Date
+  +getDateNaissance(): Date
+  +getEmail(): String
+  +getTelephone(): String
+}
+
+class Mission {
+  -code: String
+  -nom: String
+  -description: String
+  +getCode(): String
+  +getNom(): String
+  +getDescription(): String
+}
+
+class Operation {
+  -operationNumber: String
+  -creationDate: Date
+  -amount: double
+  +getOperationNumber(): String
+  +getCreationDate(): Date
+  +getAmount(): double
+}
+
+interface AccountDAO {
+  +create(account: Account): boolean
+  +update(account: Account): boolean
+  +delete(accountNumber: String): boolean
+  +getByAccountNumber(accountNumber: String): Account
+  +getAll(): List<Account>
+}
+
+interface CurrentAccountDAO {
+  +create(currentAccount: CurrentAccount): boolean
+  +update(currentAccount: CurrentAccount): boolean
+  +delete(accountNumber: String): boolean
+  +getByAccountNumber(accountNumber: String): CurrentAccount
+  +getAll(): List<CurrentAccount>
+}
+
+interface SavingsAccountDAO {
+  +create(savingsAccount: SavingsAccount): boolean
+  +update(savingsAccount: SavingsAccount): boolean
+  +delete(accountNumber: String): boolean
+  +getByAccountNumber(accountNumber: String): SavingsAccount
+  +getAll(): List<SavingsAccount>
+}
+
+interface ClientDAO {
+  +create(client: Client): boolean
+  +update(client: Client): boolean
+  +delete(code: String): boolean
+  +getByCode(code: String): Client
+  +getAll(): List<Client>
+}
+
+interface EmployeeDAO {
+  +create(employee: Employee): boolean
+  +update(employee: Employee): boolean
+  +delete(matricule: String): boolean
+  +getByMatricule(matricule: String): Employee
+  +getAll(): List<Employee>
+}
+
+interface MissionDAO {
+  +create(mission: Mission): boolean
+  +update(mission: Mission): boolean
+  +delete(code: String): boolean
+  +getByCode(code: String): Mission
+  +getAll(): List<Mission>
+}
+
+interface OperationDAO {
+  +create(operation: Operation): boolean
+  +update(operation: Operation): boolean
+  +delete(operationNumber: String): boolean
+  +getByOperationNumber(operationNumber: String): Operation
+  +getAll(): List<Operation>
+}
+
+
+class AccountDAOImpl {
+  +create(account: Account): boolean
+  +update(account: Account): boolean
+  +delete(accountNumber: String): boolean
+  +getByAccountNumber(accountNumber: String): Account
+  +getAll(): List<Account>
+}
+
+class CurrentAccountDAOImpl {
+  +create(currentAccount: CurrentAccount): boolean
+  +update(currentAccount: CurrentAccount): boolean
+  +delete(accountNumber: String): boolean
+  +getByAccountNumber(accountNumber: String): CurrentAccount
+  +getAll(): List<CurrentAccount>
+}
+
+class SavingsAccountDAOImpl {
+  +create(savingsAccount: SavingsAccount): boolean
+  +update(savingsAccount: SavingsAccount): boolean
+  +delete(accountNumber: String): boolean
+  +getByAccountNumber(accountNumber: String): SavingsAccount
+  +getAll(): List<SavingsAccount>
+}
+
+class ClientDAOImpl {
+  +create(client: Client): boolean
+  +update(client: Client): boolean
+  +delete(code: String): boolean
+  +getByCode(code: String): Client
+  +getAll(): List<Client>
+}
+
+class EmployeeDAOImpl {
+  +create(employee: Employee): boolean
+  +update(employee: Employee): boolean
+  +delete(matricule: String): boolean
+  +getByMatricule(matricule: String): Employee
+  +getAll(): List<Employee>
+}
+
+class MissionDAOImpl {
+  +create(mission: Mission): boolean
+  +update(mission: Mission): boolean
+  +delete(code: String): boolean
+  +getByCode(code: String): Mission
+  +getAll(): List<Mission>
+}
+
+class OperationDAOImpl {
+  +create(operation: Operation): boolean
+  +update(operation: Operation): boolean
+  +delete(operationNumber: String): boolean
+  +getByOperationNumber(operationNumber: String): Operation
+  +getAll(): List<Operation>
+}
+
+
+class AccountService {
+  -accountDAO: AccountDAO
+  +createAccount(account: Account): boolean
+  +updateAccount(account: Account): boolean
+  +deleteAccount(accountNumber: String): boolean
+  +getAccountByAccountNumber(accountNumber: String): Account
+  +getAllAccounts(): List<Account>
+}
+
+class CurrentAccountService {
+  -currentAccountDAO: CurrentAccountDAO
+  +createCurrentAccount(currentAccount: CurrentAccount): boolean
+  +updateCurrentAccount(currentAccount: CurrentAccount): boolean
+  +deleteCurrentAccount(accountNumber: String): boolean
+  +getCurrentAccountByAccountNumber(accountNumber: String): CurrentAccount
+  +getAllCurrentAccounts(): List<CurrentAccount>
+}
+
+class SavingsAccountService {
+  -savingsAccountDAO: SavingsAccountDAO
+  +createSavingsAccount(savingsAccount: SavingsAccount): boolean
+  +updateSavingsAccount(savingsAccount: SavingsAccount): boolean
+  +deleteSavingsAccount(accountNumber: String): boolean
+  +getSavingsAccountByAccountNumber(accountNumber: String): SavingsAccount
+  +getAllSavingsAccounts(): List<SavingsAccount>
+}
+
+class ClientService {
+  -clientDAO: ClientDAO
+  +createClient(client: Client): boolean
+  +updateClient(client: Client): boolean
+  +deleteClient(code: String): boolean
+  +getClientByCode(code: String): Client
+  +getAllClients(): List<Client>
+}
+
+class EmployeeService {
+  -employeeDAO: EmployeeDAO
+  +createEmployee(employee: Employee): boolean
+  +updateEmployee(employee: Employee): boolean
+  +deleteEmployee(matricule: String): boolean
+  +getEmployeeByMatricule(matricule: String): Employee
+  +getAllEmployees(): List<Employee>
+}
+
+class MissionService {
+  -missionDAO: MissionDAO
+  +createMission(mission: Mission): boolean
+  +updateMission(mission: Mission): boolean
+  +deleteMission(code: String): boolean
+  +getMissionByCode(code: String): Mission
+  +getAllMissions(): List<Mission>
+}
+
+class OperationService {
+  -operationDAO: OperationDAO
+  +createOperation(operation: Operation): boolean
+  +updateOperation(operation: Operation): boolean
+  +deleteOperation(operationNumber: String): boolean
+  +getOperationByOperationNumber(operationNumber: String): Operation
+  +getAllOperations(): List<Operation>
+}
+
+
+class AccountUseCase {
+  -accountService: AccountService
+  +createAccount(account: Account): boolean
+  +updateAccount(account: Account): boolean
+  +deleteAccount(accountNumber: String): boolean
+  +getAccountByAccountNumber(accountNumber: String): Account
+  +getAllAccounts(): List<Account>
+}
+
+class CurrentAccountUseCase {
+  -currentAccountService: CurrentAccountService
+  +createCurrentAccount(currentAccount: CurrentAccount): boolean
+  +updateCurrentAccount(currentAccount: CurrentAccount): boolean
+  +deleteCurrentAccount(accountNumber: String): boolean
+  +getCurrentAccountByAccountNumber(accountNumber: String): CurrentAccount
+  +getAllCurrentAccounts(): List<CurrentAccount>
+}
+
+class SavingsAccountUseCase {
+  -savingsAccountService: SavingsAccountService
+  +createSavingsAccount(savingsAccount: SavingsAccount): boolean
+  +updateSavingsAccount(savingsAccount: SavingsAccount): boolean
+  +deleteSavingsAccount(accountNumber: String): boolean
+  +getSavingsAccountByAccountNumber(accountNumber: String): SavingsAccount
+  +getAllSavingsAccounts(): List<SavingsAccount>
+}
+
+class ClientUseCase {
+  -clientService: ClientService
+  +createClient(client: Client): boolean
+  +updateClient(client: Client): boolean
+  +deleteClient(code: String): boolean
+  +getClientByCode(code: String): Client
+  +getAllClients(): List<Client>
+}
+
+class EmployeeUseCase {
+  -employeeService: EmployeeService
+  +createEmployee(employee: Employee): boolean
+  +updateEmployee(employee: Employee): boolean
+  +deleteEmployee(matricule: String): boolean
+  +getEmployeeByMatricule(matricule: String): Employee
+  +getAllEmployees(): List<Employee>
+}
+
+class MissionUseCase {
+  -missionService: MissionService
+  +createMission(mission: Mission): boolean
+  +updateMission(mission: Mission): boolean
+  +deleteMission(code: String): boolean
+  +getMissionByCode(code: String): Mission
+  +getAllMissions(): List<Mission>
+}
+
+class OperationUseCase {
+  -operationService: OperationService
+  +createOperation(operation: Operation): boolean
+  +updateOperation(operation: Operation): boolean
+  +deleteOperation(operationNumber: String): boolean
+  +getOperationByOperationNumber(operationNumber: String): Operation
+  +getAllOperations(): List<Operation>
+}
+
+AccountUseCase --> AccountService : uses
+CurrentAccountUseCase --> CurrentAccountService : uses
+SavingsAccountUseCase --> SavingsAccountService : uses
+ClientUseCase --> ClientService : uses
+EmployeeUseCase --> EmployeeService : uses
+MissionUseCase --> MissionService : uses
+OperationUseCase --> OperationService : uses
+AccountService --> AccountDAOImpl : uses
+CurrentAccountService --> CurrentAccountDAOImpl : uses
+SavingsAccountService --> SavingsAccountDAOImpl : uses
+ClientService --> ClientDAOImpl : uses
+EmployeeService --> EmployeeDAOImpl : uses
+MissionService --> MissionDAOImpl : uses
+OperationService --> OperationDAOImpl : uses
+AccountDAO --|> AccountDAOImpl
+CurrentAccountDAO --|> CurrentAccountDAOImpl
+SavingsAccountDAO --|> SavingsAccountDAOImpl
+ClientDAO --|> ClientDAOImpl
+EmployeeDAO --|> EmployeeDAOImpl
+MissionDAO --|> MissionDAOImpl
+OperationDAO --|> OperationDAOImpl
+Account <|-- CurrentAccount : extends
+Account <|-- SavingsAccount : extends
+Account "1" *-- "0..*" Operation
+Account "1" *-- "1" Client
+Account "1" *-- "0..*" Employee
+Employee "1" *-- "0..*" Operation
+Mission "1" *-- "0..*" Employee
+
+@enduml
