@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Account {
-    private String _accountNumber;
+    private int _accountNumber;
 
     private double _balance;
 

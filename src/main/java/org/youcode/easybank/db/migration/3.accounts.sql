@@ -1,5 +1,5 @@
 CREATE TABLE accounts (
-    accountNumber VARCHAR(255) PRIMARY KEY,
+    accountNumber SERIAL PRIMARY KEY,
     balance DOUBLE PRECISION,
     creationDate DATE,
     status VARCHAR(255),

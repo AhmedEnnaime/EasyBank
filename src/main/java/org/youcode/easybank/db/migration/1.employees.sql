@@ -1,5 +1,5 @@
 CREATE TABLE employees (
-    matricule INT PRIMARY KEY,
+    matricule SERIAL PRIMARY KEY,
     firstName VARCHAR(255),
     lastName VARCHAR(255),
     recruitmentDate DATE,

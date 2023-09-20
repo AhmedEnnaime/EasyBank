@@ -1,5 +1,5 @@
 CREATE TABLE clients (
-    code INT PRIMARY KEY,
+    code SERIAL PRIMARY KEY,
     firstName VARCHAR(255),
     lastName VARCHAR(255),
     birthDate DATE,
