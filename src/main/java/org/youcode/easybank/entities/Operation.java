@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.youcode.easybank.enums.OPERATION;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 public class Operation {
     private int _operationNumber;
 
-    private SimpleDateFormat _creationDate;
+    private LocalDate _creationDate;
 
     private double _amount;
 

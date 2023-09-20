@@ -4,23 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Client {
+public class Client extends Person{
     private int _code;
 
-    private String _lastName;
-
-    private String _firstName;
-
-    private SimpleDateFormat _birthDate;
-
-    private String _phone;
-
-    private String _address;
-
     private Account _account;
+
+    public Client(String lastName, String firstName, LocalDate birthDate, String phone, String address, int code, Account account) {
+        super(lastName, firstName, birthDate, phone, address);
+        this._code = code;
+        this._account = account;
+    }
+
 }

@@ -5,29 +5,34 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Employee {
+public class Employee extends Person{
     private int _matricule;
 
-    private String _lastName;
-
-    private String _firstName;
-
-    private SimpleDateFormat _recruitmentDate;
-
-    private SimpleDateFormat _birthDate;
+    private LocalDate _recruitmentDate;
 
     private String _email;
-
-    private String _phone;
-
-    private Account _account;
 
     private List<Operation> _operations;
 
     private List<Mission> _missions;
+
+    private List<Account> _accounts;
+
+    public Employee(String lastName, String firstName, LocalDate birthDate, String phone, String address,
+                    int matricule, LocalDate recruitmentDate, String email,
+                    List<Operation> operations, List<Mission> missions, List<Account> accounts) {
+        super(lastName, firstName, birthDate, phone, address);
+        this._matricule = matricule;
+        this._recruitmentDate = recruitmentDate;
+        this._email = email;
+        this._operations = operations;
+        this._missions = missions;
+        this._accounts = accounts;
+    }
 }

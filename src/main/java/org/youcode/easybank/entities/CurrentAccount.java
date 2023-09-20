@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.youcode.easybank.enums.STATUS;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -14,7 +14,7 @@ import java.util.List;
 public class CurrentAccount extends Account{
     private double _overdraft;
 
-    public CurrentAccount(String accountNumber, double balance, SimpleDateFormat creationDate, STATUS status, Employee employee, Client client, List<Operation> operations, double overdraft) {
+    public CurrentAccount(String accountNumber, double balance, LocalDate creationDate, STATUS status, Employee employee, Client client, List<Operation> operations, double overdraft) {
         super(accountNumber, balance, creationDate, status, employee, client, operations);
         this._overdraft = overdraft;
     }

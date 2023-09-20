@@ -3,7 +3,7 @@ package org.youcode.easybank.entities;
 import lombok.*;
 import org.youcode.easybank.enums.STATUS;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -14,7 +14,7 @@ public class Account {
 
     private double _balance;
 
-    private SimpleDateFormat _creationDate;
+    private LocalDate _creationDate;
 
     private STATUS _status;
 

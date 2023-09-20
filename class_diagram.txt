@@ -21,14 +21,12 @@ class SavingsAccount {
   +getInterestRate(): double
 }
 
-class Client {
-  -code: int
+class Person {
   -nom: String
   -prenom: String
   -dateNaissance: Date
   -telephone: String
   -adresse: String
-  +getCode(): int
   +getNom(): String
   +getPrenom(): String
   +getDateNaissance(): Date
@@ -36,21 +34,18 @@ class Client {
   +getAdresse(): String
 }
 
-class Employee {
+class Client extends Person {
+  -code: int
+  +getCode(): int
+}
+
+class Employee extends Person {
   -matricule: int
-  -nom: String
-  -prenom: String
   -dateRecrutement: Date
-  -dateNaissance: Date
   -email: String
-  -telephone: String
   +getMatricule(): int
-  +getNom(): String
-  +getPrenom(): String
   +getDateRecrutement(): Date
-  +getDateNaissance(): Date
   +getEmail(): String
-  +getTelephone(): String
 }
 
 class Mission {
@@ -60,6 +55,13 @@ class Mission {
   +getCode(): int
   +getNom(): String
   +getDescription(): String
+}
+
+class MissionAssignment {
+  -debutDate: Date
+  -endDate: Date
+  +getDebutDate(): Date
+  +getEndDate(): Date
 }
 
 class Operation {
@@ -74,8 +76,6 @@ class Operation {
 }
 
 interface AccountDAO {
-  +create(account: Account): Account
-  +update(account: Account): Account
   +delete(accountNumber: String): boolean
   +getByAccountNumber(accountNumber: String): Account
   +getAll(): List<Account>
@@ -84,17 +84,19 @@ interface AccountDAO {
 interface CurrentAccountDAO {
   +create(currentAccount: CurrentAccount): CurrentAccount
   +update(currentAccount: CurrentAccount): CurrentAccount
-  +delete(accountNumber: String): boolean
-  +getByAccountNumber(accountNumber: String): CurrentAccount
-  +getAll(): List<CurrentAccount>
 }
 
 interface SavingsAccountDAO {
   +create(savingsAccount: SavingsAccount): SavingsAccount
   +update(savingsAccount: SavingsAccount): SavingsAccount
-  +delete(accountNumber: String): boolean
-  +getByAccountNumber(accountNumber: String): SavingsAccount
-  +getAll(): List<SavingsAccount>
+}
+
+interface PersonDAO {
+  +create(person: Person): Person
+  +update(person: Person): Person
+  +delete(id: String): boolean
+  +getById(id: String): Person
+  +getAll(): List<Person>
 }
 
 interface ClientDAO {
@@ -121,6 +123,14 @@ interface MissionDAO {
   +getAll(): List<Mission>
 }
 
+interface MissionAssignmentDAO {
+  +create(assignment: MissionAssignment): MissionAssignment
+  +update(assignment: MissionAssignment): MissionAssignment
+  +delete(id: String): boolean
+  +getById(id: String): MissionAssignment
+  +getAll(): List<MissionAssignment>
+}
+
 interface OperationDAO {
   +create(operation: Operation): Operation
   +update(operation: Operation): Operation
@@ -129,10 +139,7 @@ interface OperationDAO {
   +getAll(): List<Operation>
 }
 
-
 class AccountDAOImpl {
-  +create(account: Account): Account
-  +update(account: Account): Account
   +delete(accountNumber: String): boolean
   +getByAccountNumber(accountNumber: String): Account
   +getAll(): List<Account>
@@ -141,17 +148,16 @@ class AccountDAOImpl {
 class CurrentAccountDAOImpl {
   +create(currentAccount: CurrentAccount): CurrentAccount
   +update(currentAccount: CurrentAccount): CurrentAccount
-  +delete(accountNumber: String): boolean
-  +getByAccountNumber(accountNumber: String): CurrentAccount
-  +getAll(): List<CurrentAccount>
 }
 
 class SavingsAccountDAOImpl {
   +create(savingsAccount: SavingsAccount): SavingsAccount
   +update(savingsAccount: SavingsAccount): SavingsAccount
-  +delete(accountNumber: String): boolean
-  +getByAccountNumber(accountNumber: String): SavingsAccount
-  +getAll(): List<SavingsAccount>
+}
+
+class PersonDAOImpl {
+  +create(person: Person): Person
+  +update(person: Person): Person
 }
 
 class ClientDAOImpl {
@@ -178,6 +184,14 @@ class MissionDAOImpl {
   +getAll(): List<Mission>
 }
 
+class MissionAssignmentDAOImpl {
+  +create(assignment: MissionAssignment): MissionAssignment
+  +update(assignment: MissionAssignment): MissionAssignment
+  +delete(id: String): boolean
+  +getById(id: String): MissionAssignment
+  +getAll(): List<MissionAssignment>
+}
+
 class OperationDAOImpl {
   +create(operation: Operation): Operation
   +update(operation: Operation): Operation
@@ -185,7 +199,6 @@ class OperationDAOImpl {
   +getByOperationNumber(operationNumber: String): Operation
   +getAll(): List<Operation>
 }
-
 
 class AccountService {
   -accountDAO: AccountDAO
@@ -214,6 +227,15 @@ class SavingsAccountService {
   +getAllSavingsAccounts(): List<SavingsAccount>
 }
 
+class PersonService {
+  -personDAO: PersonDAO
+  +createPerson(person: Person): Person
+  +updatePerson(person: Person): Person
+  +deletePerson(id: String): boolean
+  +getPersonById(id: String): Person
+  +getAllPersons(): List<Person>
+}
+
 class ClientService {
   -clientDAO: ClientDAO
   +createClient(client: Client): Client
@@ -239,6 +261,15 @@ class MissionService {
   +deleteMission(code: String): boolean
   +getMissionByCode(code: String): Mission
   +getAllMissions(): List<Mission>
+}
+
+class MissionAssignmentService {
+  -missionAssignmentDAO: MissionAssignmentDAO
+  +createMissionAssignment(assignment: MissionAssignment): MissionAssignment
+  +updateMissionAssignment(assignment: MissionAssignment): MissionAssignment
+  +deleteMissionAssignment(id: String): boolean
+  +getMissionAssignmentById(id: String): MissionAssignment
+  +getAllMissionAssignments(): List<MissionAssignment>
 }
 
 class OperationService {
@@ -349,9 +380,12 @@ OperationDAO --|> OperationDAOImpl
 Account <|-- CurrentAccount : extends
 Account <|-- SavingsAccount : extends
 Account "1" *-- "0..*" Operation
-Account "1" *-- "1" Client
+Account "1" *-- "0..*" Client
 Account "1" *-- "0..*" Employee
 Employee "1" *-- "0..*" Operation
 Mission "1" *-- "0..*" Employee
+MissionAssignment -- Mission : assigned to
+MissionAssignment -- Employee : assigned employee
+MissionAssignment ..> Person : extends
 
 @enduml
