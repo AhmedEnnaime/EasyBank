@@ -4,23 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBConnection {
+public class DBTestConnection {
     private static Connection conn;
-    private static DBConnection instance;
 
-    private DBConnection() {
-    }
-
-    public static DBConnection getInstance() {
-        if (instance == null) {
-            instance = new DBConnection();
-        }
-        return instance;
-    }
-
-    public Connection establishConnection() {
+    public static Connection establishTestConnection() {
         if (conn == null) {
-            String jdbcUrl = "jdbc:postgresql://localhost:5433/easybank";
+            String jdbcUrl = "jdbc:postgresql://localhost:5432/easybank";
             String username = "postgres";
             String password = "3ea14367A4";
 
@@ -29,7 +18,10 @@ public class DBConnection {
                 conn = DriverManager.getConnection(jdbcUrl, username, password);
 
                 if (conn != null) {
-                    System.out.println("Connection to PostgreSQL database established.");
+                    System.out.println("Connection to testing PostgreSQL database established.");
+//                    createUsersTable(conn);
+//                    createBooksTable(conn);
+//                    createLoansTable(conn);
                 }
 
             } catch (ClassNotFoundException | SQLException e) {
