@@ -1,5 +1,4 @@
 package org.youcode.easybank.dao;
 
-public interface EmployeeDao {
-
+public interface SavingsAccountDao {
 }

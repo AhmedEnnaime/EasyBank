@@ -22,13 +22,13 @@ class SavingsAccount {
 }
 
 class Client {
-  -code: String
+  -code: int
   -nom: String
   -prenom: String
   -dateNaissance: Date
   -telephone: String
   -adresse: String
-  +getCode(): String
+  +getCode(): int
   +getNom(): String
   +getPrenom(): String
   +getDateNaissance(): Date
@@ -37,14 +37,14 @@ class Client {
 }
 
 class Employee {
-  -matricule: String
+  -matricule: int
   -nom: String
   -prenom: String
   -dateRecrutement: Date
   -dateNaissance: Date
   -email: String
   -telephone: String
-  +getMatricule(): String
+  +getMatricule(): int
   +getNom(): String
   +getPrenom(): String
   +getDateRecrutement(): Date
@@ -54,20 +54,20 @@ class Employee {
 }
 
 class Mission {
-  -code: String
+  -code: int
   -nom: String
   -description: String
-  +getCode(): String
+  +getCode(): int
   +getNom(): String
   +getDescription(): String
 }
 
 class Operation {
-  -operationNumber: String
+  -operationNumber: int
   -creationDate: Date
   -amount: double
   -type: OPERATIONTYPE
-  +getOperationNumber(): String
+  +getOperationNumber(): int
   +getCreationDate(): Date
   +getAmount(): double
   +getType(): OPERATIONTYPE
