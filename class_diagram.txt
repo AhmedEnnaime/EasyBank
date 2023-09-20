@@ -91,13 +91,6 @@ interface SavingsAccountDAO {
   +update(savingsAccount: SavingsAccount): SavingsAccount
 }
 
-interface PersonDAO {
-  +create(person: Person): Person
-  +update(person: Person): Person
-  +delete(id: String): boolean
-  +getById(id: String): Person
-  +getAll(): List<Person>
-}
 
 interface ClientDAO {
   +create(client: Client): Client
@@ -153,11 +146,6 @@ class CurrentAccountDAOImpl {
 class SavingsAccountDAOImpl {
   +create(savingsAccount: SavingsAccount): SavingsAccount
   +update(savingsAccount: SavingsAccount): SavingsAccount
-}
-
-class PersonDAOImpl {
-  +create(person: Person): Person
-  +update(person: Person): Person
 }
 
 class ClientDAOImpl {
@@ -225,15 +213,6 @@ class SavingsAccountService {
   +deleteSavingsAccount(accountNumber: String): boolean
   +getSavingsAccountByAccountNumber(accountNumber: String): SavingsAccount
   +getAllSavingsAccounts(): List<SavingsAccount>
-}
-
-class PersonService {
-  -personDAO: PersonDAO
-  +createPerson(person: Person): Person
-  +updatePerson(person: Person): Person
-  +deletePerson(id: String): boolean
-  +getPersonById(id: String): Person
-  +getAllPersons(): List<Person>
 }
 
 class ClientService {
