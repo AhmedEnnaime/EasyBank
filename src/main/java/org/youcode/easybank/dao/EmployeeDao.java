@@ -16,4 +16,6 @@ public interface EmployeeDao {
     public Optional<Employee> getByMatricule(int matricule) throws EmployeeException;
 
     public List<Employee> getAll() throws EmployeeException;
+
+    public boolean deleteAll();
 }
