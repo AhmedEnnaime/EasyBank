@@ -1,5 +1,6 @@
 package org.youcode.easybank.daoImpl;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
@@ -36,6 +37,16 @@ public class EmployeeDaoImplTest {
         employeeDao.create(employee);
 
         testMatricule = employee.get_matricule();
+    }
+
+    void assertEmployeesEqual(Employee expected, Employee actual) {
+        assertEquals(expected.get_firstName(), actual.get_firstName());
+        assertEquals(expected.get_lastName(), actual.get_lastName());
+        assertEquals(expected.get_birthDate(), actual.get_birthDate());
+        assertEquals(expected.get_phone(), actual.get_phone());
+        assertEquals(expected.get_address(), actual.get_address());
+        assertEquals(expected.get_recruitmentDate(), actual.get_recruitmentDate());
+        assertEquals(expected.get_email(), actual.get_email());
     }
 
     @Test
@@ -115,14 +126,23 @@ public class EmployeeDaoImplTest {
 
     @Test
     public void testGetByMatricule() throws EmployeeException {
-        Optional<Employee> retrievedUpdatedEmployee = employeeDao.getByMatricule(testMatricule);
-        assertTrue(retrievedUpdatedEmployee.isPresent());
+        Employee employee = new Employee(
+                "Salah",
+                "Mohammed",
+                LocalDate.of(2003, 4, 23),
+                "064782487924",
+                "Jrayfat",
+                LocalDate.of(2023, 6, 27),
+                "salah@gmail.com"
+        );
 
-        assertEquals("Mousta", retrievedUpdatedEmployee.get().get_firstName());
-        assertEquals("Delegue", retrievedUpdatedEmployee.get().get_lastName());
-        assertEquals("06473347924", retrievedUpdatedEmployee.get().get_phone());
-        assertEquals("Jrayfat", retrievedUpdatedEmployee.get().get_address());
-        assertEquals("mousta@gmail.com", retrievedUpdatedEmployee.get().get_email());
+        Optional<Employee> createdEmployee = employeeDao.create(employee);
+        assertTrue(createdEmployee.isPresent());
+
+        Optional<Employee> retrievedEmployee = employeeDao.getByMatricule(createdEmployee.get().get_matricule());
+        assertTrue(retrievedEmployee.isPresent());
+        assertEmployeesEqual(createdEmployee.get(), retrievedEmployee.get());
+
     }
 
     @Test
@@ -131,8 +151,12 @@ public class EmployeeDaoImplTest {
         assertNotNull(allEmployees);
         assertFalse(allEmployees.isEmpty());
 
-        assertTrue(allEmployees.stream().anyMatch(e -> e.get_firstName().equals("Mousta")));
-        assertTrue(allEmployees.stream().anyMatch(e -> e.get_lastName().equals("Delegue")));
+        assertTrue(allEmployees.stream().anyMatch(e -> e.get_email().equals("mousta@gmail.com")));
+    }
+
+    @AfterEach
+    public void tearDown() {
+        employeeDao.deleteAll();
     }
 
 }
