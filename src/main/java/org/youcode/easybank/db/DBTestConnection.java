@@ -37,23 +37,24 @@ public class DBTestConnection {
         return conn;
     }
 
-    public static void createEmployeesTable(Connection conn) throws SQLException{
-        String createTableSQL = "CREATE TABLE employees ("
+    public static void createEmployeesTable(Connection conn) throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS employees ("
                 + "matricule SERIAL PRIMARY KEY,"
                 + "firstName VARCHAR(255),"
                 + "lastName VARCHAR(255),"
                 + "recruitmentDate DATE,"
                 + "birthDate DATE,"
                 + "email VARCHAR(255),"
-                + "phone VARCHAR(255)"
+                + "phone VARCHAR(255),"
+                + "address VARCHAR(255)"
                 + ");";
-        try(Statement stmt = conn.createStatement()) {
+        try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);
         }
     }
 
     public static void createClientsTable(Connection conn) throws SQLException {
-        String createTableSQL = "CREATE TABLE clients ("
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS clients ("
                 + "code SERIAL PRIMARY KEY,"
                 + "firstName VARCHAR(255),"
                 + "lastName VARCHAR(255),"
@@ -67,7 +68,7 @@ public class DBTestConnection {
     }
 
     public static void createAccountsTable(Connection conn) throws SQLException {
-        String createTableSQL = "CREATE TABLE accounts ("
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS accounts ("
                 + "accountNumber SERIAL PRIMARY KEY,"
                 + "balance DOUBLE PRECISION,"
                 + "creationDate DATE,"
@@ -83,7 +84,7 @@ public class DBTestConnection {
     }
 
     public static void createSavingsAccountsTable(Connection conn) throws SQLException {
-        String createTableSQL = "CREATE TABLE savingsAccounts ("
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS savingsAccounts ("
                 + "accountNumber INT PRIMARY KEY,"
                 + "interestRate DOUBLE PRECISION,"
                 + "FOREIGN KEY (accountNumber) REFERENCES accounts(accountNumber)"
@@ -92,8 +93,9 @@ public class DBTestConnection {
             stmt.executeUpdate(createTableSQL);
         }
     }
+
     public static void createCurrentAccountsTable(Connection conn) throws SQLException {
-        String createTableSQL = "CREATE TABLE currentAccounts ("
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS currentAccounts ("
                 + "accountNumber INT PRIMARY KEY,"
                 + "overdraft DOUBLE PRECISION,"
                 + "FOREIGN KEY (accountNumber) REFERENCES accounts(accountNumber)"
@@ -104,7 +106,7 @@ public class DBTestConnection {
     }
 
     public static void createOperationsTable(Connection conn) throws SQLException {
-        String createTableSQL = "CREATE TABLE operations ("
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS operations ("
                 + "operationNumber SERIAL PRIMARY KEY,"
                 + "creationDate DATE,"
                 + "amount DOUBLE PRECISION,"
@@ -120,7 +122,7 @@ public class DBTestConnection {
     }
 
     public static void createMissionsTable(Connection conn) throws SQLException {
-        String createTableSQL = "CREATE TABLE missions ("
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS missions ("
                 + "code SERIAL PRIMARY KEY,"
                 + "nom VARCHAR(255),"
                 + "description VARCHAR(255),"
@@ -132,9 +134,8 @@ public class DBTestConnection {
         }
     }
 
-
     public static void createMissionAssignmentsTable(Connection conn) throws SQLException {
-        String createTableSQL = "CREATE TABLE missionAssignments ("
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS missionAssignments ("
                 + "debut_date TIMESTAMP,"
                 + "end_date TIMESTAMP,"
                 + "employee_matricule INT REFERENCES employees(matricule),"

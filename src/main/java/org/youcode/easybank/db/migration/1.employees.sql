@@ -5,5 +5,6 @@ CREATE TABLE employees (
     recruitmentDate DATE,
     birthDate DATE,
     email VARCHAR(255),
-    phone VARCHAR(255)
+    phone VARCHAR(255),
+    address VARCHAR(255)
 );
