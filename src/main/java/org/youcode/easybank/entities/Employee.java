@@ -35,4 +35,11 @@ public class Employee extends Person{
         this._missions = missions;
         this._accounts = accounts;
     }
+
+    public Employee(String lastName, String firstName, LocalDate birthDate, String phone, String address,
+                    LocalDate recruitmentDate, String email) {
+        super(lastName, firstName, birthDate, phone, address);
+        this._recruitmentDate = recruitmentDate;
+        this._email = email;
+    }
 }
