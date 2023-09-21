@@ -3,8 +3,10 @@ package org.youcode.easybank.dao;
 import org.youcode.easybank.entities.SavingsAccount;
 import org.youcode.easybank.exceptions.SavingsAccountException;
 
-public interface SavingsAccountDao {
-    public SavingsAccount create(SavingsAccount savingsAccount) throws SavingsAccountException;
+import java.util.Optional;
 
-    public SavingsAccount update(int accountNumber, SavingsAccount savingsAccount) throws SavingsAccountException;
+public interface SavingsAccountDao {
+    public Optional<SavingsAccount> create(SavingsAccount savingsAccount) throws SavingsAccountException;
+
+    public Optional<SavingsAccount> update(int accountNumber, SavingsAccount savingsAccount) throws SavingsAccountException;
 }

@@ -5,11 +5,12 @@ import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AccountDao {
     public boolean delete(int accountNumber);
 
-    public Account getByAccountNumber(int accountNumber) throws AccountException;
+    public Optional<Account> getByAccountNumber(int accountNumber) throws AccountException;
 
     public List<Account> getAll() throws AccountException;
 

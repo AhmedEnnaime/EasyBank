@@ -3,8 +3,10 @@ package org.youcode.easybank.dao;
 import org.youcode.easybank.entities.CurrentAccount;
 import org.youcode.easybank.exceptions.CurrentAccountException;
 
-public interface CurrentAccountDao {
-    public CurrentAccount create(CurrentAccount currentAccount) throws CurrentAccountException;
+import java.util.Optional;
 
-    public CurrentAccount update(int accountNumber, CurrentAccount currentAccount) throws CurrentAccountException;
+public interface CurrentAccountDao {
+    public Optional<CurrentAccount> create(CurrentAccount currentAccount) throws CurrentAccountException;
+
+    public Optional<CurrentAccount> update(int accountNumber, CurrentAccount currentAccount) throws CurrentAccountException;
 }
