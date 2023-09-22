@@ -52,7 +52,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
             return Optional.of(employee);
         } catch (SQLException e) {
-            throw new EmployeeException("Error creating employee.");
+            e.printStackTrace();
+            throw new EmployeeException("Error creating employee." + e.getMessage());
         }
     }
 

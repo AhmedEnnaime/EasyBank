@@ -1,9 +1,9 @@
 package org.youcode.easybank;
 
-import org.youcode.easybank.db.DBConnection;
+import org.youcode.easybank.services.EmployeeService;
 
 public class Main {
     public static void main(String[] args) {
-        DBConnection.getInstance().establishConnection();
+        EmployeeService.getAllEmployees();
     }
 }
