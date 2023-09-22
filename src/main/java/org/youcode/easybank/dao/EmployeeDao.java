@@ -18,4 +18,6 @@ public interface EmployeeDao {
     public List<Employee> getAll() throws EmployeeException;
 
     public boolean deleteAll();
+
+    public List<Employee> findByAttribute(String attr) throws EmployeeException;
 }

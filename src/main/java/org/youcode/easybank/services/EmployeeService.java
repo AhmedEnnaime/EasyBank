@@ -244,4 +244,37 @@ public class EmployeeService {
             System.out.println("Error retrieving employees: " + e.getMessage());
         }
     }
+
+    public static void findEmployeeByAttribute() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter the value you want to search for: ");
+        String searchValue = sc.nextLine();
+
+        EmployeeDao dao = new EmployeeDaoImpl();
+
+        try {
+            List<Employee> foundEmployees = dao.findByAttribute(searchValue);
+
+            if (!foundEmployees.isEmpty()) {
+                System.out.println("Employees found:");
+                for (Employee employee : foundEmployees) {
+                    System.out.println("Matricule: " + employee.get_matricule());
+                    System.out.println("First Name: " + employee.get_firstName());
+                    System.out.println("Last Name: " + employee.get_lastName());
+                    System.out.println("Birthdate: " + employee.get_birthDate());
+                    System.out.println("Phone: " + employee.get_phone());
+                    System.out.println("Address: " + employee.get_address());
+                    System.out.println("Recruitment Date: " + employee.get_recruitmentDate());
+                    System.out.println("Email: " + employee.get_email());
+                    System.out.println("---------------------------");
+                }
+            } else {
+                System.out.println("No employees found with the specified value.");
+            }
+        } catch (EmployeeException e) {
+            System.out.println("Error searching for employees: " + e.getMessage());
+        }
+    }
+
 }

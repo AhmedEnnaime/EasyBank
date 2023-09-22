@@ -173,4 +173,47 @@ public class EmployeeDaoImpl implements EmployeeDao {
         }
         return deleted;
     }
+
+    @Override
+    public List<Employee> findByAttribute(String searchValue) throws EmployeeException {
+        List<Employee> employees = new ArrayList<>();
+
+        String selectByAttributeSQL = "SELECT * FROM employees WHERE " +
+                "matricule::TEXT LIKE ? OR " +
+                "firstName LIKE ? OR " +
+                "lastName LIKE ? OR " +
+                "birthDate::TEXT LIKE ? OR " +
+                "phone LIKE ? OR " +
+                "address LIKE ? OR " +
+                "recruitmentDate::TEXT LIKE ? OR " +
+                "email LIKE ?";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(selectByAttributeSQL)) {
+            String wildcardSearchValue = "%" + searchValue + "%";
+            for (int i = 1; i <= 8; i++) {
+                preparedStatement.setString(i, wildcardSearchValue);
+            }
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Employee employee = new Employee();
+                    employee.set_matricule(resultSet.getInt("matricule"));
+                    employee.set_firstName(resultSet.getString("firstName"));
+                    employee.set_lastName(resultSet.getString("lastName"));
+                    employee.set_birthDate(resultSet.getDate("birthDate").toLocalDate());
+                    employee.set_phone(resultSet.getString("phone"));
+                    employee.set_address(resultSet.getString("address"));
+                    employee.set_recruitmentDate(resultSet.getDate("recruitmentDate").toLocalDate());
+                    employee.set_email(resultSet.getString("email"));
+
+                    employees.add(employee);
+                }
+            }
+        } catch (SQLException e) {
+            throw new EmployeeException("Error searching for employees by attribute.");
+        }
+
+        return employees;
+    }
+
 }
