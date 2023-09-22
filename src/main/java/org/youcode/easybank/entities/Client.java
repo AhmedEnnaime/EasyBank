@@ -15,10 +15,17 @@ public class Client extends Person{
 
     private List<Account> _accounts;
 
-    public Client(String lastName, String firstName, LocalDate birthDate, String phone, String address, int code, List<Account> accounts) {
+    private Employee _employee;
+
+    public Client(String lastName, String firstName, LocalDate birthDate, String phone, String address, int code, List<Account> accounts, Employee employee) {
         super(lastName, firstName, birthDate, phone, address);
         this._code = code;
         this._accounts = accounts;
+        this._employee = employee;
+    }
+
+    public Client(String lastName, String firstName, LocalDate birthDate, String phone, String address) {
+        super(lastName, firstName, birthDate, phone, address);
     }
 
 }

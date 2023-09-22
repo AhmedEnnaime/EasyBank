@@ -24,9 +24,11 @@ public class Employee extends Person{
 
     private List<Account> _accounts;
 
+    private List<Client> _clients;
+
     public Employee(String lastName, String firstName, LocalDate birthDate, String phone, String address,
                     int matricule, LocalDate recruitmentDate, String email,
-                    List<Operation> operations, List<Mission> missions, List<Account> accounts) {
+                    List<Operation> operations, List<Mission> missions, List<Account> accounts, List<Client> clients) {
         super(lastName, firstName, birthDate, phone, address);
         this._matricule = matricule;
         this._recruitmentDate = recruitmentDate;
@@ -34,6 +36,7 @@ public class Employee extends Person{
         this._operations = operations;
         this._missions = missions;
         this._accounts = accounts;
+        this._clients = clients;
     }
 
     public Employee(String lastName, String firstName, LocalDate birthDate, String phone, String address,

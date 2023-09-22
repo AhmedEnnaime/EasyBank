@@ -154,6 +154,47 @@ public class EmployeeDaoImplTest {
         assertTrue(allEmployees.stream().anyMatch(e -> e.get_email().equals("mousta@gmail.com")));
     }
 
+    @Test
+    public void testFindByAttribute() throws EmployeeException {
+
+        Employee employee1 = new Employee(
+                "John",
+                "Doe",
+                LocalDate.of(1990, 1, 15),
+                "1234567890",
+                "123 Main St",
+                LocalDate.of(2023, 9, 21),
+                "john.doe@example.com"
+        );
+
+        Employee employee2 = new Employee(
+                "Jane",
+                "Doe",
+                LocalDate.of(1995, 5, 20),
+                "9876543210",
+                "456 Elm St",
+                LocalDate.of(2023, 9, 21),
+                "jane.doe@example.com"
+        );
+
+        employeeDao.create(employee1);
+        employeeDao.create(employee2);
+
+        List<Employee> foundEmployees = employeeDao.findByAttribute("John");
+        assertNotNull(foundEmployees);
+        assertEquals(1, foundEmployees.size());
+        assertEquals("Doe", foundEmployees.get(0).get_firstName());
+
+        foundEmployees = employeeDao.findByAttribute("jane.doe@example.com");
+        assertNotNull(foundEmployees);
+        assertEquals(1, foundEmployees.size());
+        assertEquals("jane.doe@example.com", foundEmployees.get(0).get_email());
+
+        foundEmployees = employeeDao.findByAttribute("NonExistent");
+        assertNotNull(foundEmployees);
+        assertEquals(0, foundEmployees.size());
+    }
+
     @AfterEach
     public void tearDown() {
         employeeDao.deleteAll();

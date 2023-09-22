@@ -16,4 +16,8 @@ public interface ClientDao {
     public Optional<Client> getByCode(int code) throws ClientException;
 
     public List<Client> getAll() throws ClientException;
+
+    public List<Client> findByAttribute(String attr) throws ClientException;
+
+    public boolean deleteAll();
 }

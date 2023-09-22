@@ -125,7 +125,7 @@ public class DBTestConnection {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS missions ("
                 + "code SERIAL PRIMARY KEY,"
                 + "nom VARCHAR(255),"
-                + "description VARCHAR(255),"
+                + "description VARCHAR(255)"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);
