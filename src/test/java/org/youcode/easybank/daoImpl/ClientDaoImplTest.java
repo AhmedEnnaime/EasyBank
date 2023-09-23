@@ -74,7 +74,6 @@ public class ClientDaoImplTest {
     @Test
     public void testCreate() throws ClientException, EmployeeException {
 
-        employeeDao.create(employee);
         Client client = new Client(
                 "Abdelali",
                 "Hotgame",

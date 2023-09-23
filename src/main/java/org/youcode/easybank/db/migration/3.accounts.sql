@@ -1,8 +1,8 @@
 CREATE TABLE accounts (
     accountNumber SERIAL PRIMARY KEY,
     balance DOUBLE PRECISION,
-    creationDate DATE,
-    status VARCHAR(255),
+    creationDate DATE DEFAULT CURRENT_DATE,,
+    status VARCHAR(255) DEFAULT 'ACTIVE',
     clientCode INT,
     employeeMatricule INT,
     FOREIGN KEY (clientCode) REFERENCES clients(code),

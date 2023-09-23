@@ -16,8 +16,9 @@ public class SavingsAccount extends Account{
 
     private double _interestRate;
 
-    public SavingsAccount(int accountNumber, double balance, LocalDate creationDate, STATUS status, Employee employee, Client client, List<Operation> operations, double interestRate) {
-        super(accountNumber, balance, creationDate, status, employee, client, operations);
+    public SavingsAccount(Account account, double interestRate) {
+        super(account);
         this._interestRate = interestRate;
     }
+
 }
