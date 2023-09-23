@@ -4,7 +4,7 @@ CREATE TABLE employees (
     lastName VARCHAR(255),
     recruitmentDate DATE,
     birthDate DATE,
-    email VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
     phone VARCHAR(255),
     address VARCHAR(255)
 );

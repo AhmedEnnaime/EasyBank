@@ -4,9 +4,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
+import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.Client;
+import org.youcode.easybank.entities.Employee;
 import org.youcode.easybank.exceptions.ClientException;
+import org.youcode.easybank.exceptions.EmployeeException;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -18,21 +21,40 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ClientDaoImplTest {
     private ClientDaoImpl clientDao;
 
+    private EmployeeDaoImpl employeeDao;
+
     private int testCode;
+
+    private Employee employee;
 
 
     @BeforeEach
-    public void setUp() throws ClientException {
+    public void setUp() throws ClientException, EmployeeException {
         Connection testConnection = DBTestConnection.establishTestConnection();
 
         clientDao = new ClientDaoImpl(testConnection);
+
+        employeeDao = new EmployeeDaoImpl(testConnection);
+
+        employee = new Employee(
+                "Aymen",
+                "Servoy",
+                LocalDate.of(2000, 1, 26),
+                "06823347924",
+                "sidi bouzid",
+                LocalDate.of(2023, 9, 21),
+                "servoy@gmail.com"
+        );
+
+        employeeDao.create(employee);
 
         Client client = new Client(
                 "Mousta",
                 "Delegue",
                 LocalDate.of(2001, 11, 17),
                 "06473347924",
-                "Jrayfat"
+                "Jrayfat",
+                employee
         );
 
         clientDao.create(client);
@@ -50,13 +72,16 @@ public class ClientDaoImplTest {
     }
 
     @Test
-    public void testCreate() throws ClientException {
+    public void testCreate() throws ClientException, EmployeeException {
+
+        employeeDao.create(employee);
         Client client = new Client(
                 "Abdelali",
                 "Hotgame",
                 LocalDate.of(1990, 5, 15),
                 "0682332783924",
-                "hay anass"
+                "hay anass",
+                employee
         );
 
         Optional<Client> createdClient = clientDao.create(client);
@@ -66,6 +91,8 @@ public class ClientDaoImplTest {
         assertEquals(client.get_birthDate(), createdClient.get().get_birthDate());
         assertEquals(client.get_phone(), createdClient.get().get_phone());
         assertEquals(client.get_address(), createdClient.get().get_address());
+
+        assertNotNull(client.get_employee());
     }
 
     @Test
@@ -107,7 +134,8 @@ public class ClientDaoImplTest {
                 "Mohammed",
                 LocalDate.of(2003, 4, 23),
                 "064782487924",
-                "Jrayfat"
+                "Jrayfat",
+                employee
         );
 
         Optional<Client> createdClient = clientDao.create(client);
@@ -136,7 +164,8 @@ public class ClientDaoImplTest {
                 "Doe",
                 LocalDate.of(1990, 1, 15),
                 "1234567890",
-                "123 Main St"
+                "123 Main St",
+                employee
         );
 
         Client client2 = new Client(
@@ -144,7 +173,8 @@ public class ClientDaoImplTest {
                 "Doe",
                 LocalDate.of(1995, 5, 20),
                 "9876543210",
-                "456 Elm St"
+                "456 Elm St",
+                employee
         );
 
         clientDao.create(client1);

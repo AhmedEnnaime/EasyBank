@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -78,7 +79,6 @@ public class EmployeeService {
             String matriculeInput = sc.nextLine();
 
             if (matriculeInput.equalsIgnoreCase("q")) {
-                // User wants to quit
                 break;
             }
 
@@ -277,4 +277,31 @@ public class EmployeeService {
         }
     }
 
+    public static int validateMatricule() {
+        int matricule = 0;
+
+        while (matricule == 0) {
+            try {
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Enter matricule number:");
+                matricule = Integer.parseInt(sc.nextLine());
+
+                EmployeeDao dao = new EmployeeDaoImpl();
+
+                if (dao.validateMatricule(matricule)) {
+                    System.out.println("Matricule number is valid!");
+                } else {
+                    System.out.println("Matricule number is not valid. Please try again.");
+                    matricule = 0;
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid Input");
+            } catch (EmployeeException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return matricule;
+    }
 }

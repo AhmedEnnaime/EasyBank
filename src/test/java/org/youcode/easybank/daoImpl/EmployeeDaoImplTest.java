@@ -195,6 +195,14 @@ public class EmployeeDaoImplTest {
         assertEquals(0, foundEmployees.size());
     }
 
+    @Test
+    public void testValidateMatricule() throws EmployeeException {
+        boolean isValid = employeeDao.validateMatricule(testMatricule);
+
+        assertTrue(isValid);
+
+    }
+
     @AfterEach
     public void tearDown() {
         employeeDao.deleteAll();

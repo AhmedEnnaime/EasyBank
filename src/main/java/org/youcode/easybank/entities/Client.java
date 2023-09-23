@@ -28,4 +28,9 @@ public class Client extends Person{
         super(lastName, firstName, birthDate, phone, address);
     }
 
+    public Client(String lastName, String firstName, LocalDate birthDate, String phone, String address, Employee employee) {
+        super(lastName, firstName, birthDate, phone, address);
+        this._employee = employee;
+    }
+
 }

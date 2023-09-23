@@ -60,7 +60,9 @@ public class DBTestConnection {
                 + "lastName VARCHAR(255),"
                 + "birthDate DATE,"
                 + "phone VARCHAR(255),"
-                + "address VARCHAR(255)"
+                + "address VARCHAR(255),"
+                + "employeeMatricule INT,"
+                + "FOREIGN KEY (employeeMatricule) REFERENCES employees(matricule)"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);

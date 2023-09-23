@@ -216,4 +216,18 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return employees;
     }
 
+    @Override
+    public boolean validateMatricule(int matricule) throws EmployeeException{
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM employees WHERE matricule = ?");
+            ps.setInt(1, matricule);
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+
+        }catch (SQLException e) {
+            throw new EmployeeException(e.getMessage());
+        }
+    }
+
 }

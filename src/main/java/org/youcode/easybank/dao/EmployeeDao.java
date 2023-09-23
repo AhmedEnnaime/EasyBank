@@ -20,4 +20,6 @@ public interface EmployeeDao {
     public boolean deleteAll();
 
     public List<Employee> findByAttribute(String attr) throws EmployeeException;
+
+    public boolean validateMatricule(int matricule) throws EmployeeException;
 }
