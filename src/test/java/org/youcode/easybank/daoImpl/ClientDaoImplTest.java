@@ -198,5 +198,6 @@ public class ClientDaoImplTest {
     @AfterEach
     public void tearDown() {
         clientDao.deleteAll();
+        employeeDao.deleteAll();
     }
 }
