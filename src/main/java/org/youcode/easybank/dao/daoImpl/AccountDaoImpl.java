@@ -6,7 +6,9 @@ import org.youcode.easybank.entities.Account;
 import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
 
-import java.sql.Connection;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,46 +26,175 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Optional<Account> create(Account account) throws AccountException {
-        return Optional.empty();
-    }
+        String insertSQL = "INSERT INTO accounts (balance, clientCode, employeeMatricule) VALUES (?, ?, ?) RETURNING accountNumber";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setDouble(1, account.get_balance());
+            preparedStatement.setInt(2, account.get_client().get_code());
+            preparedStatement.setInt(3, account.get_employee().get_matricule());
 
-    @Override
-    public Optional<Account> update(int accountNumber, Account account) throws AccountException {
-        return Optional.empty();
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new AccountException("Creating account failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int accountNumber = generatedKeys.getInt(1);
+                    account.set_accountNumber(accountNumber);
+                } else {
+                    throw new AccountException("Creating account failed, no ID obtained.");
+                }
+            }
+
+            return Optional.of(account);
+        } catch (SQLException e) {
+            throw new AccountException("Error creating account: " + e.getMessage());
+        }
     }
 
     @Override
     public boolean delete(int accountNumber) {
-        return false;
+        String deleteSQL = "DELETE FROM accounts WHERE accountNumber = ?";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL)) {
+            preparedStatement.setInt(1, accountNumber);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
 
     @Override
     public Optional<Account> getByAccountNumber(int accountNumber) throws AccountException {
-        return Optional.empty();
+        String selectSQL = "SELECT * FROM accounts WHERE accountNumber = ?";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
+            preparedStatement.setInt(1, accountNumber);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    Account account = new Account();
+                    account.set_accountNumber(resultSet.getInt("accountNumber"));
+                    account.set_balance(resultSet.getDouble("balance"));
+                    account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                    account.set_status(STATUS.valueOf(resultSet.getString("status")));
+
+                    return Optional.of(account);
+                } else {
+                    return Optional.empty();
+                }
+            }
+        } catch (SQLException e) {
+            throw new AccountException("Error retrieving account by account number: " + e.getMessage());
+        }
     }
+
 
     @Override
     public List<Account> getAll() throws AccountException {
-        return null;
+        List<Account> accounts = new ArrayList<>();
+        String selectAllSQL = "SELECT * FROM accounts";
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(selectAllSQL)) {
+
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.set_accountNumber(resultSet.getInt("accountNumber"));
+                account.set_balance(resultSet.getDouble("balance"));
+                account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                account.set_status(STATUS.valueOf(resultSet.getString("status")));
+
+                accounts.add(account);
+            }
+        } catch (SQLException e) {
+            throw new AccountException("Error retrieving all accounts: " + e.getMessage());
+        }
+        return accounts;
     }
 
+
     @Override
-    public List<Account> getByCreationDate() throws AccountException {
-        return null;
+    public List<Account> getByCreationDate(LocalDate date) throws AccountException {
+        List<Account> accounts = new ArrayList<>();
+        String selectByCreationDateSQL = "SELECT * FROM accounts WHERE creationDate = ?";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(selectByCreationDateSQL)) {
+            preparedStatement.setDate(1, Date.valueOf(date));
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Account account = new Account();
+                    account.set_accountNumber(resultSet.getInt("accountNumber"));
+                    account.set_balance(resultSet.getDouble("balance"));
+                    account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                    account.set_status(STATUS.valueOf(resultSet.getString("status")));
+                    accounts.add(account);
+                }
+            }
+        } catch (SQLException e) {
+            throw new AccountException("Error retrieving accounts by creation date: " + e.getMessage());
+        }
+        return accounts;
     }
+
 
     @Override
     public List<Account> getByStatus(STATUS status) throws AccountException {
-        return null;
+        List<Account> accounts = new ArrayList<>();
+        String selectByStatusSQL = "SELECT * FROM accounts WHERE status = ?";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(selectByStatusSQL)) {
+            preparedStatement.setString(1, status.toString());
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Account account = new Account();
+                    account.set_accountNumber(resultSet.getInt("accountNumber"));
+                    account.set_balance(resultSet.getDouble("balance"));
+                    account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                    account.set_status(STATUS.valueOf(status.toString()));
+
+                    accounts.add(account);
+                }
+            }
+        } catch (SQLException e) {
+            throw new AccountException("Error retrieving accounts by status: " + e.getMessage());
+        }
+        return accounts;
     }
 
     @Override
-    public boolean updateStatus(int accountNumber) {
-        return false;
+    public boolean updateStatus(int accountNumber, STATUS newStatus) {
+        String updateStatusSQL = "UPDATE accounts SET status = ? WHERE accountNumber = ?";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(updateStatusSQL)) {
+            preparedStatement.setString(1, newStatus.toString());
+            preparedStatement.setInt(2, accountNumber);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean deleteAll() {
-        return false;
+        boolean deleted = false;
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM accounts");
+            int rows = ps.executeUpdate();
+
+            if (rows > 0) {
+                deleted = true;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return deleted;
     }
 }
