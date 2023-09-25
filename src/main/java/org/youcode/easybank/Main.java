@@ -18,8 +18,7 @@ public class Main {
 //        }catch (ClientException | EmployeeException a) {
 //            a.printStackTrace();
 //        }
-
-        AccountService.updateAccount();
+            AccountService.updateAccount();
 
     }
 }

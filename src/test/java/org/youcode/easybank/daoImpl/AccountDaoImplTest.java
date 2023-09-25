@@ -205,6 +205,51 @@ public class AccountDaoImplTest {
         assertEquals(STATUS.INACTIVE, updatedAccount.get().get_status());
     }
 
+    @Test
+    public void testGetClientAccounts() throws AccountException, ClientException, EmployeeException {
+
+        Employee employee = new Employee(
+                "Aymen",
+                "Servoy",
+                LocalDate.of(2000, 1, 26),
+                "06823347924",
+                "sidi bouzid",
+                LocalDate.of(2023, 9, 21),
+                "servoy@gmail.com"
+        );
+
+        employeeDao.create(employee);
+
+        Client client = new Client(
+                "Mousta",
+                "Delegue",
+                LocalDate.of(2001, 11, 17),
+                "06473347924",
+                "Jrayfat",
+                employee
+        );
+
+        clientDao.create(client);
+
+        Account account = new Account(
+                8700,
+                employee,
+                client
+        );
+
+        accountDao.create(account);
+
+        List<Optional<Account>> clientAccounts = accountDao.getClientAccounts(client);
+        assertNotNull(clientAccounts);
+        assertEquals(1, clientAccounts.size());
+
+        Optional<Account> retrievedAccount = clientAccounts.get(0);
+        assertTrue(retrievedAccount.isPresent());
+        assertEquals(account.get_balance(), retrievedAccount.get().get_balance());
+        assertEquals(LocalDate.of(2023, 9, 26), retrievedAccount.get().get_creationDate());
+        assertEquals(STATUS.ACTIVE, retrievedAccount.get().get_status());
+    }
+
 
     @AfterEach
     public void tearDown() {

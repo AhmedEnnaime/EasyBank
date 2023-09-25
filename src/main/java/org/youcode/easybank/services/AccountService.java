@@ -323,11 +323,37 @@ public class AccountService {
     public static void updateAccount() {
         Scanner sc = new Scanner(System.in);
 
-        try {
-            System.out.println("Enter the account number you want to update: ");
-            int accountNumber = sc.nextInt();
-            sc.nextLine();
+        boolean validAccountNumber = false;
+        int accountNumber = 0;
 
+        while (!validAccountNumber) {
+            try {
+                System.out.println("Enter the account number you want to update: ");
+                accountNumber = sc.nextInt();
+                sc.nextLine();
+
+                AccountDao accountDao = new AccountDaoImpl();
+                Optional<Account> account = accountDao.getByAccountNumber(accountNumber);
+
+                if (account.isPresent()) {
+                    validAccountNumber = true;
+                } else {
+                    System.out.println("Account not found with account number: " + accountNumber);
+                    System.out.println("Do you want to retry? (yes/no): ");
+                    String retry = sc.nextLine().toLowerCase();
+                    if (!retry.equals("yes")) {
+                        return;
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer account number.");
+                sc.nextLine();
+            } catch (AccountException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        try {
             AccountDao accountDao = new AccountDaoImpl();
             SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImpl();
             Optional<Account> account = accountDao.getByAccountNumber(accountNumber);
@@ -383,4 +409,70 @@ public class AccountService {
             System.out.println("Error updating account: " + e.getMessage());
         }
     }
+
+
+    public static void getAccountsByClient() throws AccountException {
+        Scanner sc = new Scanner(System.in);
+
+        boolean validClientCode = false;
+        Optional<Client> client = Optional.empty();
+
+        while (!validClientCode) {
+            try {
+                System.out.println("Enter the client's code to retrieve accounts: ");
+                int clientCode = sc.nextInt();
+                sc.nextLine();
+
+                ClientDao clientDao = new ClientDaoImpl();
+                client = clientDao.getByCode(clientCode);
+
+                if (client.isPresent()) {
+                    validClientCode = true;
+                } else {
+                    System.out.println("Client not found with code: " + clientCode);
+                    System.out.println("Do you want to retry? (yes/no): ");
+                    String retry = sc.nextLine().toLowerCase();
+                    if (!retry.equals("yes")) {
+                        return;
+                    }
+                }
+            } catch (InputMismatchException | ClientException e) {
+                System.out.println("Invalid input. Please enter a valid integer client code.");
+                sc.nextLine();
+            }
+        }
+
+        AccountDao accountDao = new AccountDaoImpl();
+        List<Optional<Account>> clientAccounts = accountDao.getClientAccounts(client.get());
+
+        if (!clientAccounts.isEmpty()) {
+            System.out.println("Accounts for client " + client.get().get_lastName() + ":");
+            for (Optional<Account> optionalAccount : clientAccounts) {
+                if (optionalAccount.isPresent()) {
+                    Account account = optionalAccount.get();
+                    System.out.println("Account Number: " + account.get_accountNumber());
+                    System.out.println("Balance: " + account.get_balance());
+                    System.out.println("Creation Date: " + account.get_creationDate());
+                    System.out.println("Status: " + account.get_status());
+
+                    if (account instanceof SavingsAccount) {
+                        SavingsAccount savingsAccount = (SavingsAccount) account;
+                        System.out.println("Interest Rate: " + savingsAccount.get_interestRate());
+                    } else if (account instanceof CurrentAccount) {
+                        CurrentAccount currentAccount = (CurrentAccount) account;
+                        System.out.println("Overdraft: " + currentAccount.get_overdraft());
+                    }
+
+                    System.out.println("---------------------------");
+                } else {
+                    System.out.println("Account not found.");
+                }
+            }
+        } else {
+            System.out.println("No accounts found for client " + client.get().get_lastName());
+        }
+    }
+
+
+
 }

@@ -3,6 +3,9 @@ package org.youcode.easybank.dao.daoImpl;
 import org.youcode.easybank.dao.AccountDao;
 import org.youcode.easybank.db.DBConnection;
 import org.youcode.easybank.entities.Account;
+import org.youcode.easybank.entities.Client;
+import org.youcode.easybank.entities.CurrentAccount;
+import org.youcode.easybank.entities.SavingsAccount;
 import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
 
@@ -181,6 +184,47 @@ public class AccountDaoImpl implements AccountDao {
             return false;
         }
     }
+
+    @Override
+    public List<Optional<Account>> getClientAccounts(Client client) throws AccountException {
+        List<Optional<Account>> clientAccounts = new ArrayList<>();
+
+        String selectSQL = "SELECT a.*, s.interestRate AS savingsInterestRate, c.overdraft AS currentOverdraft " +
+                "FROM accounts a " +
+                "LEFT JOIN savingsAccounts s ON a.accountNumber = s.accountNumber " +
+                "LEFT JOIN currentAccounts c ON a.accountNumber = c.accountNumber " +
+                "WHERE a.clientCode = ?";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
+            preparedStatement.setInt(1, client.get_code());
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Account account;
+                    if (resultSet.getDouble("savingsinterestrate") > 0) {
+                        account = new SavingsAccount();
+                        ((SavingsAccount) account).set_interestRate(resultSet.getDouble("savingsInterestRate"));
+                    } else if (resultSet.getDouble("currentoverdraft") > 0) {
+                        account = new CurrentAccount();
+                        ((CurrentAccount) account).set_overdraft(resultSet.getDouble("currentOverdraft"));
+                    } else {
+                        System.out.println("nothing");
+                        account = new Account();
+                    }
+                    account.set_accountNumber(resultSet.getInt("accountNumber"));
+                    account.set_balance(resultSet.getDouble("balance"));
+                    account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                    account.set_status(STATUS.valueOf(resultSet.getString("status")));
+                    clientAccounts.add(Optional.of(account));
+                }
+            }
+        } catch (SQLException e) {
+            throw new AccountException("Error retrieving client accounts: " + e.getMessage());
+        }
+
+        return clientAccounts;
+    }
+
 
     @Override
     public boolean deleteAll() {
