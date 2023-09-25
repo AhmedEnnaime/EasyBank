@@ -14,6 +14,11 @@ import java.util.List;
 public class CurrentAccount extends Account{
     private double _overdraft;
 
+//    public CurrentAccount(int accountNumber, double balance, LocalDate creationDate, STATUS status, Employee employee, Client client, List<Operation> operations, double overdraft) {
+//        super(accountNumber, balance, creationDate, status, employee, client, operations);
+//        this._overdraft = overdraft;
+//    }
+
     public CurrentAccount(Account account, double overdraft) {
         super(account);
         this._overdraft = overdraft;

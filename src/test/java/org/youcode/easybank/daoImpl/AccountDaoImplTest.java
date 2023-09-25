@@ -124,6 +124,37 @@ public class AccountDaoImplTest {
         assertFalse(deletedAccount.isPresent());
     }
 
+<<<<<<< HEAD
+=======
+//    @Test
+//    public void testGetByAccountNumber() throws AccountException {
+//        Account account = new Account(
+//                800,
+//                employee,
+//                client2
+//        );
+//
+//        Optional<Account> createdAccount = accountDao.create(account);
+//        assertTrue(createdAccount.isPresent());
+//
+//        Optional<Account> retrievedAccount = accountDao.getByAccountNumber(createdAccount.get().get_accountNumber());
+//        assertTrue(retrievedAccount.isPresent());
+//
+//        assertAccountsEqual(createdAccount.get(), retrievedAccount.get());
+//    }
+
+    @Test
+    public void testGetAll() throws AccountException {
+        List<Account> allAccounts = accountDao.getAll();
+        assertNotNull(allAccounts);
+
+        System.out.println(allAccounts);
+
+        assertFalse(allAccounts.isEmpty());
+        assertTrue(allAccounts.stream().anyMatch(e -> e.get_balance() == 8700));
+
+    }
+>>>>>>> parent of a8abe09 (EAS-10 completed create account,savingsAccount, currentAccount and their testing)
 
     @Test
     public void testGetByCreationDate() throws AccountException {
@@ -157,7 +188,7 @@ public class AccountDaoImplTest {
         List<Account> activeAccounts = accountDao.getByStatus(STATUS.ACTIVE);
         assertNotNull(activeAccounts);
 
-        assertEquals(5, activeAccounts.size());
+        assertEquals(3, activeAccounts.size());
         assertTrue(activeAccounts.stream().allMatch(a -> a.get_status().equals(STATUS.ACTIVE)));
     }
 

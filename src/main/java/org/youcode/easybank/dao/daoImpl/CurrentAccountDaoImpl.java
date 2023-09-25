@@ -1,5 +1,6 @@
 package org.youcode.easybank.dao.daoImpl;
 
+<<<<<<< HEAD
 import org.youcode.easybank.dao.CurrentAccountDao;
 import org.youcode.easybank.db.DBConnection;
 import org.youcode.easybank.entities.CurrentAccount;
@@ -101,4 +102,7 @@ public class CurrentAccountDaoImpl implements CurrentAccountDao {
         }
         return deleted;
     }
+=======
+public class CurrentAccountDaoImpl {
+>>>>>>> parent of a8abe09 (EAS-10 completed create account,savingsAccount, currentAccount and their testing)
 }

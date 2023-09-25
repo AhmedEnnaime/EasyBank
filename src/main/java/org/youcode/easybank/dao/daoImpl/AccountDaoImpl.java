@@ -5,8 +5,6 @@ import org.youcode.easybank.db.DBConnection;
 import org.youcode.easybank.entities.Account;
 import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
-import org.youcode.easybank.exceptions.ClientException;
-import org.youcode.easybank.exceptions.EmployeeException;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -83,16 +81,12 @@ public class AccountDaoImpl implements AccountDao {
                     account.set_balance(resultSet.getDouble("balance"));
                     account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
                     account.set_status(STATUS.valueOf(resultSet.getString("status")));
-//                    account.set_client(new ClientDaoImpl().getByCode(resultSet.getInt("clientCode")).get());
-//                    account.set_employee(new EmployeeDaoImpl().getByMatricule(resultSet.getInt("employeeMatricule")).get());
+
                     return Optional.of(account);
                 } else {
                     return Optional.empty();
                 }
             }
-//            } catch (ClientException | EmployeeException e) {
-//                throw new RuntimeException(e);
-//            }
         } catch (SQLException e) {
             throw new AccountException("Error retrieving account by account number: " + e.getMessage());
         }
@@ -100,6 +94,32 @@ public class AccountDaoImpl implements AccountDao {
 
 
     @Override
+<<<<<<< HEAD
+=======
+    public List<Account> getAll() throws AccountException {
+        List<Account> accounts = new ArrayList<>();
+        String selectAllSQL = "SELECT * FROM accounts";
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(selectAllSQL)) {
+
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.set_accountNumber(resultSet.getInt("accountNumber"));
+                account.set_balance(resultSet.getDouble("balance"));
+                account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                account.set_status(STATUS.valueOf(resultSet.getString("status")));
+
+                accounts.add(account);
+            }
+        } catch (SQLException e) {
+            throw new AccountException("Error retrieving all accounts: " + e.getMessage());
+        }
+        return accounts;
+    }
+
+
+    @Override
+>>>>>>> parent of a8abe09 (EAS-10 completed create account,savingsAccount, currentAccount and their testing)
     public List<Account> getByCreationDate(LocalDate date) throws AccountException {
         List<Account> accounts = new ArrayList<>();
         String selectByCreationDateSQL = "SELECT * FROM accounts WHERE creationDate = ?";
@@ -143,7 +163,10 @@ public class AccountDaoImpl implements AccountDao {
                     accounts.add(account);
                 }
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of a8abe09 (EAS-10 completed create account,savingsAccount, currentAccount and their testing)
         } catch (SQLException e) {
             throw new AccountException("Error retrieving accounts by status: " + e.getMessage());
         }

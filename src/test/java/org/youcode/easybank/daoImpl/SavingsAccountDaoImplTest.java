@@ -1,28 +1,19 @@
 package org.youcode.easybank.daoImpl;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.youcode.easybank.dao.daoImpl.AccountDaoImpl;
 import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
-import org.youcode.easybank.dao.daoImpl.SavingsAccountDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
-import org.youcode.easybank.entities.Account;
 import org.youcode.easybank.entities.Client;
 import org.youcode.easybank.entities.Employee;
-import org.youcode.easybank.entities.SavingsAccount;
-import org.youcode.easybank.exceptions.AccountException;
-import org.youcode.easybank.exceptions.ClientException;
-import org.youcode.easybank.exceptions.EmployeeException;
-import org.youcode.easybank.exceptions.SavingsAccountException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
+<<<<<<< HEAD
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+=======
+>>>>>>> parent of a8abe09 (EAS-10 completed create account,savingsAccount, currentAccount and their testing)
 
 public class SavingsAccountDaoImplTest {
     private ClientDaoImpl clientDao;
@@ -31,16 +22,13 @@ public class SavingsAccountDaoImplTest {
 
     private AccountDaoImpl accountDao;
 
-    private SavingsAccountDaoImpl savingsAccountDao;
-
     private Employee employee;
 
     private Client client;
 
     private int testAccountNumber;
 
-    @BeforeEach
-    public void setUp() throws EmployeeException, ClientException, AccountException {
+    public void setUp() {
 
         Connection testConnection = DBTestConnection.establishTestConnection();
 
@@ -50,6 +38,7 @@ public class SavingsAccountDaoImplTest {
 
         accountDao = new AccountDaoImpl(testConnection);
 
+<<<<<<< HEAD
         savingsAccountDao = new SavingsAccountDaoImpl(testConnection);
 
         employee = new Employee(
@@ -122,6 +111,8 @@ public class SavingsAccountDaoImplTest {
         savingsAccountDao.deleteAll();
         clientDao.deleteAll();
         employeeDao.deleteAll();
+=======
+>>>>>>> parent of a8abe09 (EAS-10 completed create account,savingsAccount, currentAccount and their testing)
     }
 
 }
