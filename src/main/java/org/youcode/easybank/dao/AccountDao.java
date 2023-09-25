@@ -12,7 +12,7 @@ public interface AccountDao {
 
     public Optional<Account> create(Account account) throws AccountException;
 
-//    public Optional<Account> update(int accountNumber, Account account) throws AccountException;
+    public Optional<Account> update(int accountNumber, Account account) throws AccountException;
 
     public boolean delete(int accountNumber);
 

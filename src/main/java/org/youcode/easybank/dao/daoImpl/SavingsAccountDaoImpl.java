@@ -55,9 +55,24 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao {
     }
 
     @Override
-    public Optional<SavingsAccount> update(int accountNumber, SavingsAccount savingsAccount) throws SavingsAccountException {
-        return Optional.empty();
+    public Optional<SavingsAccount> update(int accountNumber, SavingsAccount updatedSavingsAccount) throws SavingsAccountException {
+        String updateSQL = "UPDATE savingsAccounts SET interestRate = ? WHERE accountNumber = ?";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(updateSQL)) {
+            preparedStatement.setDouble(1, updatedSavingsAccount.get_interestRate());
+            preparedStatement.setInt(2, accountNumber);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                return Optional.of(updatedSavingsAccount);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new SavingsAccountException("Error updating savings account: " + e.getMessage());
+        }
     }
+
 
     @Override
     public List<SavingsAccount> getAll() throws SavingsAccountException {
@@ -84,6 +99,32 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao {
         }
         return accounts;
     }
+
+    @Override
+    public Optional<SavingsAccount> getByAccountNumber(int accountNumber) throws SavingsAccountException {
+        String selectSQL = "SELECT * FROM savingsAccounts s JOIN accounts a ON s.accountNumber = a.accountNumber WHERE s.accountNumber = ?";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
+            preparedStatement.setInt(1, accountNumber);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    SavingsAccount account = new SavingsAccount();
+                    account.set_accountNumber(resultSet.getInt("accountNumber"));
+                    account.set_balance(resultSet.getDouble("balance"));
+                    account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                    account.set_status(STATUS.valueOf(resultSet.getString("status")));
+                    account.set_interestRate(resultSet.getDouble("interestRate"));
+                    return Optional.of(account);
+                } else {
+                    return Optional.empty();
+                }
+            }
+        } catch (SQLException e) {
+            throw new SavingsAccountException("Error retrieving savings account by account number: " + e.getMessage());
+        }
+    }
+
 
     @Override
     public boolean deleteAll() {

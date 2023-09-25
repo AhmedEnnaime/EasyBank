@@ -103,6 +103,34 @@ public class CurrentAccountDaoImplTest {
 
     }
 
+    @Test
+    public void testUpdate() throws CurrentAccountException {
+        // Create a new current account
+        CurrentAccount currentAccount = new CurrentAccount();
+        currentAccount.set_accountNumber(testAccountNumber);
+        currentAccount.set_overdraft(1000.0);
+
+        Optional<CurrentAccount> createdAccount = currentAccountDao.create(currentAccount);
+        assertTrue(createdAccount.isPresent());
+
+        Optional<CurrentAccount> retrievedAccount = currentAccountDao.update(testAccountNumber, currentAccount);
+        assertTrue(retrievedAccount.isPresent());
+
+        double newOverdraft = 1500.0;
+        retrievedAccount.get().set_overdraft(newOverdraft);
+
+        Optional<CurrentAccount> updatedAccount = currentAccountDao.update(testAccountNumber, retrievedAccount.get());
+        assertTrue(updatedAccount.isPresent());
+
+        Optional<CurrentAccount> finalAccount = currentAccountDao.update(testAccountNumber, retrievedAccount.get());
+        assertTrue(finalAccount.isPresent());
+
+        assertEquals(newOverdraft, finalAccount.get().get_overdraft());
+    }
+
+
+
+
     @AfterEach
     public void tearDown() {
         accountDao.deleteAll();

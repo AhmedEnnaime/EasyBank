@@ -124,22 +124,6 @@ public class AccountDaoImplTest {
         assertFalse(deletedAccount.isPresent());
     }
 
-//    @Test
-//    public void testGetByAccountNumber() throws AccountException {
-//        Account account = new Account(
-//                800,
-//                employee,
-//                client2
-//        );
-//
-//        Optional<Account> createdAccount = accountDao.create(account);
-//        assertTrue(createdAccount.isPresent());
-//
-//        Optional<Account> retrievedAccount = accountDao.getByAccountNumber(createdAccount.get().get_accountNumber());
-//        assertTrue(retrievedAccount.isPresent());
-//
-//        assertAccountsEqual(createdAccount.get(), retrievedAccount.get());
-//    }
 
     @Test
     public void testGetByCreationDate() throws AccountException {
@@ -159,6 +143,34 @@ public class AccountDaoImplTest {
     }
 
     @Test
+    public void testUpdate() throws AccountException {
+
+        Account account = new Account(
+                1000,
+                employee,
+                client
+        );
+
+        Optional<Account> createdAccount = accountDao.create(account);
+        assertTrue(createdAccount.isPresent());
+
+        int accountNumber = createdAccount.get().get_accountNumber();
+
+        Account updatedAccount = new Account(
+                2000
+        );
+
+        Optional<Account> updatedOptional = accountDao.update(accountNumber, updatedAccount);
+        assertTrue(updatedOptional.isPresent());
+
+        Optional<Account> retrievedAccount = accountDao.getByAccountNumber(accountNumber);
+        assertTrue(retrievedAccount.isPresent());
+
+        assertEquals(updatedAccount.get_balance(), retrievedAccount.get().get_balance());
+    }
+
+
+    @Test
     public void testGetByStatus() throws AccountException {
 
         Account activeAccount1 = new Account(1000, employee, client);
@@ -173,7 +185,7 @@ public class AccountDaoImplTest {
         List<Account> activeAccounts = accountDao.getByStatus(STATUS.ACTIVE);
         assertNotNull(activeAccounts);
 
-        assertEquals(5, activeAccounts.size());
+        assertEquals(9, activeAccounts.size());
         assertTrue(activeAccounts.stream().allMatch(a -> a.get_status().equals(STATUS.ACTIVE)));
     }
 

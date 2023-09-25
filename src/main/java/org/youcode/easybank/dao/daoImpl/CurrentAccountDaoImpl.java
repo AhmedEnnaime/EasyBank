@@ -55,9 +55,24 @@ public class CurrentAccountDaoImpl implements CurrentAccountDao {
     }
 
     @Override
-    public Optional<CurrentAccount> update(int accountNumber, CurrentAccount currentAccount) throws CurrentAccountException {
-        return Optional.empty();
+    public Optional<CurrentAccount> update(int accountNumber, CurrentAccount updatedCurrentAccount) throws CurrentAccountException {
+        String updateSQL = "UPDATE currentAccounts SET overdraft = ? WHERE accountNumber = ?";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(updateSQL)) {
+            preparedStatement.setDouble(1, updatedCurrentAccount.get_overdraft());
+            preparedStatement.setInt(2, accountNumber);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                return Optional.of(updatedCurrentAccount);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new CurrentAccountException("Error updating current account: " + e.getMessage());
+        }
     }
+
 
     @Override
     public List<CurrentAccount> getAll() throws CurrentAccountException {

@@ -54,6 +54,27 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
+    public Optional<Account> update(int accountNumber, Account updatedAccount) throws AccountException {
+        String updateSQL = "UPDATE accounts SET balance = ? WHERE accountNumber = ?";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(updateSQL)) {
+            preparedStatement.setDouble(1, updatedAccount.get_balance());
+            preparedStatement.setInt(2, accountNumber);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+
+                return Optional.of(updatedAccount);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new AccountException("Error updating account: " + e.getMessage());
+        }
+    }
+
+
+    @Override
     public boolean delete(int accountNumber) {
         String deleteSQL = "DELETE FROM accounts WHERE accountNumber = ?";
         try (PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL)) {

@@ -320,6 +320,67 @@ public class AccountService {
         }
     }
 
+    public static void updateAccount() {
+        Scanner sc = new Scanner(System.in);
 
+        try {
+            System.out.println("Enter the account number you want to update: ");
+            int accountNumber = sc.nextInt();
+            sc.nextLine();
 
+            AccountDao accountDao = new AccountDaoImpl();
+            SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImpl();
+            Optional<Account> account = accountDao.getByAccountNumber(accountNumber);
+
+            if (account.isPresent()) {
+                Account updatedAccount = account.get();
+                System.out.println("Enter updated balance: ");
+                double updatedBalance = sc.nextDouble();
+                sc.nextLine();
+
+                updatedAccount.set_balance(updatedBalance);
+                accountDao.update(accountNumber, updatedAccount);
+
+                if (savingsAccountDao.getByAccountNumber(account.get().get_accountNumber()).isPresent()) {
+
+                    SavingsAccount savingsAccount = new SavingsAccount();
+
+                    System.out.println("Enter updated interest rate for savings account: ");
+                    double updatedInterestRate = sc.nextDouble();
+                    sc.nextLine();
+
+                    savingsAccount.set_interestRate(updatedInterestRate);
+
+                    Optional<SavingsAccount> updatedSavingsAccount = savingsAccountDao.update(accountNumber, savingsAccount);
+
+                    if (updatedSavingsAccount.isPresent()) {
+                        System.out.println("Savings account updated successfully!");
+                    } else {
+                        System.out.println("Failed to update savings account.");
+                    }
+                } else {
+                    CurrentAccountDao currentAccountDao = new CurrentAccountDaoImpl();
+                    CurrentAccount currentAccount = new CurrentAccount();
+
+                    System.out.println("Enter updated overdraft for current account: ");
+                    double updatedOverdraft = sc.nextDouble();
+                    sc.nextLine();
+
+                    currentAccount.set_overdraft(updatedOverdraft);
+
+                    Optional<CurrentAccount> updatedCurrentAccount = currentAccountDao.update(accountNumber, currentAccount);
+
+                    if (updatedCurrentAccount.isPresent()) {
+                        System.out.println("Current account updated successfully!");
+                    } else {
+                        System.out.println("Failed to update current account.");
+                    }
+                }
+            } else {
+                System.out.println("Account not found with account number: " + accountNumber);
+            }
+        } catch (Exception e) {
+            System.out.println("Error updating account: " + e.getMessage());
+        }
+    }
 }

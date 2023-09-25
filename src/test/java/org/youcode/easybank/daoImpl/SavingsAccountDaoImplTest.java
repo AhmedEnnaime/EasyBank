@@ -104,6 +104,31 @@ public class SavingsAccountDaoImplTest {
 
     }
 
+    @Test
+    public void testGetByAccountNumber() throws SavingsAccountException, AccountException {
+        Account account = new Account(
+                5000,
+                employee,
+                client
+        );
+
+        Optional<Account> createdAccount = accountDao.create(account);
+        assertTrue(createdAccount.isPresent());
+        SavingsAccount savingsAccount = new SavingsAccount(
+                createdAccount.get(),
+                0.03
+        );
+
+        Optional<SavingsAccount> createdSavingsAccount = savingsAccountDao.create(savingsAccount);
+        assertTrue(createdSavingsAccount.isPresent());
+        System.out.println("account number : " + createdSavingsAccount.get().get_accountNumber());
+        Optional<SavingsAccount> retrievedAccount = savingsAccountDao.getByAccountNumber(createdSavingsAccount.get().get_accountNumber());
+        assertTrue(retrievedAccount.isPresent());
+//
+//        assertEquals(createdAccount.get().get_accountNumber(), retrievedAccount.get().get_accountNumber());
+//        assertEquals(0.03, retrievedAccount.get().get_interestRate());
+    }
+
 
     public void testGetAll() throws SavingsAccountException {
         List<SavingsAccount> allSavingsAccounts = savingsAccountDao.getAll();
@@ -113,9 +138,23 @@ public class SavingsAccountDaoImplTest {
 
     }
 
-    public void testUpdate() {
+    @Test
+    public void testUpdate() throws SavingsAccountException {
+        SavingsAccount savingsAccount = new SavingsAccount();
+        savingsAccount.set_accountNumber(testAccountNumber);
+        savingsAccount.set_interestRate(0.03);
+
+        Optional<SavingsAccount> createdAccount = savingsAccountDao.create(savingsAccount);
+        assertTrue(createdAccount.isPresent());
+
+        double newInterestRate = 0.04;
+        savingsAccount.set_interestRate(newInterestRate);
+
+        Optional<SavingsAccount> updatedAccount = savingsAccountDao.update(testAccountNumber, savingsAccount);
+        assertTrue(updatedAccount.isPresent());
 
     }
+
 
     @AfterEach
     public void tearDown() {

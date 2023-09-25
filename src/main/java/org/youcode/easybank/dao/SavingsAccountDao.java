@@ -15,6 +15,8 @@ public interface SavingsAccountDao {
 
     public List<SavingsAccount> getAll() throws SavingsAccountException;
 
+    public Optional<SavingsAccount> getByAccountNumber(int accountNumber) throws SavingsAccountException;
+
     public boolean deleteAll();
 
 }
