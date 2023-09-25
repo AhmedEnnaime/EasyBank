@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public class SavingsAccountDaoImplTest {
@@ -99,6 +100,19 @@ public class SavingsAccountDaoImplTest {
 
         assertEquals(testAccountNumber, createdAccount.get_accountNumber());
         assertEquals(0.03, createdAccount.get_interestRate());
+
+    }
+
+
+    public void testGetAll() throws SavingsAccountException {
+        List<SavingsAccount> allSavingsAccounts = savingsAccountDao.getAll();
+        assertNotNull(allSavingsAccounts);
+
+        assertFalse(allSavingsAccounts.isEmpty());
+
+    }
+
+    public void testUpdate() {
 
     }
 

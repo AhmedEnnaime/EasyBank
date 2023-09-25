@@ -3,10 +3,16 @@ package org.youcode.easybank.dao.daoImpl;
 import org.youcode.easybank.dao.CurrentAccountDao;
 import org.youcode.easybank.db.DBConnection;
 import org.youcode.easybank.entities.CurrentAccount;
+import org.youcode.easybank.entities.SavingsAccount;
+import org.youcode.easybank.enums.STATUS;
+import org.youcode.easybank.exceptions.ClientException;
 import org.youcode.easybank.exceptions.CurrentAccountException;
+import org.youcode.easybank.exceptions.EmployeeException;
 import org.youcode.easybank.exceptions.SavingsAccountException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class CurrentAccountDaoImpl implements CurrentAccountDao {
@@ -52,6 +58,32 @@ public class CurrentAccountDaoImpl implements CurrentAccountDao {
     @Override
     public Optional<CurrentAccount> update(int accountNumber, CurrentAccount currentAccount) throws CurrentAccountException {
         return Optional.empty();
+    }
+
+    @Override
+    public List<CurrentAccount> getAll() throws CurrentAccountException {
+        List<CurrentAccount> accounts = new ArrayList<>();
+        String selectAllSQL = "SELECT * FROM currentAccounts c JOIN accounts a ON c.accountNumber = a.accountNumber";
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(selectAllSQL)) {
+
+            while (resultSet.next()) {
+                CurrentAccount account = new CurrentAccount();
+                account.set_accountNumber(resultSet.getInt("accountNumber"));
+                account.set_balance(resultSet.getDouble("balance"));
+                account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                account.set_status(STATUS.valueOf(resultSet.getString("status")));
+                account.set_overdraft(resultSet.getDouble("overdraft"));
+                account.set_client(new ClientDaoImpl().getByCode(resultSet.getInt("clientCode")).get());
+                account.set_employee(new EmployeeDaoImpl().getByMatricule(resultSet.getInt("employeeMatricule")).get());
+                accounts.add(account);
+            }
+        } catch (SQLException e) {
+            throw new CurrentAccountException("Error retrieving all accounts: " + e.getMessage());
+        } catch (EmployeeException | ClientException e) {
+            throw new RuntimeException(e);
+        }
+        return accounts;
     }
 
     @Override

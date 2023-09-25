@@ -11,11 +11,13 @@ public class Main {
 
 //        EmployeeService.createEmployee();
 //        ClientService.createClient();
-        try {
-            AccountService.createAccount();
-        }catch (EmployeeException | ClientException c) {
-            System.out.println(c.getMessage());
-        }
+//        try {
+//            AccountService.createAccount();
+//        }catch (EmployeeException | ClientException c) {
+//            System.out.println(c.getMessage());
+//        }
+
+        AccountService.getAllCurrentAccounts();
 
     }
 }

@@ -16,8 +16,6 @@ public interface AccountDao {
 
     public Optional<Account> getByAccountNumber(int accountNumber) throws AccountException;
 
-    public List<Account> getAll() throws AccountException;
-
     public List<Account> getByCreationDate(LocalDate date) throws AccountException;
 
     public List<Account> getByStatus(STATUS status) throws AccountException;

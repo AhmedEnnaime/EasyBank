@@ -11,13 +11,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Person {
 
-    private String _lastName;
+    protected String _lastName;
 
-    private String _firstName;
+    protected String _firstName;
 
-    private LocalDate _birthDate;
+    protected LocalDate _birthDate;
 
-    private String _phone;
+    protected String _phone;
 
-    private String _address;
+    protected String _address;
 }

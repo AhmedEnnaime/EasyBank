@@ -6,17 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.youcode.easybank.dao.daoImpl.*;
 import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.*;
-import org.youcode.easybank.exceptions.AccountException;
-import org.youcode.easybank.exceptions.ClientException;
-import org.youcode.easybank.exceptions.CurrentAccountException;
-import org.youcode.easybank.exceptions.EmployeeException;
+import org.youcode.easybank.exceptions.*;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class CurrentAccountDaoImplTest {
 
@@ -95,6 +93,14 @@ public class CurrentAccountDaoImplTest {
 
         assertEquals(testAccountNumber, createdAccount.get_accountNumber());
         assertEquals(0.03, createdAccount.get_overdraft());
+    }
+
+    public void testGetAll() throws CurrentAccountException {
+        List<CurrentAccount> allCurrentAccounts = currentAccountDao.getAll();
+        assertNotNull(allCurrentAccounts);
+
+        assertFalse(allCurrentAccounts.isEmpty());
+
     }
 
     @AfterEach

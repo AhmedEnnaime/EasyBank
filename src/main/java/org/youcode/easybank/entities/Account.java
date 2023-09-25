@@ -10,19 +10,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Account {
-    private int _accountNumber;
+    protected int _accountNumber;
 
-    private double _balance;
+    protected double _balance;
 
-    private LocalDate _creationDate;
+    protected LocalDate _creationDate;
 
-    private STATUS _status;
+    protected STATUS _status;
 
-    private Employee _employee;
+    protected Employee _employee;
 
-    private Client _client;
+    protected Client _client;
 
-    private List<Operation> _operations;
+    protected List<Operation> _operations;
 
     public Account(double balance, Employee employee, Client client) {
         this._balance = balance;

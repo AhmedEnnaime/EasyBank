@@ -124,17 +124,6 @@ public class AccountDaoImplTest {
         assertFalse(deletedAccount.isPresent());
     }
 
-    @Test
-    public void testGetAll() throws AccountException {
-        List<Account> allAccounts = accountDao.getAll();
-        assertNotNull(allAccounts);
-
-        System.out.println(allAccounts);
-
-        assertFalse(allAccounts.isEmpty());
-        assertTrue(allAccounts.stream().anyMatch(e -> e.get_balance() == 8700));
-
-    }
 
     @Test
     public void testGetByCreationDate() throws AccountException {
