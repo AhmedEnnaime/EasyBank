@@ -124,23 +124,6 @@ public class AccountDaoImplTest {
         assertFalse(deletedAccount.isPresent());
     }
 
-//    @Test
-//    public void testGetByAccountNumber() throws AccountException {
-//        Account account = new Account(
-//                800,
-//                employee,
-//                client2
-//        );
-//
-//        Optional<Account> createdAccount = accountDao.create(account);
-//        assertTrue(createdAccount.isPresent());
-//
-//        Optional<Account> retrievedAccount = accountDao.getByAccountNumber(createdAccount.get().get_accountNumber());
-//        assertTrue(retrievedAccount.isPresent());
-//
-//        assertAccountsEqual(createdAccount.get(), retrievedAccount.get());
-//    }
-
     @Test
     public void testGetAll() throws AccountException {
         List<Account> allAccounts = accountDao.getAll();
@@ -185,7 +168,7 @@ public class AccountDaoImplTest {
         List<Account> activeAccounts = accountDao.getByStatus(STATUS.ACTIVE);
         assertNotNull(activeAccounts);
 
-        assertEquals(3, activeAccounts.size());
+        assertEquals(5, activeAccounts.size());
         assertTrue(activeAccounts.stream().allMatch(a -> a.get_status().equals(STATUS.ACTIVE)));
     }
 

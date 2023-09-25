@@ -5,6 +5,8 @@ import org.youcode.easybank.db.DBConnection;
 import org.youcode.easybank.entities.Account;
 import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
+import org.youcode.easybank.exceptions.ClientException;
+import org.youcode.easybank.exceptions.EmployeeException;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -81,12 +83,16 @@ public class AccountDaoImpl implements AccountDao {
                     account.set_balance(resultSet.getDouble("balance"));
                     account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
                     account.set_status(STATUS.valueOf(resultSet.getString("status")));
-
+//                    account.set_client(new ClientDaoImpl().getByCode(resultSet.getInt("clientCode")).get());
+//                    account.set_employee(new EmployeeDaoImpl().getByMatricule(resultSet.getInt("employeeMatricule")).get());
                     return Optional.of(account);
                 } else {
                     return Optional.empty();
                 }
             }
+//            } catch (ClientException | EmployeeException e) {
+//                throw new RuntimeException(e);
+//            }
         } catch (SQLException e) {
             throw new AccountException("Error retrieving account by account number: " + e.getMessage());
         }
@@ -106,12 +112,16 @@ public class AccountDaoImpl implements AccountDao {
                 account.set_balance(resultSet.getDouble("balance"));
                 account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
                 account.set_status(STATUS.valueOf(resultSet.getString("status")));
-
+//                account.set_client(new ClientDaoImpl().getByCode(resultSet.getInt("clientCode")).get());
+//                account.set_employee(new EmployeeDaoImpl().getByMatricule(resultSet.getInt("employeeMatricule")).get());
                 accounts.add(account);
             }
         } catch (SQLException e) {
             throw new AccountException("Error retrieving all accounts: " + e.getMessage());
         }
+//        } catch (EmployeeException | ClientException e) {
+//            throw new RuntimeException(e);
+//        }
         return accounts;
     }
 
@@ -131,9 +141,14 @@ public class AccountDaoImpl implements AccountDao {
                     account.set_balance(resultSet.getDouble("balance"));
                     account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
                     account.set_status(STATUS.valueOf(resultSet.getString("status")));
+//                    account.set_client(new ClientDaoImpl().getByCode(resultSet.getInt("clientCode")).get());
+//                    account.set_employee(new EmployeeDaoImpl().getByMatricule(resultSet.getInt("employeeMatricule")).get());
                     accounts.add(account);
                 }
             }
+//            } catch (EmployeeException | ClientException e) {
+//                throw new RuntimeException(e);
+//            }
         } catch (SQLException e) {
             throw new AccountException("Error retrieving accounts by creation date: " + e.getMessage());
         }
@@ -156,10 +171,15 @@ public class AccountDaoImpl implements AccountDao {
                     account.set_balance(resultSet.getDouble("balance"));
                     account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
                     account.set_status(STATUS.valueOf(status.toString()));
+//                    account.set_client(new ClientDaoImpl().getByCode(resultSet.getInt("clientCode")).get());
+//                    account.set_employee(new EmployeeDaoImpl().getByMatricule(resultSet.getInt("employeeMatricule")).get());
 
                     accounts.add(account);
                 }
             }
+//            } catch (EmployeeException | ClientException e) {
+//                throw new RuntimeException(e);
+//            }
         } catch (SQLException e) {
             throw new AccountException("Error retrieving accounts by status: " + e.getMessage());
         }

@@ -9,4 +9,6 @@ public interface CurrentAccountDao {
     public Optional<CurrentAccount> create(CurrentAccount currentAccount) throws CurrentAccountException;
 
     public Optional<CurrentAccount> update(int accountNumber, CurrentAccount currentAccount) throws CurrentAccountException;
+
+    public boolean deleteAll();
 }

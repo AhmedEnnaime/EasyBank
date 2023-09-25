@@ -52,4 +52,20 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao {
     public Optional<SavingsAccount> update(int accountNumber, SavingsAccount savingsAccount) throws SavingsAccountException {
         return Optional.empty();
     }
+
+    @Override
+    public boolean deleteAll() {
+        boolean deleted = false;
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM savingsAccounts");
+            int rows = ps.executeUpdate();
+
+            if (rows > 0) {
+                deleted = true;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return deleted;
+    }
 }

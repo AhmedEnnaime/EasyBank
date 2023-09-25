@@ -3,34 +3,30 @@ package org.youcode.easybank.daoImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.youcode.easybank.dao.daoImpl.AccountDaoImpl;
-import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
-import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
-import org.youcode.easybank.dao.daoImpl.SavingsAccountDaoImpl;
+import org.youcode.easybank.dao.daoImpl.*;
 import org.youcode.easybank.db.DBTestConnection;
-import org.youcode.easybank.entities.Account;
-import org.youcode.easybank.entities.Client;
-import org.youcode.easybank.entities.Employee;
-import org.youcode.easybank.entities.SavingsAccount;
+import org.youcode.easybank.entities.*;
 import org.youcode.easybank.exceptions.AccountException;
 import org.youcode.easybank.exceptions.ClientException;
+import org.youcode.easybank.exceptions.CurrentAccountException;
 import org.youcode.easybank.exceptions.EmployeeException;
-import org.youcode.easybank.exceptions.SavingsAccountException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class SavingsAccountDaoImplTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class CurrentAccountDaoImplTest {
+
     private ClientDaoImpl clientDao;
 
     private EmployeeDaoImpl employeeDao;
 
     private AccountDaoImpl accountDao;
 
-    private SavingsAccountDaoImpl savingsAccountDao;
+    private CurrentAccountDaoImpl currentAccountDao;
 
     private Employee employee;
 
@@ -49,7 +45,7 @@ public class SavingsAccountDaoImplTest {
 
         accountDao = new AccountDaoImpl(testConnection);
 
-        savingsAccountDao = new SavingsAccountDaoImpl(testConnection);
+        currentAccountDao = new CurrentAccountDaoImpl(testConnection);
 
         employee = new Employee(
                 "Aymen",
@@ -86,28 +82,26 @@ public class SavingsAccountDaoImplTest {
     }
 
     @Test
-    public void testCreate() throws SavingsAccountException {
-        SavingsAccount savingsAccount = new SavingsAccount();
-        savingsAccount.set_accountNumber(testAccountNumber);
-        savingsAccount.set_interestRate(0.03);
+    public void testCreate() throws CurrentAccountException {
+        CurrentAccount currentAccount = new CurrentAccount();
+        currentAccount.set_accountNumber(testAccountNumber);
+        currentAccount.set_overdraft(0.03);
 
-        Optional<SavingsAccount> result = savingsAccountDao.create(savingsAccount);
+        Optional<CurrentAccount> result = currentAccountDao.create(currentAccount);
 
         assertTrue(result.isPresent());
 
-        SavingsAccount createdAccount = result.get();
+        CurrentAccount createdAccount = result.get();
 
         assertEquals(testAccountNumber, createdAccount.get_accountNumber());
-        assertEquals(0.03, createdAccount.get_interestRate());
-
+        assertEquals(0.03, createdAccount.get_overdraft());
     }
 
     @AfterEach
     public void tearDown() {
         accountDao.deleteAll();
-        savingsAccountDao.deleteAll();
+        currentAccountDao.deleteAll();
         clientDao.deleteAll();
         employeeDao.deleteAll();
     }
-
 }
