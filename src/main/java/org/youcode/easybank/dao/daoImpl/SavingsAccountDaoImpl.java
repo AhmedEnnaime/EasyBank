@@ -58,7 +58,6 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao {
     public Optional<SavingsAccount> update(int accountNumber, SavingsAccount savingsAccount) throws SavingsAccountException {
         return Optional.empty();
     }
-<<<<<<< HEAD
 
     @Override
     public List<SavingsAccount> getAll() throws SavingsAccountException {
@@ -101,6 +100,5 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao {
         }
         return deleted;
     }
-=======
->>>>>>> parent of a8abe09 (EAS-10 completed create account,savingsAccount, currentAccount and their testing)
+
 }

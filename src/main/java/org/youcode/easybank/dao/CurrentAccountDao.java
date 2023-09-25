@@ -12,11 +12,9 @@ public interface CurrentAccountDao {
     public Optional<CurrentAccount> create(CurrentAccount currentAccount) throws CurrentAccountException;
 
     public Optional<CurrentAccount> update(int accountNumber, CurrentAccount currentAccount) throws CurrentAccountException;
-<<<<<<< HEAD
 
     public List<CurrentAccount> getAll() throws CurrentAccountException;
 
     public boolean deleteAll();
-=======
->>>>>>> parent of a8abe09 (EAS-10 completed create account,savingsAccount, currentAccount and their testing)
+
 }

@@ -296,5 +296,30 @@ public class AccountService {
         }
     }
 
+    public static void getAccountByAccountNumber() {
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            System.out.println("Enter the account number you want to retrieve: ");
+            int accountNumber = sc.nextInt();
+            sc.nextLine();
+
+            AccountDao accountDao = new AccountDaoImpl();
+            Optional<Account> account = accountDao.getByAccountNumber(accountNumber);
+
+            if (account.isPresent()) {
+                System.out.println("Account Number: " + account.get().get_accountNumber());
+                System.out.println("Balance: " + account.get().get_balance());
+                System.out.println("Creation Date: " + account.get().get_creationDate());
+                System.out.println("Status: " + account.get().get_status());
+            } else {
+                System.out.println("Account not found with account number: " + accountNumber);
+            }
+        } catch (Exception e) {
+            System.out.println("Error retrieving account: " + e.getMessage());
+        }
+    }
+
+
 
 }

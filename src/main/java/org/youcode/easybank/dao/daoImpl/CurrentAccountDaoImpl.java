@@ -1,6 +1,5 @@
 package org.youcode.easybank.dao.daoImpl;
 
-<<<<<<< HEAD
 import org.youcode.easybank.dao.CurrentAccountDao;
 import org.youcode.easybank.db.DBConnection;
 import org.youcode.easybank.entities.CurrentAccount;
@@ -9,7 +8,6 @@ import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.ClientException;
 import org.youcode.easybank.exceptions.CurrentAccountException;
 import org.youcode.easybank.exceptions.EmployeeException;
-import org.youcode.easybank.exceptions.SavingsAccountException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -97,12 +95,9 @@ public class CurrentAccountDaoImpl implements CurrentAccountDao {
             if (rows > 0) {
                 deleted = true;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return deleted;
     }
-=======
-public class CurrentAccountDaoImpl {
->>>>>>> parent of a8abe09 (EAS-10 completed create account,savingsAccount, currentAccount and their testing)
 }
