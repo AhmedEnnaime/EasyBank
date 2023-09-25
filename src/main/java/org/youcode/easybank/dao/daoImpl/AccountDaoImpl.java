@@ -208,7 +208,6 @@ public class AccountDaoImpl implements AccountDao {
                         account = new CurrentAccount();
                         ((CurrentAccount) account).set_overdraft(resultSet.getDouble("currentOverdraft"));
                     } else {
-                        System.out.println("nothing");
                         account = new Account();
                     }
                     account.set_accountNumber(resultSet.getInt("accountNumber"));
