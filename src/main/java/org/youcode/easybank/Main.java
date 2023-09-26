@@ -4,10 +4,7 @@ import org.youcode.easybank.exceptions.AccountException;
 import org.youcode.easybank.exceptions.ClientException;
 import org.youcode.easybank.exceptions.EmployeeException;
 import org.youcode.easybank.exceptions.OperationException;
-import org.youcode.easybank.services.AccountService;
-import org.youcode.easybank.services.ClientService;
-import org.youcode.easybank.services.EmployeeService;
-import org.youcode.easybank.services.OperationService;
+import org.youcode.easybank.services.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,7 +25,7 @@ public class Main {
 //            throw new RuntimeException(e);
 //        }
 
-        OperationService.deleteOperation();
+        MissionService.deleteMission();
 
     }
 }
