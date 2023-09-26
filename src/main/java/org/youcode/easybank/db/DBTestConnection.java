@@ -130,10 +130,11 @@ public class DBTestConnection {
 
     public static void createMissionAssignmentsTable(Connection conn) throws SQLException {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS missionAssignments ("
+                + "id SERIAL PRIMARY KEY,"
                 + "debut_date TIMESTAMP,"
                 + "end_date TIMESTAMP,"
                 + "employee_matricule INT REFERENCES employees(matricule),"
-                + "mission_code INT PRIMARY KEY REFERENCES missions(code)"
+                + "mission_code INT REFERENCES missions(code)"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);

@@ -11,6 +11,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MissionAssignment {
+
+    private int id;
+
     private LocalDate _debutDate;
 
     private LocalDate _endDate;
@@ -18,4 +21,11 @@ public class MissionAssignment {
     private List<Employee> _employees;
 
     private Mission _mission;
+
+    public MissionAssignment(LocalDate debutDate, LocalDate endDate, List<Employee> employees, Mission mission) {
+        this._debutDate = debutDate;
+        this._endDate = endDate;
+        this._employees = employees;
+        this._mission = mission;
+    }
 }
