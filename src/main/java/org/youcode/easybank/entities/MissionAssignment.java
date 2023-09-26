@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +15,7 @@ public class MissionAssignment {
 
     private LocalDate _endDate;
 
-    private Employee _employee;
+    private List<Employee> _employees;
 
     private Mission _mission;
 }

@@ -14,5 +14,11 @@ public class Mission {
 
     private String _description;
 
-    private Employee _employee;
+//    private Employee _employee;
+
+    public Mission(String name, String description) {
+        this._name = name;
+        this._description = description;
+//        this._employee = employee;
+    }
 }
