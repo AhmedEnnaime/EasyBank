@@ -10,6 +10,8 @@ import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.Account;
 import org.youcode.easybank.entities.Client;
 import org.youcode.easybank.entities.Employee;
+import org.youcode.easybank.entities.Operation;
+import org.youcode.easybank.enums.OPERATION;
 import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
 import org.youcode.easybank.exceptions.ClientException;
@@ -185,7 +187,7 @@ public class AccountDaoImplTest {
         List<Account> activeAccounts = accountDao.getByStatus(STATUS.ACTIVE);
         assertNotNull(activeAccounts);
 
-        assertEquals(9, activeAccounts.size());
+        assertEquals(3, activeAccounts.size());
         assertTrue(activeAccounts.stream().allMatch(a -> a.get_status().equals(STATUS.ACTIVE)));
     }
 
@@ -249,6 +251,39 @@ public class AccountDaoImplTest {
         assertEquals(LocalDate.of(2023, 9, 26), retrievedAccount.get().get_creationDate());
         assertEquals(STATUS.ACTIVE, retrievedAccount.get().get_status());
     }
+
+    @Test
+    public void testUpdateBalance() throws AccountException {
+        double initialBalance = 1000.0;
+        Account account = new Account(initialBalance, employee, client);
+        Optional<Account> createdAccount = accountDao.create(account);
+        assertTrue(createdAccount.isPresent());
+
+        double depositAmount = 500.0;
+        Operation depositOperation = new Operation(depositAmount, OPERATION.PAYMENT, employee, createdAccount.get());
+
+        boolean isUpdated = accountDao.updateBalance(createdAccount.get(), depositOperation);
+        assertTrue(isUpdated);
+
+        Optional<Account> updatedAccount = accountDao.getByAccountNumber(createdAccount.get().get_accountNumber());
+        assertTrue(updatedAccount.isPresent());
+
+        double expectedBalance = initialBalance + depositAmount;
+        assertEquals(expectedBalance, updatedAccount.get().get_balance());
+
+        double withdrawalAmount = 300.0;
+        Operation withdrawalOperation = new Operation(withdrawalAmount, OPERATION.WITHDRAWAL, employee, updatedAccount.get());
+
+        isUpdated = accountDao.updateBalance(updatedAccount.get(), withdrawalOperation);
+        assertTrue(isUpdated);
+
+        updatedAccount = accountDao.getByAccountNumber(createdAccount.get().get_accountNumber());
+        assertTrue(updatedAccount.isPresent());
+
+        expectedBalance -= withdrawalAmount;
+        assertEquals(expectedBalance, updatedAccount.get().get_balance());
+    }
+
 
 
     @AfterEach

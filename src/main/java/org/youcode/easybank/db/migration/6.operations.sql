@@ -1,6 +1,6 @@
 CREATE TABLE operations (
     operationNumber SERIAL PRIMARY KEY,
-    creationDate DATE,
+    creationDate DATE DEFAULT CURRENT_DATE,
     amount DOUBLE PRECISION,
     type VARCHAR(255),
     accountNumber INT,

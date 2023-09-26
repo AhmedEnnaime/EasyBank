@@ -2,10 +2,8 @@ package org.youcode.easybank.dao.daoImpl;
 
 import org.youcode.easybank.dao.AccountDao;
 import org.youcode.easybank.db.DBConnection;
-import org.youcode.easybank.entities.Account;
-import org.youcode.easybank.entities.Client;
-import org.youcode.easybank.entities.CurrentAccount;
-import org.youcode.easybank.entities.SavingsAccount;
+import org.youcode.easybank.entities.*;
+import org.youcode.easybank.enums.OPERATION;
 import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
 
@@ -224,6 +222,31 @@ public class AccountDaoImpl implements AccountDao {
         return clientAccounts;
     }
 
+    @Override
+    public boolean updateBalance(Account account, Operation operation) {
+        String updateBalanceSQL = "UPDATE accounts SET balance = ? WHERE accountNumber = ?";
+
+        double newBalance;
+        if (operation.get_type() == OPERATION.PAYMENT) {
+            newBalance = account.get_balance() + operation.get_amount();
+        } else if (operation.get_type() == OPERATION.WITHDRAWAL) {
+            newBalance = account.get_balance() - operation.get_amount();
+        } else {
+            return false;
+        }
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(updateBalanceSQL)) {
+            preparedStatement.setDouble(1, newBalance);
+            preparedStatement.setInt(2, account.get_accountNumber());
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     @Override
     public boolean deleteAll() {

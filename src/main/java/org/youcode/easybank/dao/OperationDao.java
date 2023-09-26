@@ -11,4 +11,6 @@ public interface OperationDao {
     public boolean delete(int operationNumber);
 
     public Optional<Operation> getByNumber(int operationNumber) throws OperationException;
+
+    public boolean deleteAll();
 }

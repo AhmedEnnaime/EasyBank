@@ -22,4 +22,11 @@ public class Operation {
     private Employee _employee;
 
     private Account _account;
+
+    public Operation(double amount, OPERATION type, Employee employee, Account account) {
+        this._amount = amount;
+        this._type = type;
+        this._employee = employee;
+        this._account = account;
+    }
 }
