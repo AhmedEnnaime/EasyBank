@@ -86,8 +86,7 @@ public class DBTestConnection {
     public static void createSavingsAccountsTable(Connection conn) throws SQLException {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS savingsAccounts ("
                 + "accountNumber INT PRIMARY KEY,"
-                + "interestRate DOUBLE PRECISION,"
-                + "FOREIGN KEY (accountNumber) REFERENCES accounts(accountNumber)"
+                + "interestRate DOUBLE PRECISION"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);
@@ -97,8 +96,7 @@ public class DBTestConnection {
     public static void createCurrentAccountsTable(Connection conn) throws SQLException {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS currentAccounts ("
                 + "accountNumber INT PRIMARY KEY,"
-                + "overdraft DOUBLE PRECISION,"
-                + "FOREIGN KEY (accountNumber) REFERENCES accounts(accountNumber)"
+                + "overdraft DOUBLE PRECISION"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);

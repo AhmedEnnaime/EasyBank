@@ -9,7 +9,9 @@ import java.util.Optional;
 public interface MissionDao {
     public Optional<Mission> create(Mission mission) throws MissionException;
 
-    public List<Mission> getAll() throws MissionException;
+    public Optional<Mission> getByNumber(int code) throws MissionException;
 
     public boolean delete(int code) throws MissionException;
+
+    public boolean deleteAll();
 }
