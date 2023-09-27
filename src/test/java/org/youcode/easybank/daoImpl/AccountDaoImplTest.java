@@ -103,7 +103,7 @@ public class AccountDaoImplTest {
 
         operation = new Operation(
                 300,
-                OPERATION.PAYMENT,
+                OPERATION.DEPOSIT,
                 employee,
                 account
         );
@@ -280,7 +280,7 @@ public class AccountDaoImplTest {
         assertTrue(createdAccount.isPresent());
 
         double depositAmount = 500.0;
-        Operation depositOperation = new Operation(depositAmount, OPERATION.PAYMENT, employee, createdAccount.get());
+        Operation depositOperation = new Operation(depositAmount, OPERATION.DEPOSIT, employee, createdAccount.get());
 
         boolean isUpdated = accountDao.updateBalance(createdAccount.get(), depositOperation);
         assertTrue(isUpdated);

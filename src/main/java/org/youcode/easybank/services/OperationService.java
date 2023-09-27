@@ -50,7 +50,7 @@ public class OperationService {
                         continue;
                     }
 
-                    OPERATION operationType = operationTypeInput.equalsIgnoreCase("D") ? OPERATION.PAYMENT : OPERATION.WITHDRAWAL;
+                    OPERATION operationType = operationTypeInput.equalsIgnoreCase("D") ? OPERATION.DEPOSIT : OPERATION.WITHDRAWAL;
 
                     System.out.println("Enter the account number: ");
                     int accountNumber;

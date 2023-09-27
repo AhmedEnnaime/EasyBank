@@ -88,7 +88,7 @@ public class OperationDaoImplTest {
 
         Operation operation = new Operation(
                 300,
-                OPERATION.PAYMENT,
+                OPERATION.DEPOSIT,
                 employee,
                 account
         );
@@ -136,7 +136,7 @@ public class OperationDaoImplTest {
     public void testGetByNumber() throws OperationException {
         Operation operation = new Operation(
                 1300,
-                OPERATION.PAYMENT,
+                OPERATION.DEPOSIT,
                 employee,
                 account
         );

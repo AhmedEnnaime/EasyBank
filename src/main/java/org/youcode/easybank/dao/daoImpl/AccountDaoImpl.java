@@ -227,7 +227,7 @@ public class AccountDaoImpl implements AccountDao {
         String updateBalanceSQL = "UPDATE accounts SET balance = ? WHERE accountNumber = ?";
 
         double newBalance;
-        if (operation.get_type() == OPERATION.PAYMENT) {
+        if (operation.get_type() == OPERATION.DEPOSIT) {
             newBalance = account.get_balance() + operation.get_amount();
         } else if (operation.get_type() == OPERATION.WITHDRAWAL) {
             newBalance = account.get_balance() - operation.get_amount();
