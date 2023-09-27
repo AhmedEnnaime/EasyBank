@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.youcode.easybank.dao.daoImpl.AccountDaoImpl;
 import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
+import org.youcode.easybank.dao.daoImpl.OperationDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.Account;
 import org.youcode.easybank.entities.Client;
@@ -16,6 +17,7 @@ import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
 import org.youcode.easybank.exceptions.ClientException;
 import org.youcode.easybank.exceptions.EmployeeException;
+import org.youcode.easybank.exceptions.OperationException;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -32,15 +34,20 @@ public class AccountDaoImplTest {
 
     private AccountDaoImpl accountDao;
 
+    private OperationDaoImpl operationDao;
+
     private Employee employee;
+
+    private Operation operation;
 
     private Client client;
     private Client client2;
 
+    private int testOperationNumber;
     private int testAccountNumber;
 
     @BeforeEach
-    public void setUp() throws ClientException, EmployeeException, AccountException {
+    public void setUp() throws ClientException, EmployeeException, AccountException, OperationException {
         Connection testConnection = DBTestConnection.establishTestConnection();
 
         clientDao = new ClientDaoImpl(testConnection);
@@ -48,6 +55,8 @@ public class AccountDaoImplTest {
         employeeDao = new EmployeeDaoImpl(testConnection);
 
         accountDao = new AccountDaoImpl(testConnection);
+
+        operationDao = new OperationDaoImpl(testConnection);
 
         employee = new Employee(
                 "Aymen",
@@ -91,6 +100,17 @@ public class AccountDaoImplTest {
         accountDao.create(account);
 
         testAccountNumber = account.get_accountNumber();
+
+        operation = new Operation(
+                300,
+                OPERATION.PAYMENT,
+                employee,
+                account
+        );
+
+        operationDao.create(operation);
+
+        testOperationNumber = operation.get_operationNumber();
     }
 
     public void assertAccountsEqual(Account expected, Account actual) {
@@ -248,7 +268,7 @@ public class AccountDaoImplTest {
         Optional<Account> retrievedAccount = clientAccounts.get(0);
         assertTrue(retrievedAccount.isPresent());
         assertEquals(account.get_balance(), retrievedAccount.get().get_balance());
-        assertEquals(LocalDate.of(2023, 9, 26), retrievedAccount.get().get_creationDate());
+        assertEquals(LocalDate.now(), retrievedAccount.get().get_creationDate());
         assertEquals(STATUS.ACTIVE, retrievedAccount.get().get_status());
     }
 
@@ -284,6 +304,15 @@ public class AccountDaoImplTest {
         assertEquals(expectedBalance, updatedAccount.get().get_balance());
     }
 
+    @Test
+    public void testGetByOperationNumber() throws AccountException {
+        Optional<Account> retrievedAccount = accountDao.getByOperationNumber(testOperationNumber);
+
+        assertTrue(retrievedAccount.isPresent());
+        assertEquals(8700, retrievedAccount.get().get_balance());
+        assertEquals(STATUS.ACTIVE, retrievedAccount.get().get_status());
+        assertEquals(LocalDate.now(), retrievedAccount.get().get_creationDate());
+    }
 
 
     @AfterEach
@@ -291,6 +320,7 @@ public class AccountDaoImplTest {
         accountDao.deleteAll();
         clientDao.deleteAll();
         employeeDao.deleteAll();
+        operationDao.deleteAll();
     }
 
 }

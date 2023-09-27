@@ -30,5 +30,7 @@ public interface AccountDao {
 
     public boolean updateBalance(Account account, Operation operation);
 
+    public Optional<Account> getByOperationNumber(int operationNumber) throws AccountException;
+
     public boolean deleteAll();
 }

@@ -249,6 +249,35 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
+    public Optional<Account> getByOperationNumber(int operationNumber) throws AccountException {
+        String selectSQL = "SELECT a.* " +
+                "FROM accounts a " +
+                "JOIN operations o ON a.accountNumber = o.accountNumber " +
+                "WHERE o.operationNumber = ?";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
+            preparedStatement.setInt(1, operationNumber);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    Account account = new Account();
+                    account.set_accountNumber(resultSet.getInt("accountNumber"));
+                    account.set_balance(resultSet.getDouble("balance"));
+                    account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                    account.set_status(STATUS.valueOf(resultSet.getString("status")));
+
+                    return Optional.of(account);
+                } else {
+                    return Optional.empty();
+                }
+            }
+        } catch (SQLException e) {
+            throw new AccountException("Error retrieving account by operation number: " + e.getMessage());
+        }
+    }
+
+
+    @Override
     public boolean deleteAll() {
         boolean deleted = false;
         try {
