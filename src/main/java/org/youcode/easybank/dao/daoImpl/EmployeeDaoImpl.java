@@ -23,7 +23,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public Optional<Employee> create(Employee employee) throws EmployeeException {
+    public Optional<Employee> create(Employee employee) {
         String insertSQL = "INSERT INTO employees (firstName, lastName, birthDate, phone, address, recruitmentDate, email) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING matricule";
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -51,14 +51,14 @@ public class EmployeeDaoImpl implements EmployeeDao {
             }
 
             return Optional.of(employee);
-        } catch (SQLException e) {
+        } catch (SQLException | EmployeeException e) {
             e.printStackTrace();
-            throw new EmployeeException("Error creating employee." + e.getMessage());
+            return Optional.empty();
         }
     }
 
     @Override
-    public Optional<Employee> update(int matricule, Employee employee) throws EmployeeException {
+    public Optional<Employee> update(Integer matricule, Employee employee) {
         String updateSQL = "UPDATE employees " +
                 "SET firstName = ?, lastName = ?, birthDate = ?, phone = ?, address = ?, " +
                 "recruitmentDate = ?, email = ? " +
@@ -80,13 +80,14 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 throw new EmployeeException("Updating employee failed, no rows affected.");
             }
             return Optional.of(employee);
-        } catch (SQLException e) {
-            throw new EmployeeException("Error updating employee.");
+        } catch (SQLException | EmployeeException e) {
+            e.printStackTrace();
+            return Optional.empty();
         }
     }
 
     @Override
-    public boolean delete(int matricule) {
+    public boolean delete(Integer matricule) {
         String deleteSQL = "DELETE FROM employees WHERE matricule = ?";
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL)) {
@@ -101,7 +102,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public Optional<Employee> getByMatricule(int matricule) throws EmployeeException {
+    public Optional<Employee> findByID(Integer matricule) {
         String selectSQL = "SELECT * FROM employees WHERE matricule = ?";
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
@@ -125,12 +126,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 }
             }
         } catch (SQLException e) {
-            throw new EmployeeException("Error retrieving employee by matricule.");
+            e.printStackTrace();
+            return Optional.empty();
         }
     }
 
     @Override
-    public List<Employee> getAll() throws EmployeeException {
+    public List<Employee> getAll() {
         List<Employee> employees = new ArrayList<>();
         String selectAllSQL = "SELECT * FROM employees";
 
@@ -152,7 +154,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
             }
 
         } catch (SQLException e) {
-            throw new EmployeeException("Error retrieving all employees.");
+            e.printStackTrace();
         }
 
         return employees;

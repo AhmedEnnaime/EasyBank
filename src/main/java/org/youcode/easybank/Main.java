@@ -140,7 +140,7 @@ public class Main {
                         ClientService.findClientByAttribute();
                         break;
                     case 7:
-                        return; // Return to the main menu
+                        return;
                     default:
                         System.out.println("Invalid choice. Please select a valid option.");
                         break;
@@ -164,7 +164,8 @@ public class Main {
                 System.out.println("9. Get Accounts By Their Status");
                 System.out.println("10. Get Account By Account Number");
                 System.out.println("11. Get Accounts By Client");
-                System.out.println("12. Back to Main Menu");
+                System.out.println("12. Get All Accounts (Current and Savings)");
+                System.out.println("13. Back to Main Menu");
                 System.out.print("Enter your choice: ");
 
                 int choice = sc.nextInt();
@@ -213,6 +214,9 @@ public class Main {
                         }
                         break;
                     case 12:
+                        AccountService.getAllAccounts();
+                        return;
+                    case 13:
                         return;
                     default:
                         System.out.println("Invalid choice. Please select a valid option.");

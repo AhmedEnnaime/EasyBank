@@ -57,12 +57,8 @@ public class EmployeeService {
                 Employee newEmployee = new Employee(firstName, lastName, birthdate, phone, address, recruitmentDate, email);
                 EmployeeDao dao = new EmployeeDaoImpl();
 
-                try {
-                    dao.create(newEmployee);
-                    System.out.println("Employee created successfully.");
-                } catch (EmployeeException e) {
-                    System.out.println("Employee creation failed: " + e.getMessage());
-                }
+                dao.create(newEmployee);
+                System.out.println("Employee created successfully.");
                 break;
 
             } catch (DateTimeParseException e) {
@@ -85,7 +81,7 @@ public class EmployeeService {
             try {
                 int matricule = Integer.parseInt(matriculeInput);
                 EmployeeDao dao = new EmployeeDaoImpl();
-                Optional<Employee> existingEmployee = dao.getByMatricule(matricule);
+                Optional<Employee> existingEmployee = dao.findByID(matricule);
 
                 if (existingEmployee.isPresent()) {
                     Employee employeeToUpdate = existingEmployee.get();
@@ -134,20 +130,14 @@ public class EmployeeService {
                         employeeToUpdate.set_email(newEmail);
                     }
 
-                    try {
-                        dao.update(matricule, employeeToUpdate);
-                        System.out.println("Employee updated successfully.");
-                        break;
-                    } catch (EmployeeException e) {
-                        System.out.println("Employee update failed: " + e.getMessage());
-                    }
+                    dao.update(matricule, employeeToUpdate);
+                    System.out.println("Employee updated successfully.");
+                    break;
                 } else {
                     System.out.println("Employee not found with matricule: " + matricule);
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a valid matricule or 'q' to quit.");
-            } catch (EmployeeException e) {
-                System.out.println("Error retrieving employee: " + e.getMessage());
             }
         }
     }
@@ -193,7 +183,7 @@ public class EmployeeService {
             try {
                 int matricule = Integer.parseInt(matriculeInput);
                 EmployeeDao dao = new EmployeeDaoImpl();
-                Optional<Employee> existingEmployee = dao.getByMatricule(matricule);
+                Optional<Employee> existingEmployee = dao.findByID(matricule);
 
                 if (existingEmployee.isPresent()) {
                     Employee employee = existingEmployee.get();
@@ -212,8 +202,6 @@ public class EmployeeService {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a valid matricule or 'q' to quit.");
-            } catch (EmployeeException e) {
-                System.out.println("Error retrieving employee: " + e.getMessage());
             }
         }
     }
@@ -221,27 +209,23 @@ public class EmployeeService {
     public static void getAllEmployees() {
         EmployeeDao dao = new EmployeeDaoImpl();
 
-        try {
-            List<Employee> employees = dao.getAll();
+        List<Employee> employees = dao.getAll();
 
-            if (!employees.isEmpty()) {
-                System.out.println("List of all employees:");
-                for (Employee employee : employees) {
-                    System.out.println("Matricule: " + employee.get_matricule());
-                    System.out.println("First Name: " + employee.get_firstName());
-                    System.out.println("Last Name: " + employee.get_lastName());
-                    System.out.println("Birthdate: " + employee.get_birthDate());
-                    System.out.println("Phone: " + employee.get_phone());
-                    System.out.println("Address: " + employee.get_address());
-                    System.out.println("Recruitment Date: " + employee.get_recruitmentDate());
-                    System.out.println("Email: " + employee.get_email());
-                    System.out.println("---------------------------");
-                }
-            } else {
-                System.out.println("No employees found.");
+        if (!employees.isEmpty()) {
+            System.out.println("List of all employees:");
+            for (Employee employee : employees) {
+                System.out.println("Matricule: " + employee.get_matricule());
+                System.out.println("First Name: " + employee.get_firstName());
+                System.out.println("Last Name: " + employee.get_lastName());
+                System.out.println("Birthdate: " + employee.get_birthDate());
+                System.out.println("Phone: " + employee.get_phone());
+                System.out.println("Address: " + employee.get_address());
+                System.out.println("Recruitment Date: " + employee.get_recruitmentDate());
+                System.out.println("Email: " + employee.get_email());
+                System.out.println("---------------------------");
             }
-        } catch (EmployeeException e) {
-            System.out.println("Error retrieving employees: " + e.getMessage());
+        } else {
+            System.out.println("No employees found.");
         }
     }
 

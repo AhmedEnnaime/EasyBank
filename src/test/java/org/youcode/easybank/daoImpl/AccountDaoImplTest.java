@@ -142,7 +142,7 @@ public class AccountDaoImplTest {
         boolean isDeleted = accountDao.delete(testAccountNumber);
         assertTrue(isDeleted);
 
-        Optional<Account> deletedAccount = accountDao.getByAccountNumber(testAccountNumber);
+        Optional<Account> deletedAccount = accountDao.findByID(testAccountNumber);
         assertFalse(deletedAccount.isPresent());
     }
 
@@ -155,7 +155,7 @@ public class AccountDaoImplTest {
 
         accountDao.create(accountToday);
 
-        Optional<Account> retrievedAccount = accountDao.getByAccountNumber(accountToday.get_accountNumber());
+        Optional<Account> retrievedAccount = accountDao.findByID(accountToday.get_accountNumber());
         assertTrue(retrievedAccount.isPresent());
         List<Account> accountsCreatedToday = accountDao.getByCreationDate(today);
         assertNotNull(accountsCreatedToday);
@@ -185,7 +185,7 @@ public class AccountDaoImplTest {
         Optional<Account> updatedOptional = accountDao.update(accountNumber, updatedAccount);
         assertTrue(updatedOptional.isPresent());
 
-        Optional<Account> retrievedAccount = accountDao.getByAccountNumber(accountNumber);
+        Optional<Account> retrievedAccount = accountDao.findByID(accountNumber);
         assertTrue(retrievedAccount.isPresent());
 
         assertEquals(updatedAccount.get_balance(), retrievedAccount.get().get_balance());
@@ -221,7 +221,7 @@ public class AccountDaoImplTest {
         boolean isUpdated = accountDao.updateStatus(accountNumber, STATUS.INACTIVE);
         assertTrue(isUpdated);
 
-        Optional<Account> updatedAccount = accountDao.getByAccountNumber(accountNumber);
+        Optional<Account> updatedAccount = accountDao.findByID(accountNumber);
         assertTrue(updatedAccount.isPresent());
 
         assertEquals(STATUS.INACTIVE, updatedAccount.get().get_status());
@@ -285,7 +285,7 @@ public class AccountDaoImplTest {
         boolean isUpdated = accountDao.updateBalance(createdAccount.get(), depositOperation);
         assertTrue(isUpdated);
 
-        Optional<Account> updatedAccount = accountDao.getByAccountNumber(createdAccount.get().get_accountNumber());
+        Optional<Account> updatedAccount = accountDao.findByID(createdAccount.get().get_accountNumber());
         assertTrue(updatedAccount.isPresent());
 
         double expectedBalance = initialBalance + depositAmount;
@@ -297,7 +297,7 @@ public class AccountDaoImplTest {
         isUpdated = accountDao.updateBalance(updatedAccount.get(), withdrawalOperation);
         assertTrue(isUpdated);
 
-        updatedAccount = accountDao.getByAccountNumber(createdAccount.get().get_accountNumber());
+        updatedAccount = accountDao.findByID(createdAccount.get().get_accountNumber());
         assertTrue(updatedAccount.isPresent());
 
         expectedBalance -= withdrawalAmount;

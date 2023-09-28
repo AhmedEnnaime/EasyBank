@@ -34,7 +34,7 @@ public class OperationService {
             }
 
             EmployeeDao employeeDao = new EmployeeDaoImpl();
-            Optional<Employee> employeeOptional = employeeDao.getByMatricule(employeeMatricule);
+            Optional<Employee> employeeOptional = employeeDao.findByID(employeeMatricule);
 
             if (employeeOptional.isPresent()) {
                 while (true) {
@@ -63,7 +63,7 @@ public class OperationService {
                     }
 
                     AccountDao accountDao = new AccountDaoImpl();
-                    Optional<Account> accountOptional = accountDao.getByAccountNumber(accountNumber);
+                    Optional<Account> accountOptional = accountDao.findByID(accountNumber);
 
                     if (!accountOptional.isPresent()) {
                         System.out.println("Account not found with account number: " + accountNumber);

@@ -10,15 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface AccountDao {
-
-    public Optional<Account> create(Account account) throws AccountException;
-
-    public Optional<Account> update(int accountNumber, Account account) throws AccountException;
-
-    public boolean delete(int accountNumber);
-
-    public Optional<Account> getByAccountNumber(int accountNumber) throws AccountException;
+public interface AccountDao extends IData<Account, Integer>{
 
     public List<Account> getByCreationDate(LocalDate date) throws AccountException;
 
@@ -31,6 +23,4 @@ public interface AccountDao {
     public boolean updateBalance(Account account, Operation operation);
 
     public Optional<Account> getByOperationNumber(int operationNumber) throws AccountException;
-
-    public boolean deleteAll();
 }

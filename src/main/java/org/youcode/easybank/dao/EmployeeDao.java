@@ -6,18 +6,7 @@ import org.youcode.easybank.exceptions.EmployeeException;
 import java.util.List;
 import java.util.Optional;
 
-public interface EmployeeDao {
-    public Optional<Employee> create(Employee employee) throws EmployeeException;
-
-    public Optional<Employee> update(int matricule, Employee employee) throws EmployeeException;
-
-    public boolean delete(int matricule);
-
-    public Optional<Employee> getByMatricule(int matricule) throws EmployeeException;
-
-    public List<Employee> getAll() throws EmployeeException;
-
-    public boolean deleteAll();
+public interface EmployeeDao extends IData<Employee, Integer>{
 
     public List<Employee> findByAttribute(String attr) throws EmployeeException;
 

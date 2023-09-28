@@ -2,12 +2,8 @@ package org.youcode.easybank.dao.daoImpl;
 
 import org.youcode.easybank.dao.SavingsAccountDao;
 import org.youcode.easybank.db.DBConnection;
-import org.youcode.easybank.entities.Account;
 import org.youcode.easybank.entities.SavingsAccount;
 import org.youcode.easybank.enums.STATUS;
-import org.youcode.easybank.exceptions.AccountException;
-import org.youcode.easybank.exceptions.ClientException;
-import org.youcode.easybank.exceptions.EmployeeException;
 import org.youcode.easybank.exceptions.SavingsAccountException;
 
 import java.sql.*;
@@ -27,7 +23,7 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao {
         conn = connection;
     }
     @Override
-    public Optional<SavingsAccount> create(SavingsAccount savingsAccount) throws SavingsAccountException {
+    public Optional<SavingsAccount> create(SavingsAccount savingsAccount) {
         String insertSQL = "INSERT INTO savingsAccounts (accountNumber, interestRate) VALUES (?, ?) RETURNING accountNumber";
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, savingsAccount.get_accountNumber());
@@ -49,13 +45,14 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao {
             }
 
             return Optional.of(savingsAccount);
-        } catch (SQLException e) {
-            throw new SavingsAccountException("Error creating savings account: " + e.getMessage());
+        } catch (SQLException | SavingsAccountException e) {
+            e.printStackTrace();
+            return Optional.empty();
         }
     }
 
     @Override
-    public Optional<SavingsAccount> update(int accountNumber, SavingsAccount updatedSavingsAccount) throws SavingsAccountException {
+    public Optional<SavingsAccount> update(Integer accountNumber, SavingsAccount updatedSavingsAccount) {
         String updateSQL = "UPDATE savingsAccounts SET interestRate = ? WHERE accountNumber = ?";
         try (PreparedStatement preparedStatement = conn.prepareStatement(updateSQL)) {
             preparedStatement.setDouble(1, updatedSavingsAccount.get_interestRate());
@@ -69,13 +66,14 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao {
                 return Optional.empty();
             }
         } catch (SQLException e) {
-            throw new SavingsAccountException("Error updating savings account: " + e.getMessage());
+           e.printStackTrace();
+            return Optional.empty();
         }
     }
 
 
     @Override
-    public List<SavingsAccount> getAll() throws SavingsAccountException {
+    public List<SavingsAccount> getAll() {
         List<SavingsAccount> accounts = new ArrayList<>();
         String selectAllSQL = "SELECT * FROM savingsAccounts s JOIN accounts a ON s.accountNumber = a.accountNumber";
         try (Statement statement = conn.createStatement();
@@ -88,20 +86,22 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao {
                 account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
                 account.set_status(STATUS.valueOf(resultSet.getString("status")));
                 account.set_interestRate(resultSet.getDouble("interestRate"));
-                account.set_client(new ClientDaoImpl().getByCode(resultSet.getInt("clientCode")).get());
-                account.set_employee(new EmployeeDaoImpl().getByMatricule(resultSet.getInt("employeeMatricule")).get());
+                account.set_client(new ClientDaoImpl().findByID(resultSet.getInt("clientCode")).get());
+                account.set_employee(new EmployeeDaoImpl().findByID(resultSet.getInt("employeeMatricule")).get());
                 accounts.add(account);
             }
         } catch (SQLException e) {
-            throw new SavingsAccountException("Error retrieving all accounts: " + e.getMessage());
-        } catch (ClientException | EmployeeException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return accounts;
     }
 
     @Override
-    public Optional<SavingsAccount> getByAccountNumber(int accountNumber) throws SavingsAccountException {
+    public boolean delete(Integer id) {
+        return false;
+    }
+
+    public Optional<SavingsAccount> findByID(Integer accountNumber) {
         String selectSQL = "SELECT * FROM savingsAccounts s JOIN accounts a ON s.accountNumber = a.accountNumber WHERE s.accountNumber = ?";
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
@@ -121,7 +121,8 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao {
                 }
             }
         } catch (SQLException e) {
-            throw new SavingsAccountException("Error retrieving savings account by account number: " + e.getMessage());
+            e.printStackTrace();
+            return Optional.empty();
         }
     }
 

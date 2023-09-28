@@ -3,7 +3,6 @@ package org.youcode.easybank.dao.daoImpl;
 import org.youcode.easybank.dao.CurrentAccountDao;
 import org.youcode.easybank.db.DBConnection;
 import org.youcode.easybank.entities.CurrentAccount;
-import org.youcode.easybank.entities.SavingsAccount;
 import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.ClientException;
 import org.youcode.easybank.exceptions.CurrentAccountException;
@@ -88,14 +87,12 @@ public class CurrentAccountDaoImpl implements CurrentAccountDao {
                 account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
                 account.set_status(STATUS.valueOf(resultSet.getString("status")));
                 account.set_overdraft(resultSet.getDouble("overdraft"));
-                account.set_client(new ClientDaoImpl().getByCode(resultSet.getInt("clientCode")).get());
-                account.set_employee(new EmployeeDaoImpl().getByMatricule(resultSet.getInt("employeeMatricule")).get());
+                account.set_client(new ClientDaoImpl().findByID(resultSet.getInt("clientCode")).get());
+                account.set_employee(new EmployeeDaoImpl().findByID(resultSet.getInt("employeeMatricule")).get());
                 accounts.add(account);
             }
         } catch (SQLException e) {
             throw new CurrentAccountException("Error retrieving all accounts: " + e.getMessage());
-        } catch (EmployeeException | ClientException e) {
-            throw new RuntimeException(e);
         }
         return accounts;
     }

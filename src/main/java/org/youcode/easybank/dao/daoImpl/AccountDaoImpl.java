@@ -26,7 +26,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Optional<Account> create(Account account) throws AccountException {
+    public Optional<Account> create(Account account) {
         String insertSQL = "INSERT INTO accounts (balance, clientCode, employeeMatricule) VALUES (?, ?, ?) RETURNING accountNumber";
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setDouble(1, account.get_balance());
@@ -49,13 +49,14 @@ public class AccountDaoImpl implements AccountDao {
             }
 
             return Optional.of(account);
-        } catch (SQLException e) {
-            throw new AccountException("Error creating account: " + e.getMessage());
+        } catch (SQLException | AccountException e) {
+            e.printStackTrace();
+            return Optional.empty();
         }
     }
 
     @Override
-    public Optional<Account> update(int accountNumber, Account updatedAccount) throws AccountException {
+    public Optional<Account> update(Integer accountNumber, Account updatedAccount) {
         String updateSQL = "UPDATE accounts SET balance = ? WHERE accountNumber = ?";
         try (PreparedStatement preparedStatement = conn.prepareStatement(updateSQL)) {
             preparedStatement.setDouble(1, updatedAccount.get_balance());
@@ -70,13 +71,14 @@ public class AccountDaoImpl implements AccountDao {
                 return Optional.empty();
             }
         } catch (SQLException e) {
-            throw new AccountException("Error updating account: " + e.getMessage());
+            e.printStackTrace();
+            return Optional.empty();
         }
     }
 
 
     @Override
-    public boolean delete(int accountNumber) {
+    public boolean delete(Integer accountNumber) {
         String deleteSQL = "DELETE FROM accounts WHERE accountNumber = ?";
         try (PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL)) {
             preparedStatement.setInt(1, accountNumber);
@@ -91,7 +93,7 @@ public class AccountDaoImpl implements AccountDao {
 
 
     @Override
-    public Optional<Account> getByAccountNumber(int accountNumber) throws AccountException {
+    public Optional<Account> findByID(Integer accountNumber) {
         String selectSQL = "SELECT * FROM accounts WHERE accountNumber = ?";
         try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
             preparedStatement.setInt(1, accountNumber);
@@ -110,8 +112,48 @@ public class AccountDaoImpl implements AccountDao {
                 }
             }
         } catch (SQLException e) {
-            throw new AccountException("Error retrieving account by account number: " + e.getMessage());
+            e.printStackTrace();
+            return Optional.empty();
         }
+    }
+
+    @Override
+    public List<Account> getAll() {
+        List<Account> accounts = new ArrayList<>();
+
+        String selectSQL = "SELECT a.*, s.interestRate AS savingsInterestRate, c.overdraft AS currentOverdraft " +
+                "FROM accounts a " +
+                "LEFT JOIN savingsAccounts s ON a.accountNumber = s.accountNumber " +
+                "LEFT JOIN currentAccounts c ON a.accountNumber = c.accountNumber ";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Account account;
+                    if (resultSet.getDouble("savingsinterestrate") > 0) {
+                        account = new SavingsAccount();
+                        ((SavingsAccount) account).set_interestRate(resultSet.getDouble("savingsInterestRate"));
+                    } else if (resultSet.getDouble("currentoverdraft") > 0) {
+                        account = new CurrentAccount();
+                        ((CurrentAccount) account).set_overdraft(resultSet.getDouble("currentOverdraft"));
+                    } else {
+                        account = new Account();
+                    }
+                    account.set_accountNumber(resultSet.getInt("accountNumber"));
+                    account.set_balance(resultSet.getDouble("balance"));
+                    account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                    account.set_status(STATUS.valueOf(resultSet.getString("status")));
+                    account.set_employee(new EmployeeDaoImpl().findByID(resultSet.getInt("employeematricule")).get());
+                    account.set_client(new ClientDaoImpl().findByID(resultSet.getInt("clientcode")).get());
+                    accounts.add(account);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return accounts;
     }
 
 

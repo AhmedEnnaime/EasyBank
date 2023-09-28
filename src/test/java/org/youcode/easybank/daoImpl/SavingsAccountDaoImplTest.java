@@ -122,7 +122,7 @@ public class SavingsAccountDaoImplTest {
         Optional<SavingsAccount> createdSavingsAccount = savingsAccountDao.create(savingsAccount);
         assertTrue(createdSavingsAccount.isPresent());
         System.out.println("account number : " + createdSavingsAccount.get().get_accountNumber());
-        Optional<SavingsAccount> retrievedAccount = savingsAccountDao.getByAccountNumber(createdSavingsAccount.get().get_accountNumber());
+        Optional<SavingsAccount> retrievedAccount = savingsAccountDao.findByID(createdSavingsAccount.get().get_accountNumber());
         assertTrue(retrievedAccount.isPresent());
 //
 //        assertEquals(createdAccount.get().get_accountNumber(), retrievedAccount.get().get_accountNumber());

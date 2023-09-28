@@ -23,7 +23,7 @@ public class AccountService {
         int matricule = EmployeeService.validateMatricule();
         EmployeeDaoImpl employeeDao = new EmployeeDaoImpl();
 
-        Optional<Employee> retrievedEmployee = employeeDao.getByMatricule(matricule);
+        Optional<Employee> retrievedEmployee = employeeDao.findByID(matricule);
 
 
         if (matricule > 0) {
@@ -46,7 +46,7 @@ public class AccountService {
                     int clientCode = sc.nextInt();
                     sc.nextLine();
                     ClientDao dao = new ClientDaoImpl();
-                    Optional<Client> retrievedClient = dao.getByCode(clientCode);
+                    Optional<Client> retrievedClient = dao.findByID(clientCode);
 
                     if (retrievedClient.isPresent()) {
                         System.out.println("Do you want to create a savings account or current account? Type 's' for savings or 'c' for current");
@@ -62,14 +62,10 @@ public class AccountService {
                             sc.nextLine();
                             Account account = new Account(balance, retrievedEmployee.get(), retrievedClient.get());
 
-                            try {
-                                Optional<Account> createdAccount = accountDao.create(account);
-                                if (createdAccount.isPresent()) {
-                                    SavingsAccount savingsAccount = new SavingsAccount(createdAccount.get(), interestRate);
-                                    savingsAccountDao.create(savingsAccount);
-                                }
-                            } catch (AccountException | SavingsAccountException e) {
-                                throw new RuntimeException(e);
+                            Optional<Account> createdAccount = accountDao.create(account);
+                            if (createdAccount.isPresent()) {
+                                SavingsAccount savingsAccount = new SavingsAccount(createdAccount.get(), interestRate);
+                                savingsAccountDao.create(savingsAccount);
                             }
                             break;
                         } else if (choice.equalsIgnoreCase("c")) {
@@ -88,7 +84,7 @@ public class AccountService {
                                     CurrentAccount currentAccount = new CurrentAccount(createdAccount.get(), overdraft);
                                     currentAccountDao.create(currentAccount);
                                 }
-                            } catch (AccountException | CurrentAccountException e) {
+                            } catch (CurrentAccountException e) {
                                 throw new RuntimeException(e);
                             }
 
@@ -126,7 +122,7 @@ public class AccountService {
 
         try {
             AccountDao accountDao = new AccountDaoImpl();
-            Optional<Account> retrievedAccount = accountDao.getByAccountNumber(accountNumber);
+            Optional<Account> retrievedAccount = accountDao.findByID(accountNumber);
 
             if (retrievedAccount.isPresent()) {
 
@@ -161,26 +157,22 @@ public class AccountService {
     public static void getAllSavingsAccounts() {
         SavingsAccountDao accountDao = new SavingsAccountDaoImpl();
 
-        try {
-            List<SavingsAccount> accounts = accountDao.getAll();
+        List<SavingsAccount> accounts = accountDao.getAll();
 
-            if (!accounts.isEmpty()) {
-                System.out.println("List of all accounts:");
-                for (SavingsAccount account : accounts) {
-                    System.out.println("Account Number: " + account.get_accountNumber());
-                    System.out.println("Balance: " + account.get_balance());
-                    System.out.println("Creation Date: " + account.get_creationDate());
-                    System.out.println("Status: " + account.get_status());
-                    System.out.println("Interest Rate: " + account.get_interestRate());
-                    System.out.println("Client : " + account.get_client().get_lastName());
-                    System.out.println("Employee : " + account.get_employee().get_lastName());
-                    System.out.println("---------------------------");
-                }
-            } else {
-                System.out.println("No accounts found.");
+        if (!accounts.isEmpty()) {
+            System.out.println("List of all accounts:");
+            for (SavingsAccount account : accounts) {
+                System.out.println("Account Number: " + account.get_accountNumber());
+                System.out.println("Balance: " + account.get_balance());
+                System.out.println("Creation Date: " + account.get_creationDate());
+                System.out.println("Status: " + account.get_status());
+                System.out.println("Interest Rate: " + account.get_interestRate());
+                System.out.println("Client : " + account.get_client().get_lastName());
+                System.out.println("Employee : " + account.get_employee().get_lastName());
+                System.out.println("---------------------------");
             }
-        } catch (SavingsAccountException e) {
-            System.out.println("Error retrieving accounts: " + e.getMessage());
+        } else {
+            System.out.println("No accounts found.");
         }
     }
 
@@ -207,6 +199,36 @@ public class AccountService {
             }
         } catch (CurrentAccountException e) {
             System.out.println("Error retrieving accounts: " + e.getMessage());
+        }
+    }
+
+    public static void getAllAccounts() {
+        AccountDao accountDao = new AccountDaoImpl();
+
+        List<Account> accounts = accountDao.getAll();
+
+        if (!accounts.isEmpty()) {
+            System.out.println("List of all accounts:");
+            for (Account account : accounts) {
+                System.out.println("Account Number: " + account.get_accountNumber());
+                System.out.println("Balance: " + account.get_balance());
+                System.out.println("Creation Date: " + account.get_creationDate());
+                System.out.println("Status: " + account.get_status());
+
+                if (account instanceof SavingsAccount) {
+                    SavingsAccount savingsAccount = (SavingsAccount) account;
+                    System.out.println("Interest Rate: " + savingsAccount.get_interestRate());
+                } else if (account instanceof CurrentAccount) {
+                    CurrentAccount currentAccount = (CurrentAccount) account;
+                    System.out.println("Overdraft: " + currentAccount.get_overdraft());
+                }
+
+                System.out.println("Client : " + account.get_client().get_lastName());
+                System.out.println("Employee : " + account.get_employee().get_lastName());
+                System.out.println("---------------------------");
+            }
+        } else {
+            System.out.println("No accounts found.");
         }
     }
 
@@ -305,7 +327,7 @@ public class AccountService {
             sc.nextLine();
 
             AccountDao accountDao = new AccountDaoImpl();
-            Optional<Account> account = accountDao.getByAccountNumber(accountNumber);
+            Optional<Account> account = accountDao.findByID(accountNumber);
 
             if (account.isPresent()) {
                 System.out.println("Account Number: " + account.get().get_accountNumber());
@@ -333,7 +355,7 @@ public class AccountService {
                 sc.nextLine();
 
                 AccountDao accountDao = new AccountDaoImpl();
-                Optional<Account> account = accountDao.getByAccountNumber(accountNumber);
+                Optional<Account> account = accountDao.findByID(accountNumber);
 
                 if (account.isPresent()) {
                     validAccountNumber = true;
@@ -348,15 +370,13 @@ public class AccountService {
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid integer account number.");
                 sc.nextLine();
-            } catch (AccountException e) {
-                throw new RuntimeException(e);
             }
         }
 
         try {
             AccountDao accountDao = new AccountDaoImpl();
             SavingsAccountDao savingsAccountDao = new SavingsAccountDaoImpl();
-            Optional<Account> account = accountDao.getByAccountNumber(accountNumber);
+            Optional<Account> account = accountDao.findByID(accountNumber);
 
             if (account.isPresent()) {
                 Account updatedAccount = account.get();
@@ -367,7 +387,7 @@ public class AccountService {
                 updatedAccount.set_balance(updatedBalance);
                 accountDao.update(accountNumber, updatedAccount);
 
-                if (savingsAccountDao.getByAccountNumber(account.get().get_accountNumber()).isPresent()) {
+                if (savingsAccountDao.findByID(account.get().get_accountNumber()).isPresent()) {
 
                     SavingsAccount savingsAccount = new SavingsAccount();
 
@@ -424,7 +444,7 @@ public class AccountService {
                 sc.nextLine();
 
                 ClientDao clientDao = new ClientDaoImpl();
-                client = clientDao.getByCode(clientCode);
+                client = clientDao.findByID(clientCode);
 
                 if (client.isPresent()) {
                     validClientCode = true;
@@ -436,7 +456,7 @@ public class AccountService {
                         return;
                     }
                 }
-            } catch (InputMismatchException | ClientException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid integer client code.");
                 sc.nextLine();
             }

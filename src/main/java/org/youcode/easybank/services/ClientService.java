@@ -59,12 +59,8 @@ public class ClientService {
                     Client newClient = new Client(firstName, lastName, birthdate, phone, address, employee);
                     ClientDao dao = new ClientDaoImpl();
 
-                    try {
-                        dao.create(newClient);
-                        System.out.println("Client created successfully.");
-                    } catch (ClientException e) {
-                        System.out.println("Client creation failed: " + e.getMessage());
-                    }
+                    dao.create(newClient);
+                    System.out.println("Client created successfully.");
                     break;
 
                 } catch (DateTimeParseException e) {
@@ -88,7 +84,7 @@ public class ClientService {
             try {
                 int code = Integer.parseInt(codeInput);
                 ClientDao dao = new ClientDaoImpl();
-                Optional<Client> existingClient = dao.getByCode(code);
+                Optional<Client> existingClient = dao.findByID(code);
 
                 if (existingClient.isPresent()) {
                     Client clientToUpdate = existingClient.get();
@@ -124,20 +120,14 @@ public class ClientService {
                         clientToUpdate.set_address(newAddress);
                     }
 
-                    try {
-                        dao.update(code, clientToUpdate);
-                        System.out.println("Client updated successfully.");
-                        break;
-                    } catch (ClientException e) {
-                        System.out.println("Client update failed: " + e.getMessage());
-                    }
+                    dao.update(code, clientToUpdate);
+                    System.out.println("Client updated successfully.");
+                    break;
                 } else {
                     System.out.println("Client not found with code: " + code);
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
-            } catch (ClientException e) {
-                System.out.println("Error retrieving client: " + e.getMessage());
             }
         }
     }
@@ -183,7 +173,7 @@ public class ClientService {
             try {
                 int code = Integer.parseInt(codeInput);
                 ClientDao dao = new ClientDaoImpl();
-                Optional<Client> existingClient = dao.getByCode(code);
+                Optional<Client> existingClient = dao.findByID(code);
 
                 if (existingClient.isPresent()) {
                     Client client = existingClient.get();
@@ -194,15 +184,13 @@ public class ClientService {
                     System.out.println("Birthdate: " + client.get_birthDate());
                     System.out.println("Phone: " + client.get_phone());
                     System.out.println("Address: " + client.get_address());
-                    System.out.println("Responsible Employee: " + client.get_employee());
+                    System.out.println("Responsible Employee: " + client.get_employee().get_lastName());
                     break;
                 } else {
                     System.out.println("Client not found with code: " + code);
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
-            } catch (ClientException e) {
-                System.out.println("Error retrieving client: " + e.getMessage());
             }
         }
     }
@@ -210,25 +198,21 @@ public class ClientService {
     public static void getAllClients() {
         ClientDao dao = new ClientDaoImpl();
 
-        try {
-            List<Client> clients = dao.getAll();
+        List<Client> clients = dao.getAll();
 
-            if (!clients.isEmpty()) {
-                System.out.println("List of all clients:");
-                for (Client client : clients) {
-                    System.out.println("Code: " + client.get_code());
-                    System.out.println("First Name: " + client.get_firstName());
-                    System.out.println("Last Name: " + client.get_lastName());
-                    System.out.println("Birthdate: " + client.get_birthDate());
-                    System.out.println("Phone: " + client.get_phone());
-                    System.out.println("Address: " + client.get_address());
-                    System.out.println("---------------------------");
-                }
-            } else {
-                System.out.println("No clients found.");
+        if (!clients.isEmpty()) {
+            System.out.println("List of all clients:");
+            for (Client client : clients) {
+                System.out.println("Code: " + client.get_code());
+                System.out.println("First Name: " + client.get_firstName());
+                System.out.println("Last Name: " + client.get_lastName());
+                System.out.println("Birthdate: " + client.get_birthDate());
+                System.out.println("Phone: " + client.get_phone());
+                System.out.println("Address: " + client.get_address());
+                System.out.println("---------------------------");
             }
-        } catch (ClientException e) {
-            System.out.println("Error retrieving clients: " + e.getMessage());
+        } else {
+            System.out.println("No clients found.");
         }
     }
 

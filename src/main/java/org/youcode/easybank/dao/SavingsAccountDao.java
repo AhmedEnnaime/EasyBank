@@ -8,15 +8,6 @@ import org.youcode.easybank.exceptions.SavingsAccountException;
 import java.util.List;
 import java.util.Optional;
 
-public interface SavingsAccountDao {
-    public Optional<SavingsAccount> create(SavingsAccount savingsAccount) throws SavingsAccountException;
-
-    public Optional<SavingsAccount> update(int accountNumber, SavingsAccount savingsAccount) throws SavingsAccountException;
-
-    public List<SavingsAccount> getAll() throws SavingsAccountException;
-
-    public Optional<SavingsAccount> getByAccountNumber(int accountNumber) throws SavingsAccountException;
-
-    public boolean deleteAll();
+public interface SavingsAccountDao extends IData<SavingsAccount, Integer>{
 
 }

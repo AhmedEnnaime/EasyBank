@@ -23,7 +23,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Optional<Client> create(Client client) throws ClientException {
+    public Optional<Client> create(Client client) {
         String insertSQL = "INSERT INTO clients (firstName, lastName, birthDate, phone, address, employeeMatricule) " +
                 "VALUES (?, ?, ?, ?, ?, ?) RETURNING code";
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -50,15 +50,15 @@ public class ClientDaoImpl implements ClientDao {
             }
 
             return Optional.of(client);
-        } catch (SQLException e) {
+        } catch (SQLException | ClientException e) {
             e.printStackTrace();
-            throw new ClientException("Error creating client." + e.getMessage());
+            return Optional.empty();
         }
     }
 
 
     @Override
-    public Optional<Client> update(int code, Client client) throws ClientException {
+    public Optional<Client> update(Integer code, Client client) {
         String updateSQL = "UPDATE clients " +
                 "SET firstName = ?, lastName = ?, birthDate = ?, phone = ?, address = ? " +
                 "WHERE code = ?";
@@ -78,13 +78,14 @@ public class ClientDaoImpl implements ClientDao {
             }
 
             return Optional.of(client);
-        } catch (SQLException e) {
-            throw new ClientException("Error updating client.");
+        } catch (SQLException | ClientException e) {
+            e.printStackTrace();
+            return Optional.empty();
         }
     }
 
     @Override
-    public boolean delete(int code) {
+    public boolean delete(Integer code) {
         String deleteSQL = "DELETE FROM clients WHERE code = ?";
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL)) {
@@ -99,7 +100,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Optional<Client> getByCode(int code) throws ClientException {
+    public Optional<Client> findByID(Integer code) {
         String selectSQL = "SELECT * FROM clients WHERE code = ?";
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
@@ -114,6 +115,7 @@ public class ClientDaoImpl implements ClientDao {
                     client.set_birthDate(resultSet.getDate("birthDate").toLocalDate());
                     client.set_phone(resultSet.getString("phone"));
                     client.set_address(resultSet.getString("address"));
+//                    client.set_employee(new EmployeeDaoImpl().findByID(resultSet.getInt("employeematricule")).get());
 
                     return Optional.of(client);
                 } else {
@@ -121,12 +123,13 @@ public class ClientDaoImpl implements ClientDao {
                 }
             }
         } catch (SQLException e) {
-            throw new ClientException("Error retrieving client by code.");
+            e.printStackTrace();
+            return Optional.empty();
         }
     }
 
     @Override
-    public List<Client> getAll() throws ClientException {
+    public List<Client> getAll() {
         List<Client> clients = new ArrayList<>();
         String selectAllSQL = "SELECT * FROM clients";
 
@@ -146,7 +149,7 @@ public class ClientDaoImpl implements ClientDao {
             }
 
         } catch (SQLException e) {
-            throw new ClientException("Error retrieving all clients.");
+            e.printStackTrace();
         }
 
         return clients;

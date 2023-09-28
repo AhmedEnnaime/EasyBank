@@ -29,7 +29,7 @@ public class ClientDaoImplTest {
 
 
     @BeforeEach
-    public void setUp() throws ClientException, EmployeeException {
+    public void setUp() {
         Connection testConnection = DBTestConnection.establishTestConnection();
 
         clientDao = new ClientDaoImpl(testConnection);
@@ -95,7 +95,7 @@ public class ClientDaoImplTest {
     }
 
     @Test
-    public void testUpdate() throws ClientException {
+    public void testUpdate() {
         Client updatedClient = new Client(
                 "UpdatedName",
                 "UpdatedLastName",
@@ -107,7 +107,7 @@ public class ClientDaoImplTest {
         Optional<Client> updatedClientOptional = clientDao.update(testCode, updatedClient);
         assertTrue(updatedClientOptional.isPresent());
 
-        Optional<Client> retrievedUpdatedClient = clientDao.getByCode(testCode);
+        Optional<Client> retrievedUpdatedClient = clientDao.findByID(testCode);
         assertTrue(retrievedUpdatedClient.isPresent());
 
         assertEquals(updatedClient.get_firstName(), retrievedUpdatedClient.get().get_firstName());
@@ -118,16 +118,16 @@ public class ClientDaoImplTest {
     }
 
     @Test
-    public void testDelete() throws ClientException {
+    public void testDelete() {
         boolean isDeleted = clientDao.delete(testCode);
 
         assertTrue(isDeleted);
-        Optional<Client> deletedClient = clientDao.getByCode(testCode);
+        Optional<Client> deletedClient = clientDao.findByID(testCode);
         assertFalse(deletedClient.isPresent());
     }
 
     @Test
-    public void testGetByCode() throws ClientException {
+    public void testGetByCode() {
         Client client = new Client(
                 "Salah",
                 "Mohammed",
@@ -140,14 +140,14 @@ public class ClientDaoImplTest {
         Optional<Client> createdClient = clientDao.create(client);
         assertTrue(createdClient.isPresent());
 
-        Optional<Client> retrievedClient = clientDao.getByCode(createdClient.get().get_code());
+        Optional<Client> retrievedClient = clientDao.findByID(createdClient.get().get_code());
         assertTrue(retrievedClient.isPresent());
         assertClientsEqual(createdClient.get(), retrievedClient.get());
 
     }
 
     @Test
-    public void testGetAll() throws ClientException {
+    public void testGetAll() {
         List<Client> allClients = clientDao.getAll();
         assertNotNull(allClients);
         assertFalse(allClients.isEmpty());

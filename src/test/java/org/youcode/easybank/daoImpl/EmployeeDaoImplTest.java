@@ -102,7 +102,7 @@ public class EmployeeDaoImplTest {
         Optional<Employee> updatedEmployeeOptional = employeeDao.update(matricule, updatedEmployee);
         assertTrue(updatedEmployeeOptional.isPresent());
 
-        Optional<Employee> retrievedUpdatedEmployee = employeeDao.getByMatricule(matricule);
+        Optional<Employee> retrievedUpdatedEmployee = employeeDao.findByID(matricule);
         assertTrue(retrievedUpdatedEmployee.isPresent());
 
         assertEquals(updatedEmployee.get_firstName(), retrievedUpdatedEmployee.get().get_firstName());
@@ -120,7 +120,7 @@ public class EmployeeDaoImplTest {
         boolean isDeleted = employeeDao.delete(testMatricule);
 
         assertTrue(isDeleted);
-        Optional<Employee> deletedEmployee = employeeDao.getByMatricule(testMatricule);
+        Optional<Employee> deletedEmployee = employeeDao.findByID(testMatricule);
         assertFalse(deletedEmployee.isPresent());
     }
 
@@ -139,7 +139,7 @@ public class EmployeeDaoImplTest {
         Optional<Employee> createdEmployee = employeeDao.create(employee);
         assertTrue(createdEmployee.isPresent());
 
-        Optional<Employee> retrievedEmployee = employeeDao.getByMatricule(createdEmployee.get().get_matricule());
+        Optional<Employee> retrievedEmployee = employeeDao.findByID(createdEmployee.get().get_matricule());
         assertTrue(retrievedEmployee.isPresent());
         assertEmployeesEqual(createdEmployee.get(), retrievedEmployee.get());
 
