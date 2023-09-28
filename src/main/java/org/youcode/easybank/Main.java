@@ -6,6 +6,7 @@ import org.youcode.easybank.exceptions.ClientException;
 import org.youcode.easybank.exceptions.EmployeeException;
 import org.youcode.easybank.exceptions.OperationException;
 import org.youcode.easybank.services.*;
+import org.youcode.easybank.views.MissionView;
 
 import java.util.Scanner;
 
@@ -264,7 +265,7 @@ public class Main {
 
         private static void missionManagementMenu() {
             Scanner sc = new Scanner(System.in);
-
+            MissionView missionView = new MissionView();
             while (true) {
                 System.out.println("Mission Management Menu:");
                 System.out.println("1. Create Mission");
@@ -278,13 +279,13 @@ public class Main {
 
                 switch (choice) {
                     case 1:
-                        MissionService.createMission();
+                        missionView.createMission();
                         break;
                     case 2:
-                        MissionService.getMissionByNumber();
+                        missionView.getMissionByNumber();
                         break;
                     case 3:
-                        MissionService.deleteMission();
+                        missionView.deleteMission();
                         break;
                     case 4:
                         return;
