@@ -6,6 +6,7 @@ import org.youcode.easybank.exceptions.ClientException;
 import org.youcode.easybank.exceptions.EmployeeException;
 import org.youcode.easybank.exceptions.OperationException;
 import org.youcode.easybank.services.*;
+import org.youcode.easybank.views.MissionAssignmentView;
 import org.youcode.easybank.views.MissionView;
 
 import java.util.Scanner;
@@ -297,6 +298,7 @@ public class Main {
         }
     private static void missionAssignmentManagementMenu() {
         Scanner sc = new Scanner(System.in);
+        MissionAssignmentView missionAssignmentView = new MissionAssignmentView();
 
         while (true) {
             System.out.println("Mission Assignment Management Menu:");
@@ -304,7 +306,8 @@ public class Main {
             System.out.println("2. Get Assignment By ID");
             System.out.println("3. Delete Mission Assignment");
             System.out.println("4. Get Employees Assignments");
-            System.out.println("5. Back to Main Menu");
+            System.out.println("5. Display Statistics");
+            System.out.println("6. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
             int choice = sc.nextInt();
@@ -324,6 +327,9 @@ public class Main {
                     MissionAssignmentService.getEmployeesAssignments();
                     break;
                 case 5:
+                    missionAssignmentView.displayStats();
+                    break;
+                case 6:
                     return;
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");

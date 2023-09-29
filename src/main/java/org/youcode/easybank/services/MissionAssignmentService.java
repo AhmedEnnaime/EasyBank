@@ -15,12 +15,10 @@ import org.youcode.easybank.exceptions.MissionException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class MissionAssignmentService {
+
 
     public static void createMissionAssignment() {
         Scanner sc = new Scanner(System.in);
@@ -192,6 +190,29 @@ public class MissionAssignmentService {
         }
     }
 
+    public void displayStats() {
+        MissionAssignmentDao missionAssignmentDao = new MissionAssignmentDaoImpl();
+        try {
+            Optional<HashMap<Integer, Integer>> stats = missionAssignmentDao.getStats();
 
+            if (stats.isPresent()) {
+                HashMap<Integer, Integer> missionStats = stats.get();
+
+                System.out.println("Mission Statistics:");
+                for (Map.Entry<Integer, Integer> entry : missionStats.entrySet()) {
+                    int missionCode = entry.getKey();
+                    int totalEmployees = entry.getValue();
+
+                    System.out.println("Mission Code: " + missionCode);
+                    System.out.println("Total Employees: " + totalEmployees);
+                    System.out.println("---------------------------");
+                }
+            } else {
+                System.out.println("No mission statistics found.");
+            }
+        } catch (MissionAssignmentException e) {
+            System.out.println("Error retrieving mission statistics: " + e.getMessage());
+        }
+    }
 
 }

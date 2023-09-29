@@ -77,8 +77,25 @@ public class MissionAssignmentDaoImpl implements MissionAssignmentDao {
 
 
     @Override
-    public HashMap<String, List<?>> getAssignment() throws MissionAssignmentException {
-        return null;
+    public Optional<HashMap<Integer, Integer>> getStats() throws MissionAssignmentException {
+        HashMap<Integer, Integer> stats = new HashMap<>();
+        String sql = "SELECT mission_code, COUNT(employee_matricule) AS total FROM missionAssignments GROUP BY mission_code;";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                int mission_code = resultSet.getInt("mission_code");
+                int total = resultSet.getInt("total");
+
+                stats.put(mission_code, total);
+            }
+        } catch (SQLException e) {
+            throw new MissionAssignmentException("Error retrieving mission stats: " + e.getMessage());
+        }
+
+        return Optional.of(stats);
     }
 
     @Override

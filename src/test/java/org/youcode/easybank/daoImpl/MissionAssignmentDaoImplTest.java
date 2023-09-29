@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -199,6 +200,20 @@ public class MissionAssignmentDaoImplTest {
         Optional<MissionAssignment> retrievedMissionAssignment = missionAssignmentDao.getByID(testID);
         assertFalse(retrievedMissionAssignment.isPresent());
     }
+
+    @Test
+    public void testGetStats() throws MissionAssignmentException {
+        assertNotNull(missionAssignmentDao);
+        Optional<HashMap<Integer, Integer>> stats = missionAssignmentDao.getStats();
+        assertTrue(stats.isPresent());
+
+        HashMap<Integer, Integer> missionStats = stats.get();
+        assertNotNull(missionStats);
+
+        assertTrue(missionStats.containsKey(testMissionCode));
+        assertTrue(missionStats.get(testMissionCode) > 0);
+    }
+
 
     @AfterEach
     public void tearDown() {

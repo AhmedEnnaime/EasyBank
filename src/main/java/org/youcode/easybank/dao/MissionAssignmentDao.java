@@ -13,7 +13,7 @@ public interface MissionAssignmentDao {
 
     public boolean delete(int mission_code) throws MissionAssignmentException;
 
-    public HashMap<String, List<?>> getAssignment() throws MissionAssignmentException;
+    public Optional<HashMap<Integer, Integer>> getStats() throws MissionAssignmentException;
 
     public List<MissionAssignment> getEmployeeAssignments(Employee employee) throws MissionAssignmentException;
 
