@@ -6,5 +6,7 @@ CREATE TABLE employees (
     birthDate DATE,
     email VARCHAR(255) UNIQUE,
     phone VARCHAR(255),
-    address VARCHAR(255)
+    address VARCHAR(255),
+    agency_code INT,
+    FOREIGN KEY (agency_code) REFERENCES agencies(code)
 );

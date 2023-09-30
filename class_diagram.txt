@@ -1,11 +1,11 @@
 @startuml
 
 class Account {
-  -accountNumber: String
+  -accountNumber: int
   -balance: double
   -creationDate: Date
   -status: STATUS
-  +getAccountNumber(): String
+  +getAccountNumber(): int
   +getBalance(): double
   +getCreationDate(): Date
   +getStatus(): STATUS
@@ -80,7 +80,15 @@ class Agency {
   -name: String
   -address: String
   -phone: String
+  +getCode(): int
+  +getName(): String
+  +getAddress(): String
+  +getPhone(): String
+}
 
+class Transfer {
+  -id: int
+  -transfer_date: Date
 }
 
 class Simulation {
@@ -89,6 +97,11 @@ class Simulation {
   -borrowed_capital: double
   -monthly_payments_num: int
   -result: double
+  +getId(): int
+  +getMonthlyPayment(): double
+  +getBorrowedCapital(): double
+  +getMonthlyPaymentsNum(): int
+  +getResult(): double
 }
 
 class Credit {
@@ -98,15 +111,19 @@ class Credit {
   -state: STATE
   -remarques: String
   -duration: String
+  +getNumber(): int
+  +getDate(): Date
+  +getAmount(): double
+  +getState(): STATE
+  +getRemarques(): String
+  +getDuration(): String
 }
-
 
 Enum OPERATIONTYPE {
   PAYMENT
   WITHDRAWAL
   DEPOSIT
 }
-
 
 Enum STATUS {
   ACTIVE
@@ -135,5 +152,6 @@ Simulation "1" *-- "0..*" Employee
 Credit "1" *-- "0..*" Employee
 Credit "*" *-- "1" Client
 Simulation "1" *-- "1" Credit
-
+Agency -- Transfer : "1" *-- "0..*" Employee
+Employee -- Transfer : "1" *-- "0..*" Agency
 @enduml
