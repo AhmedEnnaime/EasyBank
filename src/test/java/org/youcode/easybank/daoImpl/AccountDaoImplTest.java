@@ -8,10 +8,7 @@ import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.dao.daoImpl.OperationDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
-import org.youcode.easybank.entities.Account;
-import org.youcode.easybank.entities.Client;
-import org.youcode.easybank.entities.Employee;
-import org.youcode.easybank.entities.Operation;
+import org.youcode.easybank.entities.*;
 import org.youcode.easybank.enums.OPERATION;
 import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
@@ -40,6 +37,8 @@ public class AccountDaoImplTest {
 
     private Operation operation;
 
+    private Agency agency;
+
     private Client client;
     private Client client2;
 
@@ -47,7 +46,7 @@ public class AccountDaoImplTest {
     private int testAccountNumber;
 
     @BeforeEach
-    public void setUp() throws ClientException, EmployeeException, AccountException, OperationException {
+    public void setUp() throws OperationException {
         Connection testConnection = DBTestConnection.establishTestConnection();
 
         clientDao = new ClientDaoImpl(testConnection);
@@ -58,6 +57,12 @@ public class AccountDaoImplTest {
 
         operationDao = new OperationDaoImpl(testConnection);
 
+        agency = new Agency(
+                "YouCode",
+                "test address",
+                "05248137133"
+        );
+
         employee = new Employee(
                 "Aymen",
                 "Servoy",
@@ -65,7 +70,8 @@ public class AccountDaoImplTest {
                 "06823347924",
                 "sidi bouzid",
                 LocalDate.of(2023, 9, 21),
-                "servoy@gmail.com"
+                "servoy@gmail.com",
+                agency
         );
 
         employeeDao.create(employee);
@@ -94,7 +100,8 @@ public class AccountDaoImplTest {
         Account account = new Account(
                 8700,
                 employee,
-                client
+                client,
+                agency
         );
 
         accountDao.create(account);
@@ -120,11 +127,12 @@ public class AccountDaoImplTest {
     }
 
     @Test
-    public void testCreate() throws AccountException {
+    public void testCreate() {
         Account account = new Account(
                 1000,
                 employee,
-                client
+                client,
+                agency
         );
 
         Optional<Account> createdAccount = accountDao.create(account);
@@ -151,7 +159,7 @@ public class AccountDaoImplTest {
     public void testGetByCreationDate() throws AccountException {
         LocalDate today = LocalDate.now();
 
-        Account accountToday = new Account(8700, employee, client);
+        Account accountToday = new Account(8700, employee, client, agency);
 
         accountDao.create(accountToday);
 
@@ -170,7 +178,8 @@ public class AccountDaoImplTest {
         Account account = new Account(
                 1000,
                 employee,
-                client
+                client,
+                agency
         );
 
         Optional<Account> createdAccount = accountDao.create(account);
@@ -195,10 +204,10 @@ public class AccountDaoImplTest {
     @Test
     public void testGetByStatus() throws AccountException {
 
-        Account activeAccount1 = new Account(1000, employee, client);
+        Account activeAccount1 = new Account(1000, employee, client, agency);
         activeAccount1.set_status(STATUS.ACTIVE);
 
-        Account activeAccount2 = new Account(1500, employee, client2);
+        Account activeAccount2 = new Account(1500, employee, client2, agency);
         activeAccount2.set_status(STATUS.ACTIVE);
 
         accountDao.create(activeAccount1);
@@ -212,8 +221,8 @@ public class AccountDaoImplTest {
     }
 
     @Test
-    public void testUpdateStatus() throws AccountException {
-        Account account = new Account(1000, employee, client);
+    public void testUpdateStatus() {
+        Account account = new Account(1000, employee, client, agency);
         Optional<Account> createdAccount = accountDao.create(account);
         assertTrue(createdAccount.isPresent());
 
@@ -228,7 +237,7 @@ public class AccountDaoImplTest {
     }
 
     @Test
-    public void testGetClientAccounts() throws AccountException, ClientException, EmployeeException {
+    public void testGetClientAccounts() throws AccountException {
 
         Employee employee = new Employee(
                 "Aymen",
@@ -237,7 +246,8 @@ public class AccountDaoImplTest {
                 "06823347924",
                 "sidi bouzid",
                 LocalDate.of(2023, 9, 21),
-                "servoy@gmail.com"
+                "servoy@gmail.com",
+                agency
         );
 
         employeeDao.create(employee);
@@ -256,7 +266,8 @@ public class AccountDaoImplTest {
         Account account = new Account(
                 8700,
                 employee,
-                client
+                client,
+                agency
         );
 
         accountDao.create(account);
@@ -273,9 +284,9 @@ public class AccountDaoImplTest {
     }
 
     @Test
-    public void testUpdateBalance() throws AccountException {
+    public void testUpdateBalance() {
         double initialBalance = 1000.0;
-        Account account = new Account(initialBalance, employee, client);
+        Account account = new Account(initialBalance, employee, client, agency);
         Optional<Account> createdAccount = accountDao.create(account);
         assertTrue(createdAccount.isPresent());
 

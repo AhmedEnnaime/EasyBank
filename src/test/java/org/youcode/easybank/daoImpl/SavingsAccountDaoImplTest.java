@@ -8,10 +8,7 @@ import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.dao.daoImpl.SavingsAccountDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
-import org.youcode.easybank.entities.Account;
-import org.youcode.easybank.entities.Client;
-import org.youcode.easybank.entities.Employee;
-import org.youcode.easybank.entities.SavingsAccount;
+import org.youcode.easybank.entities.*;
 import org.youcode.easybank.exceptions.AccountException;
 import org.youcode.easybank.exceptions.ClientException;
 import org.youcode.easybank.exceptions.EmployeeException;
@@ -37,10 +34,12 @@ public class SavingsAccountDaoImplTest {
 
     private Client client;
 
+    private Agency agency;
+
     private int testAccountNumber;
 
     @BeforeEach
-    public void setUp() throws EmployeeException, ClientException, AccountException {
+    public void setUp() {
 
         Connection testConnection = DBTestConnection.establishTestConnection();
 
@@ -53,6 +52,12 @@ public class SavingsAccountDaoImplTest {
 
         savingsAccountDao = new SavingsAccountDaoImpl(testConnection);
 
+        agency = new Agency(
+                "YouCode",
+                "test address",
+                "05248137133"
+        );
+
         employee = new Employee(
                 "Aymen",
                 "Servoy",
@@ -60,7 +65,8 @@ public class SavingsAccountDaoImplTest {
                 "06823347924",
                 "sidi bouzid",
                 LocalDate.of(2023, 9, 21),
-                "servoy@gmail.com"
+                "servoy@gmail.com",
+                agency
         );
 
         employeeDao.create(employee);
@@ -78,7 +84,8 @@ public class SavingsAccountDaoImplTest {
         Account account = new Account(
                 8700,
                 employee,
-                client
+                client,
+                agency
         );
 
         accountDao.create(account);
@@ -88,7 +95,7 @@ public class SavingsAccountDaoImplTest {
     }
 
     @Test
-    public void testCreate() throws SavingsAccountException {
+    public void testCreate() {
         SavingsAccount savingsAccount = new SavingsAccount();
         savingsAccount.set_accountNumber(testAccountNumber);
         savingsAccount.set_interestRate(0.03);
@@ -105,11 +112,12 @@ public class SavingsAccountDaoImplTest {
     }
 
     @Test
-    public void testGetByAccountNumber() throws SavingsAccountException, AccountException {
+    public void testGetByAccountNumber() {
         Account account = new Account(
                 5000,
                 employee,
-                client
+                client,
+                agency
         );
 
         Optional<Account> createdAccount = accountDao.create(account);
@@ -130,7 +138,8 @@ public class SavingsAccountDaoImplTest {
     }
 
 
-    public void testGetAll() throws SavingsAccountException {
+    @Test
+    public void testGetAll() {
         List<SavingsAccount> allSavingsAccounts = savingsAccountDao.getAll();
         assertNotNull(allSavingsAccounts);
 
@@ -139,7 +148,7 @@ public class SavingsAccountDaoImplTest {
     }
 
     @Test
-    public void testUpdate() throws SavingsAccountException {
+    public void testUpdate() {
         SavingsAccount savingsAccount = new SavingsAccount();
         savingsAccount.set_accountNumber(testAccountNumber);
         savingsAccount.set_interestRate(0.03);

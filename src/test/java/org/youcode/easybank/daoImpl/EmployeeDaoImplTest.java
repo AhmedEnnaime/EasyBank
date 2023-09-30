@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
+import org.youcode.easybank.entities.Agency;
 import org.youcode.easybank.entities.Employee;
 import org.youcode.easybank.exceptions.EmployeeException;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,12 +18,20 @@ import java.util.Optional;
 public class EmployeeDaoImplTest {
     private EmployeeDaoImpl employeeDao;
 
+    private Agency agency;
+
     private int testMatricule;
     @BeforeEach
-    public void setUp() throws EmployeeException {
+    public void setUp() {
         Connection testConnection = DBTestConnection.establishTestConnection();
 
         employeeDao = new EmployeeDaoImpl(testConnection);
+
+        agency = new Agency(
+                "YouCode",
+                "test address",
+                "05248137133"
+        );
 
         Employee employee = new Employee(
                 "Mousta",
@@ -31,7 +40,8 @@ public class EmployeeDaoImplTest {
                 "06473347924",
                 "Jrayfat",
                 LocalDate.of(2023, 9, 21),
-                "mousta@gmail.com"
+                "mousta@gmail.com",
+                agency
         );
 
         employeeDao.create(employee);
@@ -50,7 +60,7 @@ public class EmployeeDaoImplTest {
     }
 
     @Test
-    public void testCreate() throws EmployeeException {
+    public void testCreate() {
         Employee employee = new Employee(
                 "Abdelali",
                 "Hotgame",
@@ -58,7 +68,8 @@ public class EmployeeDaoImplTest {
                 "0682332783924",
                 "hay anass",
                 LocalDate.of(2023, 9, 21),
-                "hotgam@gmail.com"
+                "hotgam@gmail.com",
+                agency
         );
 
         Optional<Employee> createdEmployee = employeeDao.create(employee);
@@ -74,7 +85,7 @@ public class EmployeeDaoImplTest {
     }
 
     @Test
-    public void update() throws EmployeeException {
+    public void update() {
         Employee employee = new Employee(
                 "Aymen",
                 "Servoy",
@@ -82,7 +93,8 @@ public class EmployeeDaoImplTest {
                 "06823347924",
                 "sidi bouzid",
                 LocalDate.of(2023, 9, 21),
-                "servoy@gmail.com"
+                "servoy@gmail.com",
+                agency
         );
 
         Optional<Employee> createdEmployee = employeeDao.create(employee);
@@ -96,7 +108,8 @@ public class EmployeeDaoImplTest {
                 "061234567890",
                 "UpdatedAddress",
                 LocalDate.of(2022, 8, 15),
-                "updated.email@example.com"
+                "updated.email@example.com",
+                agency
         );
 
         Optional<Employee> updatedEmployeeOptional = employeeDao.update(matricule, updatedEmployee);
@@ -116,7 +129,7 @@ public class EmployeeDaoImplTest {
     }
 
     @Test
-    public void testDelete() throws EmployeeException {
+    public void testDelete() {
         boolean isDeleted = employeeDao.delete(testMatricule);
 
         assertTrue(isDeleted);
@@ -125,7 +138,7 @@ public class EmployeeDaoImplTest {
     }
 
     @Test
-    public void testGetByMatricule() throws EmployeeException {
+    public void testGetByMatricule() {
         Employee employee = new Employee(
                 "Salah",
                 "Mohammed",
@@ -133,7 +146,8 @@ public class EmployeeDaoImplTest {
                 "064782487924",
                 "Jrayfat",
                 LocalDate.of(2023, 6, 27),
-                "salah@gmail.com"
+                "salah@gmail.com",
+                agency
         );
 
         Optional<Employee> createdEmployee = employeeDao.create(employee);
@@ -146,7 +160,7 @@ public class EmployeeDaoImplTest {
     }
 
     @Test
-    public void testGetAll() throws EmployeeException {
+    public void testGetAll() {
         List<Employee> allEmployees = employeeDao.getAll();
         assertNotNull(allEmployees);
         assertFalse(allEmployees.isEmpty());
@@ -164,7 +178,8 @@ public class EmployeeDaoImplTest {
                 "1234567890",
                 "123 Main St",
                 LocalDate.of(2023, 9, 21),
-                "john.doe@example.com"
+                "john.doe@example.com",
+                agency
         );
 
         Employee employee2 = new Employee(
@@ -174,7 +189,8 @@ public class EmployeeDaoImplTest {
                 "9876543210",
                 "456 Elm St",
                 LocalDate.of(2023, 9, 21),
-                "jane.doe@example.com"
+                "jane.doe@example.com",
+                agency
         );
 
         employeeDao.create(employee1);

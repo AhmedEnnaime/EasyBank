@@ -8,10 +8,7 @@ import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.dao.daoImpl.OperationDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
-import org.youcode.easybank.entities.Account;
-import org.youcode.easybank.entities.Client;
-import org.youcode.easybank.entities.Employee;
-import org.youcode.easybank.entities.Operation;
+import org.youcode.easybank.entities.*;
 import org.youcode.easybank.enums.OPERATION;
 import org.youcode.easybank.exceptions.AccountException;
 import org.youcode.easybank.exceptions.ClientException;
@@ -39,12 +36,14 @@ public class OperationDaoImplTest {
 
     private Account account;
 
+    private Agency agency;
+
     private int testAccountNumber;
 
     private int testOperationNumber;
 
     @BeforeEach
-    public void setUp() throws ClientException, EmployeeException, AccountException, OperationException {
+    public void setUp() throws OperationException {
         Connection testConnection = DBTestConnection.establishTestConnection();
 
         clientDao = new ClientDaoImpl(testConnection);
@@ -55,6 +54,12 @@ public class OperationDaoImplTest {
 
         operationDao = new OperationDaoImpl(testConnection);
 
+        agency = new Agency(
+                "YouCode",
+                "test address",
+                "05248137133"
+        );
+
         employee = new Employee(
                 "Aymen",
                 "Servoy",
@@ -62,7 +67,8 @@ public class OperationDaoImplTest {
                 "06823347924",
                 "sidi bouzid",
                 LocalDate.of(2023, 9, 21),
-                "servoy@gmail.com"
+                "servoy@gmail.com",
+                agency
         );
 
         employeeDao.create(employee);
@@ -81,7 +87,8 @@ public class OperationDaoImplTest {
         account = new Account(
                 8700,
                 employee,
-                client
+                client,
+                agency
         );
 
         accountDao.create(account);

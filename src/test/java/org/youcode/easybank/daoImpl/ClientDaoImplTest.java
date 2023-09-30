@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
+import org.youcode.easybank.entities.Agency;
 import org.youcode.easybank.entities.Client;
 import org.youcode.easybank.entities.Employee;
 import org.youcode.easybank.exceptions.ClientException;
@@ -27,6 +28,8 @@ public class ClientDaoImplTest {
 
     private Employee employee;
 
+    private Agency agency;
+
 
     @BeforeEach
     public void setUp() {
@@ -36,6 +39,12 @@ public class ClientDaoImplTest {
 
         employeeDao = new EmployeeDaoImpl(testConnection);
 
+        agency = new Agency(
+                "YouCode",
+                "test address",
+                "05248137133"
+        );
+
         employee = new Employee(
                 "Aymen",
                 "Servoy",
@@ -43,7 +52,8 @@ public class ClientDaoImplTest {
                 "06823347924",
                 "sidi bouzid",
                 LocalDate.of(2023, 9, 21),
-                "servoy@gmail.com"
+                "servoy@gmail.com",
+                agency
         );
 
         employeeDao.create(employee);

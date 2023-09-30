@@ -30,10 +30,12 @@ public class CurrentAccountDaoImplTest {
 
     private Client client;
 
+    private Agency agency;
+
     private int testAccountNumber;
 
     @BeforeEach
-    public void setUp() throws EmployeeException, ClientException, AccountException {
+    public void setUp() {
 
         Connection testConnection = DBTestConnection.establishTestConnection();
 
@@ -45,6 +47,12 @@ public class CurrentAccountDaoImplTest {
 
         currentAccountDao = new CurrentAccountDaoImpl(testConnection);
 
+        agency = new Agency(
+                "YouCode",
+                "test address",
+                "05248137133"
+        );
+
         employee = new Employee(
                 "Aymen",
                 "Servoy",
@@ -52,7 +60,8 @@ public class CurrentAccountDaoImplTest {
                 "06823347924",
                 "sidi bouzid",
                 LocalDate.of(2023, 9, 21),
-                "servoy@gmail.com"
+                "servoy@gmail.com",
+                agency
         );
 
         employeeDao.create(employee);
@@ -70,7 +79,8 @@ public class CurrentAccountDaoImplTest {
         Account account = new Account(
                 8700,
                 employee,
-                client
+                client,
+                agency
         );
 
         accountDao.create(account);

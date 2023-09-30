@@ -7,6 +7,7 @@ import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.dao.daoImpl.MissionAssignmentDaoImpl;
 import org.youcode.easybank.dao.daoImpl.MissionDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
+import org.youcode.easybank.entities.Agency;
 import org.youcode.easybank.entities.Employee;
 import org.youcode.easybank.entities.Mission;
 import org.youcode.easybank.entities.MissionAssignment;
@@ -32,12 +33,14 @@ public class MissionAssignmentDaoImplTest {
 
     private Employee employee1;
 
+    private Agency agency;
+
     private int testMissionCode;
 
     private int testID;
 
     @BeforeEach
-    public void setUp() throws MissionException, EmployeeException, MissionAssignmentException {
+    public void setUp() throws MissionException, MissionAssignmentException {
 
         Connection testConnection = DBTestConnection.establishTestConnection();
 
@@ -56,6 +59,12 @@ public class MissionAssignmentDaoImplTest {
         missionDao.create(mission);
         testMissionCode = mission.get_code();
 
+        agency = new Agency(
+                "YouCode",
+                "test address",
+                "05248137133"
+        );
+
         employee1 = new Employee(
                 "Mousta",
                 "Delegue",
@@ -63,7 +72,8 @@ public class MissionAssignmentDaoImplTest {
                 "06473347924",
                 "Jrayfat",
                 LocalDate.of(2023, 9, 21),
-                "mousta@gmail.com"
+                "mousta@gmail.com",
+                agency
         );
 
         Employee employee2 = new Employee(
@@ -73,7 +83,8 @@ public class MissionAssignmentDaoImplTest {
                 "0682332783924",
                 "hay anass",
                 LocalDate.of(2023, 9, 21),
-                "hotgam@gmail.com"
+                "hotgam@gmail.com",
+                agency
         );
 
         employeeDao.create(employee1);
@@ -102,7 +113,7 @@ public class MissionAssignmentDaoImplTest {
     }
 
     @Test
-    public void testCreatet() throws MissionAssignmentException, MissionException, EmployeeException {
+    public void testCreatet() throws MissionAssignmentException, MissionException {
         Mission mission = new Mission("Test Mission", "Test description");
         missionDao.create(mission);
 
@@ -113,7 +124,8 @@ public class MissionAssignmentDaoImplTest {
                 "06400347924",
                 "jjjj",
                 LocalDate.of(2023, 9, 21),
-                "hamza@gmail.com"
+                "hamza@gmail.com",
+                agency
         );
 
         Employee employee2 = new Employee(
@@ -123,7 +135,8 @@ public class MissionAssignmentDaoImplTest {
                 "0645683924",
                 "hhhh",
                 LocalDate.of(2023, 9, 21),
-                "mouad@gmail.com"
+                "mouad@gmail.com",
+                agency
         );
 
         employeeDao.create(employee3);
@@ -160,7 +173,8 @@ public class MissionAssignmentDaoImplTest {
                 "06400347924",
                 "jjjj",
                 LocalDate.of(2023, 9, 21),
-                "hamza@gmail.com"
+                "hamza@gmail.com",
+                agency
         );
 
         employeeDao.create(employee);

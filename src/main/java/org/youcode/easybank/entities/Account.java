@@ -24,10 +24,13 @@ public class Account {
 
     protected List<Operation> _operations;
 
-    public Account(double balance, Employee employee, Client client) {
+    protected Agency _agency;
+
+    public Account(double balance, Employee employee, Client client, Agency agency) {
         this._balance = balance;
         this._employee = employee;
         this._client = client;
+        this._agency = agency;
     }
 
     public Account(Account account) {
@@ -38,6 +41,7 @@ public class Account {
         this._employee = account.get_employee();
         this._client = account.get_client();
         this._operations = account.get_operations();
+        this._agency = account.get_agency();
     }
 
     public Account(double balance) {
