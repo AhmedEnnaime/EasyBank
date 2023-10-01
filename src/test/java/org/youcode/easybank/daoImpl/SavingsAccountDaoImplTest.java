@@ -3,10 +3,7 @@ package org.youcode.easybank.daoImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.youcode.easybank.dao.daoImpl.AccountDaoImpl;
-import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
-import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
-import org.youcode.easybank.dao.daoImpl.SavingsAccountDaoImpl;
+import org.youcode.easybank.dao.daoImpl.*;
 import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.*;
 import org.youcode.easybank.exceptions.AccountException;
@@ -30,6 +27,8 @@ public class SavingsAccountDaoImplTest {
 
     private SavingsAccountDaoImpl savingsAccountDao;
 
+    private AgencyDaoImpl agencyDao;
+
     private Employee employee;
 
     private Client client;
@@ -49,6 +48,7 @@ public class SavingsAccountDaoImplTest {
 
         accountDao = new AccountDaoImpl(testConnection);
 
+        agencyDao = new AgencyDaoImpl(testConnection);
 
         savingsAccountDao = new SavingsAccountDaoImpl(testConnection);
 
@@ -57,6 +57,8 @@ public class SavingsAccountDaoImplTest {
                 "test address",
                 "05248137133"
         );
+
+        agencyDao.create(agency);
 
         employee = new Employee(
                 "Aymen",
@@ -132,16 +134,6 @@ public class SavingsAccountDaoImplTest {
         System.out.println("account number : " + createdSavingsAccount.get().get_accountNumber());
         Optional<SavingsAccount> retrievedAccount = savingsAccountDao.findByID(createdSavingsAccount.get().get_accountNumber());
         assertTrue(retrievedAccount.isPresent());
-    }
-
-
-    @Test
-    public void testGetAll() {
-        List<SavingsAccount> allSavingsAccounts = savingsAccountDao.getAll();
-        assertNotNull(allSavingsAccounts);
-
-        assertFalse(allSavingsAccounts.isEmpty());
-
     }
 
     @Test

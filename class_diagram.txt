@@ -119,6 +119,14 @@ class Credit {
   +getDuration(): String
 }
 
+class Payment {
+  -id: int
+  -transaction_time: TIMESTAMP
+  +getId(): int
+  +getTransaction_time(): TIMESTAMP
+}
+
+
 Enum OPERATIONTYPE {
   PAYMENT
   WITHDRAWAL
@@ -154,4 +162,7 @@ Credit "*" *-- "1" Client
 Simulation "1" *-- "1" Credit
 Agency -- Transfer : "1" *-- "0..*" Employee
 Employee -- Transfer : "1" *-- "0..*" Agency
+Payment "*" -- "1" Employee
+Payment "1" -- "1" Account: from
+Payment "1" -- "1" Account: to
 @enduml

@@ -20,6 +20,7 @@ public class DBTestConnection {
 
                 if (conn != null) {
                     System.out.println("Connection to testing PostgreSQL database established.");
+                    createAgenciesTable(conn);
                     createEmployeesTable(conn);
                     createClientsTable(conn);
                     createAccountsTable(conn);
@@ -28,6 +29,9 @@ public class DBTestConnection {
                     createOperationsTable(conn);
                     createMissionsTable(conn);
                     createMissionAssignmentsTable(conn);
+                    createTransfersTable(conn);
+                    createSimulationsTable(conn);
+                    createCreditsTable(conn);
                 }
 
             } catch (ClassNotFoundException | SQLException e) {
@@ -140,6 +144,59 @@ public class DBTestConnection {
             stmt.executeUpdate(createTableSQL);
         }
     }
+
+    public static void createAgenciesTable(Connection conn) throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS agencies ("
+                + "code SERIAL PRIMARY KEY,"
+                + "name VARCHAR(255),"
+                + "address VARCHAR(255),"
+                + "phone VARCHAR(12)"
+                + ");";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(createTableSQL);
+        }
+    }
+
+    public static void createTransfersTable(Connection conn) throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS transfers ("
+                + "id SERIAL PRIMARY KEY,"
+                + "transfer_date DATE,"
+                + "employee_matricule INT,"
+                + "agency_code INT"
+                + ");";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(createTableSQL);
+        }
+    }
+
+    public static void createSimulationsTable(Connection conn) throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS simulations ("
+                + "id SERIAL PRIMARY KEY,"
+                + "monthly_payment DOUBLE PRECISION,"
+                + "borrowed_capital DOUBLE PRECISION,"
+                + "monthly_payment_num INT,"
+                + "state VARCHAR(255) DEFAULT 'PENDING',"
+                + "result DOUBLE PRECISION"
+                + ");";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(createTableSQL);
+        }
+    }
+
+    public static void createCreditsTable(Connection conn) throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS credits ("
+                + "number SERIAL PRIMARY KEY,"
+                + "credit_date DATE DEFAULT CURRENT_DATE,"
+                + "amount DOUBLE PRECISION,"
+                + "remarks VARCHAR(255),"
+                + "duration VARCHAR(255),"
+                + "simulation_id INT"
+                + ");";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(createTableSQL);
+        }
+    }
+
     public static void closeConnection() {
         if (conn != null) {
             try {

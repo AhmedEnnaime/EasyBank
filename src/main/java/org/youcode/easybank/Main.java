@@ -6,6 +6,7 @@ import org.youcode.easybank.exceptions.ClientException;
 import org.youcode.easybank.exceptions.EmployeeException;
 import org.youcode.easybank.exceptions.OperationException;
 import org.youcode.easybank.services.*;
+import org.youcode.easybank.views.AgencyView;
 import org.youcode.easybank.views.MissionAssignmentView;
 import org.youcode.easybank.views.MissionView;
 
@@ -23,7 +24,8 @@ public class Main {
                 System.out.println("4. Operation Management");
                 System.out.println("5. Mission Management");
                 System.out.println("6. Mission Assignment Management");
-                System.out.println("7. Exit");
+                System.out.println("7. Agency Management");
+                System.out.println("8. Exit");
                 System.out.print("Enter your choice: ");
 
                 int choice = sc.nextInt();
@@ -49,6 +51,9 @@ public class Main {
                         missionAssignmentManagementMenu();
                         break;
                     case 7:
+                        agencyManagementMenu();
+                        break;
+                    case 8:
                         System.out.println("Exiting the application. Goodbye!");
                         DBConnection.closeConnection();
                         sc.close();
@@ -335,6 +340,37 @@ public class Main {
                     System.out.println("Invalid choice. Please select a valid option.");
                     break;
             }
+        }
+    }
+
+
+
+    private static void agencyManagementMenu() {
+        Scanner sc = new Scanner(System.in);
+        AgencyView agencyView = new AgencyView(agencyService);
+
+        System.out.println("Agency Management Menu:");
+        System.out.println("1. Create Agency");
+        System.out.println("2. Get Agency By code");
+        System.out.println("3. Delete Agency");
+        System.out.println("4. Get All agencies");
+        System.out.println("5. Update agency");
+        System.out.println("6. Get agency by address");
+        System.out.println("7. Get agency by employee");
+        System.out.println("8. Back to Main menu");
+        System.out.print("Enter your choice: ");
+
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        switch (choice) {
+            case 1:
+                agencyView.createAgency();
+            case 8:
+                return;
+            default:
+                System.out.println("Invalid choice. Please select a valid option.");
+                break;
         }
     }
 }

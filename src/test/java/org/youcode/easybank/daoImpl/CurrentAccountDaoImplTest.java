@@ -26,6 +26,8 @@ public class CurrentAccountDaoImplTest {
 
     private CurrentAccountDaoImpl currentAccountDao;
 
+    private AgencyDaoImpl agencyDao;
+
     private Employee employee;
 
     private Client client;
@@ -47,11 +49,15 @@ public class CurrentAccountDaoImplTest {
 
         currentAccountDao = new CurrentAccountDaoImpl(testConnection);
 
+        agencyDao = new AgencyDaoImpl(testConnection);
+
         agency = new Agency(
                 "YouCode",
                 "test address",
                 "05248137133"
         );
+
+        agencyDao.create(agency);
 
         employee = new Employee(
                 "Aymen",

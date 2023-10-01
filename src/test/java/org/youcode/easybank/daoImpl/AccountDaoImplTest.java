@@ -3,17 +3,12 @@ package org.youcode.easybank.daoImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.youcode.easybank.dao.daoImpl.AccountDaoImpl;
-import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
-import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
-import org.youcode.easybank.dao.daoImpl.OperationDaoImpl;
+import org.youcode.easybank.dao.daoImpl.*;
 import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.*;
 import org.youcode.easybank.enums.OPERATION;
 import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
-import org.youcode.easybank.exceptions.ClientException;
-import org.youcode.easybank.exceptions.EmployeeException;
 import org.youcode.easybank.exceptions.OperationException;
 
 import java.sql.Connection;
@@ -32,6 +27,8 @@ public class AccountDaoImplTest {
     private AccountDaoImpl accountDao;
 
     private OperationDaoImpl operationDao;
+
+    private AgencyDaoImpl agencyDao;
 
     private Employee employee;
 
@@ -57,11 +54,15 @@ public class AccountDaoImplTest {
 
         operationDao = new OperationDaoImpl(testConnection);
 
+        agencyDao = new AgencyDaoImpl(testConnection);
+
         agency = new Agency(
                 "YouCode",
                 "test address",
                 "05248137133"
         );
+
+        agencyDao.create(agency);
 
         employee = new Employee(
                 "Aymen",

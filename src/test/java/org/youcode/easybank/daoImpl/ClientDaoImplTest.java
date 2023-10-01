@@ -3,6 +3,7 @@ package org.youcode.easybank.daoImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.youcode.easybank.dao.daoImpl.AgencyDaoImpl;
 import org.youcode.easybank.dao.daoImpl.ClientDaoImpl;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
@@ -24,6 +25,8 @@ public class ClientDaoImplTest {
 
     private EmployeeDaoImpl employeeDao;
 
+    private AgencyDaoImpl agencyDao;
+
     private int testCode;
 
     private Employee employee;
@@ -39,11 +42,15 @@ public class ClientDaoImplTest {
 
         employeeDao = new EmployeeDaoImpl(testConnection);
 
+        agencyDao = new AgencyDaoImpl(testConnection);
+
         agency = new Agency(
                 "YouCode",
                 "test address",
                 "05248137133"
         );
+
+        agencyDao.create(agency);
 
         employee = new Employee(
                 "Aymen",
@@ -82,7 +89,7 @@ public class ClientDaoImplTest {
     }
 
     @Test
-    public void testCreate() throws ClientException, EmployeeException {
+    public void testCreate() {
 
         Client client = new Client(
                 "Abdelali",

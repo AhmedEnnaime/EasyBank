@@ -1,7 +1,10 @@
 package org.youcode.easybank.services;
 
+import org.youcode.easybank.dao.AgencyDao;
 import org.youcode.easybank.dao.EmployeeDao;
+import org.youcode.easybank.dao.daoImpl.AgencyDaoImpl;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
+import org.youcode.easybank.entities.Agency;
 import org.youcode.easybank.entities.Employee;
 import org.youcode.easybank.exceptions.EmployeeException;
 
@@ -41,6 +44,9 @@ public class EmployeeService {
             System.out.println("Enter email: ");
             String email = sc.nextLine();
 
+            System.out.println("Enter agency code: ");
+            Integer agency_code = sc.nextInt();
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             try {
@@ -54,7 +60,10 @@ public class EmployeeService {
                     continue;
                 }
 
-                Employee newEmployee = new Employee(firstName, lastName, birthdate, phone, address, recruitmentDate, email);
+                AgencyDao agencyDao = new AgencyDaoImpl();
+                Optional<Agency> retrievedAgency = agencyDao.findByID(agency_code);
+
+                Employee newEmployee = new Employee(firstName, lastName, birthdate, phone, address, recruitmentDate, email, retrievedAgency.get());
                 EmployeeDao dao = new EmployeeDaoImpl();
 
                 dao.create(newEmployee);

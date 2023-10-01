@@ -1,9 +1,6 @@
 package org.youcode.easybank.services;
 
-import org.youcode.easybank.dao.AccountDao;
-import org.youcode.easybank.dao.ClientDao;
-import org.youcode.easybank.dao.CurrentAccountDao;
-import org.youcode.easybank.dao.SavingsAccountDao;
+import org.youcode.easybank.dao.*;
 import org.youcode.easybank.dao.daoImpl.*;
 import org.youcode.easybank.entities.*;
 import org.youcode.easybank.enums.STATUS;
@@ -59,8 +56,13 @@ public class AccountService {
                             double balance = sc.nextDouble();
                             System.out.println("Enter the interest rate: ");
                             double interestRate = sc.nextDouble();
+                            System.out.println("Enter agency code: ");
+                            Integer agency_code = sc.nextInt();
                             sc.nextLine();
-                            Account account = new Account(balance, retrievedEmployee.get(), retrievedClient.get());
+
+                            AgencyDao agencyDao = new AgencyDaoImpl();
+                            Optional<Agency> retrievedAgency = agencyDao.findByID(agency_code);
+                            Account account = new Account(balance, retrievedEmployee.get(), retrievedClient.get(), retrievedAgency.get());
 
                             Optional<Account> createdAccount = accountDao.create(account);
                             if (createdAccount.isPresent()) {
@@ -75,8 +77,12 @@ public class AccountService {
                             double balance = sc.nextDouble();
                             System.out.println("Enter the overdraft : ");
                             double overdraft = sc.nextDouble();
+                            System.out.println("Enter agency code: ");
+                            Integer agency_code = sc.nextInt();
                             sc.nextLine();
-                            Account account = new Account(balance, retrievedEmployee.get(), retrievedClient.get());
+                            AgencyDao agencyDao = new AgencyDaoImpl();
+                            Optional<Agency> retrievedAgency = agencyDao.findByID(agency_code);
+                            Account account = new Account(balance, retrievedEmployee.get(), retrievedClient.get(), retrievedAgency.get());
 
                             try {
                                 Optional<Account> createdAccount = accountDao.create(account);

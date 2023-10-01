@@ -3,6 +3,7 @@ package org.youcode.easybank.daoImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.youcode.easybank.dao.daoImpl.AgencyDaoImpl;
 import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.Agency;
@@ -18,6 +19,8 @@ import java.util.Optional;
 public class EmployeeDaoImplTest {
     private EmployeeDaoImpl employeeDao;
 
+    private AgencyDaoImpl agencyDao;
+
     private Agency agency;
 
     private int testMatricule;
@@ -27,11 +30,15 @@ public class EmployeeDaoImplTest {
 
         employeeDao = new EmployeeDaoImpl(testConnection);
 
+        agencyDao = new AgencyDaoImpl(testConnection);
+
         agency = new Agency(
                 "YouCode",
                 "test address",
                 "05248137133"
         );
+
+        agencyDao.create(agency);
 
         Employee employee = new Employee(
                 "Mousta",
