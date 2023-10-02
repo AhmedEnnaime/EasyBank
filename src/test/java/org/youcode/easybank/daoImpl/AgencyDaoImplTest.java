@@ -94,6 +94,25 @@ public class AgencyDaoImplTest {
         assertFalse(deletedAgency.isPresent());
     }
 
+    @Test
+    public void testUpdate() {
+        Agency updatedAgency = new Agency(
+                "updated name",
+                "updated address",
+                "0524993432"
+        );
+
+        Optional<Agency> optionalAgency = agencyDao.update(agency_code, updatedAgency);
+        assertTrue(optionalAgency.isPresent());
+
+        Optional<Agency> retrievedAgency = agencyDao.findByID(agency_code);
+        assertTrue(retrievedAgency.isPresent());
+
+        assertEquals(updatedAgency.get_name(), retrievedAgency.get().get_name());
+        assertEquals(updatedAgency.get_address(), retrievedAgency.get().get_address());
+        assertEquals(updatedAgency.get_phone(), retrievedAgency.get().get_phone());
+    }
+
     @AfterEach
     public void tearDown() {
         agencyDao.deleteAll();

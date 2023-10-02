@@ -40,4 +40,14 @@ public class AgencyService {
     public boolean deleteAgencyByCode(Integer code) {
         return agencyDao.delete(code);
     }
+
+    public boolean updateAgency(Integer code, Agency agency) {
+        Optional<Agency> retrievedAgency = agencyDao.findByID(code);
+        if (retrievedAgency.isPresent()) {
+            Optional<Agency> updatedAgency = agencyDao.update(code, agency);
+            return updatedAgency.isPresent();
+        }else {
+            return false;
+        }
+    }
 }

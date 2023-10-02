@@ -5,6 +5,7 @@ import org.youcode.easybank.db.DBConnection;
 import org.youcode.easybank.entities.Agency;
 import org.youcode.easybank.exceptions.AccountException;
 import org.youcode.easybank.exceptions.AgencyException;
+import org.youcode.easybank.exceptions.ClientException;
 
 import java.sql.*;
 import java.util.List;
@@ -55,7 +56,26 @@ public class AgencyDaoImpl implements AgencyDao {
 
     @Override
     public Optional<Agency> update(Integer id, Agency agency) {
-        return Optional.empty();
+        String updateSQL = "UPDATE agencies " +  "SET name = ?, address = ?, phone = ? " + "WHERE code = ?";
+
+        try(PreparedStatement ps = conn.prepareStatement(updateSQL)) {
+            ps.setString(1, agency.get_name());
+            ps.setString(2, agency.get_address());
+            ps.setString(3, agency.get_phone());
+            ps.setInt(1, id);
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new AgencyException("Updating agency failed, no rows affected.");
+            }
+
+            return Optional.of(agency);
+        }catch (SQLException | AgencyException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+
     }
 
     @Override
