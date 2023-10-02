@@ -55,4 +55,8 @@ public class AgencyService {
     public List<Agency> getAllAgencies() {
         return agencyDao.getAll();
     }
+
+    public List<Agency> getAgenciesByAddress(String address) {
+        return agencyDao.findByAddress(address);
+    }
 }

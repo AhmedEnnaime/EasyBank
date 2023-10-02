@@ -132,6 +132,23 @@ public class AgencyDaoImplTest {
         assertTrue(allAgencies.stream().anyMatch(e -> e.get_name().equals("Trionix")));
     }
 
+    @Test
+    public void testGetByAddress() {
+        Agency agency1 = new Agency(
+                "Zerpin",
+                "safi",
+                "0524712132"
+        );
+
+        Optional<Agency> createdAgency = agencyDao.create(agency1);
+        assertTrue(createdAgency.isPresent());
+
+        List<Agency> agencies = agencyDao.findByAddress("safi");
+        assertNotNull(agencies);
+        assertFalse(agencies.isEmpty());
+
+    }
+
     @AfterEach
     public void tearDown() {
         agencyDao.deleteAll();

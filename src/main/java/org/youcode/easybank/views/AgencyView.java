@@ -132,4 +132,25 @@ public class AgencyView {
         }
     }
 
+    public void getAgenciesByAddress() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter agency's address ");
+        String address = sc.nextLine();
+
+        List<Agency> agencies = agencyService.getAgenciesByAddress(address);
+        if (agencies.isEmpty()) {
+            System.out.println("No agencies found with that address " + address);
+        }else {
+            System.out.println("List of Agencies:");
+            for (Agency agency : agencies) {
+                System.out.println("Code: " + agency.get_code());
+                System.out.println("Name: " + agency.get_name());
+                System.out.println("Address: " + agency.get_address());
+                System.out.println("Phone Number: " + agency.get_phone());
+                System.out.println("-----------------------------");
+            }
+        }
+    }
+
 }

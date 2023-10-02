@@ -157,4 +157,28 @@ public class AgencyDaoImpl implements AgencyDao {
         }
         return deleted;
     }
+
+    @Override
+    public List<Agency> findByAddress(String address) {
+        List<Agency> allAgencies = new ArrayList<>();
+        String selectSQL = "SELECT * FROM agencies WHERE address = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(selectSQL)){
+            ps.setString(1, address);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Agency agency = new Agency();
+
+                agency.set_code(rs.getInt("code"));
+                agency.set_address(rs.getString("address"));
+                agency.set_phone(rs.getString("phone"));
+
+                allAgencies.add(agency);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allAgencies;
+    }
 }
