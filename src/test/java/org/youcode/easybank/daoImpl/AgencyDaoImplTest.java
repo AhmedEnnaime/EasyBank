@@ -4,10 +4,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.youcode.easybank.dao.daoImpl.AgencyDaoImpl;
+import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.Agency;
+import org.youcode.easybank.entities.Employee;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AgencyDaoImplTest {
 
     private AgencyDaoImpl agencyDao;
+
+    private EmployeeDaoImpl employeeDao;
 
     private Agency agency;
 
@@ -26,6 +31,8 @@ public class AgencyDaoImplTest {
         Connection testConnection = DBTestConnection.establishTestConnection();
 
         agencyDao = new AgencyDaoImpl(testConnection);
+
+        employeeDao = new EmployeeDaoImpl(testConnection);
 
         agency = new Agency(
                 "Trionix",
@@ -147,6 +154,25 @@ public class AgencyDaoImplTest {
         assertNotNull(agencies);
         assertFalse(agencies.isEmpty());
 
+    }
+
+    public void testGetAgencyByEmployee() {
+        Employee employee = new Employee(
+                "Mousta",
+                "Delegue",
+                LocalDate.of(2001, 11, 17),
+                "06473347924",
+                "Jrayfat",
+                LocalDate.of(2023, 9, 21),
+                "mousta@gmail.com",
+                agency
+        );
+
+        Optional<Employee> createdEmployee = employeeDao.create(employee);
+        assertTrue(createdEmployee.isPresent());
+
+        Agency retrievedAgency = agencyDao.findAgencyByEmployee(employee);
+        assertNotNull(retrievedAgency);
     }
 
     @AfterEach

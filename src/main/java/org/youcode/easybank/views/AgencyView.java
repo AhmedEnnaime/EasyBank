@@ -1,7 +1,10 @@
 package org.youcode.easybank.views;
 
+import org.youcode.easybank.dao.EmployeeDao;
 import org.youcode.easybank.dao.daoImpl.AgencyDaoImpl;
+import org.youcode.easybank.dao.daoImpl.EmployeeDaoImpl;
 import org.youcode.easybank.entities.Agency;
+import org.youcode.easybank.entities.Employee;
 import org.youcode.easybank.services.AgencyService;
 
 import java.util.List;
@@ -47,8 +50,13 @@ public class AgencyView {
             }
 
             int code = Integer.parseInt(codeInput);
-
-            if (agencyService.getAgencyByID(code)) {
+            Agency agency = agencyService.getAgencyByID(code);
+            if (agency != null) {
+                System.out.println("Code: " + agency.get_code());
+                System.out.println("Name: " + agency.get_name());
+                System.out.println("Address: " + agency.get_address());
+                System.out.println("Phone Number: " + agency.get_phone());
+                System.out.println("-----------------------------");
                 break;
             }else {
                 System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
@@ -70,6 +78,7 @@ public class AgencyView {
             int code = Integer.parseInt(codeInput);
 
             if (agencyService.deleteAgencyByCode(code)) {
+                System.out.println("Agency deleted successfully");
                 break;
             }else {
                 System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
@@ -151,6 +160,38 @@ public class AgencyView {
                 System.out.println("-----------------------------");
             }
         }
+    }
+
+    public void getAgencyByEmployee() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Enter employee's matricule ");
+            String matriculeInput = sc.nextLine();
+
+            if (matriculeInput.equalsIgnoreCase("q")) {
+                break;
+            }
+
+            EmployeeDao employeeDao = new EmployeeDaoImpl();
+
+            int matricule = Integer.parseInt(matriculeInput);
+            Optional<Employee> retrievedEmployee = employeeDao.findByID(matricule);
+
+            if (retrievedEmployee.isPresent()) {
+                Agency foundAgency = agencyService.getAgencyByEmployee(retrievedEmployee.get());
+                if (foundAgency != null) {
+                    System.out.println("Code: " + foundAgency.get_code());
+                    System.out.println("Name: " + foundAgency.get_name());
+                    System.out.println("Address: " + foundAgency.get_address());
+                    System.out.println("Phone Number: " + foundAgency.get_phone());
+                    System.out.println("-----------------------------");
+                }
+            }else {
+                System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
+            }
+        }
+
     }
 
 }

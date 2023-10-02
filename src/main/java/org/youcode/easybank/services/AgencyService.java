@@ -2,6 +2,7 @@ package org.youcode.easybank.services;
 
 import org.youcode.easybank.dao.daoImpl.AgencyDaoImpl;
 import org.youcode.easybank.entities.Agency;
+import org.youcode.easybank.entities.Employee;
 import org.youcode.easybank.exceptions.AgencyException;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class AgencyService {
         }
     }
 
-    public boolean getAgencyByID(Integer code) {
+    public Agency getAgencyByID(Integer code) {
         Optional<Agency> retrievedAgency = agencyDao.findByID(code);
         if (retrievedAgency.isPresent()) {
             Agency existingAgency = retrievedAgency.get();
@@ -31,10 +32,10 @@ public class AgencyService {
             System.out.println("Name: " + existingAgency.get_name());
             System.out.println("Description: " + existingAgency.get_address());
             System.out.println("Phone Number: " + existingAgency.get_phone());
-            return true;
+            return existingAgency;
         }else {
             System.out.println("Mission not found with code: " + code);
-            return false;
+            return null;
         }
     }
 
@@ -58,5 +59,9 @@ public class AgencyService {
 
     public List<Agency> getAgenciesByAddress(String address) {
         return agencyDao.findByAddress(address);
+    }
+
+    public Agency getAgencyByEmployee(Employee employee) {
+        return agencyDao.findAgencyByEmployee(employee);
     }
 }
