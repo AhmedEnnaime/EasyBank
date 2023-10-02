@@ -36,4 +36,8 @@ public class AgencyService {
             return false;
         }
     }
+
+    public boolean deleteAgencyByCode(Integer code) {
+        return agencyDao.delete(code);
+    }
 }

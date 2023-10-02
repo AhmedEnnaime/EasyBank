@@ -27,7 +27,7 @@ public class AgencyDaoImpl implements AgencyDao {
     public Optional<Agency> create(Agency agency) {
         String insertSQL = "INSERT INTO agencies (name, address, phone) VALUES (?, ?, ?) RETURNING code";
 
-        try(PreparedStatement ps = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, agency.get_name());
             ps.setString(2, agency.get_address());
             ps.setString(3, agency.get_phone());
@@ -38,16 +38,16 @@ public class AgencyDaoImpl implements AgencyDao {
                 throw new AgencyException("Creating agency failed, no rows affected.");
             }
 
-            try(ResultSet generatedKeys = ps.getGeneratedKeys()){
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int code = generatedKeys.getInt(1);
                     agency.set_code(code);
-                }else {
+                } else {
                     throw new AgencyException("Creating agency failed, no ID obtained.");
                 }
             }
             return Optional.of(agency);
-        }catch (SQLException | AgencyException e) {
+        } catch (SQLException | AgencyException e) {
             e.printStackTrace();
             return Optional.empty();
         }
@@ -91,7 +91,17 @@ public class AgencyDaoImpl implements AgencyDao {
 
     @Override
     public boolean delete(Integer id) {
-        return false;
+        String deleteSQL = "DELETE FROM agencies WHERE code = ?";
+        try(PreparedStatement ps = conn.prepareStatement(deleteSQL)) {
+            ps.setInt(1, id);
+            int affectedRows = ps.executeUpdate();
+
+            return affectedRows > 0;
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

@@ -48,4 +48,25 @@ public class AgencyView {
             }
         }
     }
+
+    public void deleteAgencyByID() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Enter agency's code you want to delete : ");
+            String codeInput = sc.nextLine();
+
+            if (codeInput.equalsIgnoreCase("q")) {
+                break;
+            }
+
+            int code = Integer.parseInt(codeInput);
+
+            if (agencyService.deleteAgencyByCode(code)) {
+                break;
+            }else {
+                System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
+            }
+        }
+    }
 }

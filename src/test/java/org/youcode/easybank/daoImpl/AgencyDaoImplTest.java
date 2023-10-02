@@ -76,6 +76,24 @@ public class AgencyDaoImplTest {
 
     }
 
+    @Test
+    public void testDelete() {
+        Agency agency1 = new Agency(
+                "Zerpin",
+                "safi",
+                "052471236132"
+        );
+
+        Optional<Agency> createdAgency = agencyDao.create(agency1);
+        assertTrue(createdAgency.isPresent());
+
+        boolean isDeleted = agencyDao.delete(createdAgency.get().get_code());
+        assertTrue(isDeleted);
+
+        Optional<Agency> deletedAgency = agencyDao.findByID(createdAgency.get().get_code());
+        assertFalse(deletedAgency.isPresent());
+    }
+
     @AfterEach
     public void tearDown() {
         agencyDao.deleteAll();
