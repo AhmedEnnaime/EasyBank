@@ -174,7 +174,7 @@ public class AccountDaoImplTest {
     }
 
     @Test
-    public void testUpdate() throws AccountException {
+    public void testUpdate() {
 
         Account account = new Account(
                 1000,

@@ -4,6 +4,7 @@ import org.youcode.easybank.dao.daoImpl.AgencyDaoImpl;
 import org.youcode.easybank.entities.Agency;
 import org.youcode.easybank.exceptions.AgencyException;
 
+import java.util.List;
 import java.util.Optional;
 
 public class AgencyService {
@@ -49,5 +50,9 @@ public class AgencyService {
         }else {
             return false;
         }
+    }
+
+    public List<Agency> getAllAgencies() {
+        return agencyDao.getAll();
     }
 }

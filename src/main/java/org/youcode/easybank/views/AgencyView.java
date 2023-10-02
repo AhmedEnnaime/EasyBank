@@ -4,6 +4,7 @@ import org.youcode.easybank.dao.daoImpl.AgencyDaoImpl;
 import org.youcode.easybank.entities.Agency;
 import org.youcode.easybank.services.AgencyService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -113,4 +114,22 @@ public class AgencyView {
 
         }
     }
+
+    public void getAllAgencies() {
+        List<Agency> agencies = agencyService.getAllAgencies();
+
+        if (agencies.isEmpty()) {
+            System.out.println("No agencies found.");
+        } else {
+            System.out.println("List of Agencies:");
+            for (Agency agency : agencies) {
+                System.out.println("Code: " + agency.get_code());
+                System.out.println("Name: " + agency.get_name());
+                System.out.println("Address: " + agency.get_address());
+                System.out.println("Phone Number: " + agency.get_phone());
+                System.out.println("-----------------------------");
+            }
+        }
+    }
+
 }

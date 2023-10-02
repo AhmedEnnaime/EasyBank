@@ -8,6 +8,7 @@ import org.youcode.easybank.exceptions.AgencyException;
 import org.youcode.easybank.exceptions.ClientException;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,7 +107,24 @@ public class AgencyDaoImpl implements AgencyDao {
 
     @Override
     public List<Agency> getAll() {
-        return null;
+        List<Agency> allAgencies = new ArrayList<>();
+        String selectSQL = "SELECT * FROM agencies";
+        try (PreparedStatement ps = conn.prepareStatement(selectSQL)){
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Agency agency = new Agency();
+                agency.set_code(rs.getInt("code"));
+                agency.set_name(rs.getString("name"));
+                agency.set_address(rs.getString("address"));
+                agency.set_phone(rs.getString("phone"));
+
+                allAgencies.add(agency);
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allAgencies;
     }
 
     @Override

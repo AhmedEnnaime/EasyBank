@@ -8,6 +8,7 @@ import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.Agency;
 
 import java.sql.Connection;
+import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -120,6 +121,15 @@ public class AgencyDaoImplTest {
         assertEquals(updatedAgency.get_name(), retrievedAgency.get().get_name());
         assertEquals(updatedAgency.get_address(), retrievedAgency.get().get_address());
         assertEquals(updatedAgency.get_phone(), retrievedAgency.get().get_phone());
+    }
+
+    @Test
+    public void testGetAll() {
+        List<Agency> allAgencies = agencyDao.getAll();
+        assertNotNull(allAgencies);
+        assertFalse(allAgencies.isEmpty());
+
+        assertTrue(allAgencies.stream().anyMatch(e -> e.get_name().equals("Trionix")));
     }
 
     @AfterEach
