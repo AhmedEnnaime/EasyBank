@@ -29,7 +29,7 @@ public class AgencyDaoImplTest {
         agency = new Agency(
                 "Trionix",
                 "biyada",
-                "0728673822442"
+                "072867442"
         );
 
         agencyDao.create(agency);
@@ -49,7 +49,7 @@ public class AgencyDaoImplTest {
         Agency agency1 = new Agency(
                 "Zerpin",
                 "safi",
-                "052471236132"
+                "052471232"
         );
 
         Optional<Agency> createdAgency = agencyDao.create(agency1);
@@ -81,7 +81,7 @@ public class AgencyDaoImplTest {
         Agency agency1 = new Agency(
                 "Zerpin",
                 "safi",
-                "052471236132"
+                "0524712332"
         );
 
         Optional<Agency> createdAgency = agencyDao.create(agency1);
@@ -96,16 +96,25 @@ public class AgencyDaoImplTest {
 
     @Test
     public void testUpdate() {
+        Agency agency1 = new Agency(
+                "Zerpin",
+                "safi",
+                "0524712132"
+        );
+
+        Optional<Agency> createdAgency = agencyDao.create(agency1);
+        assertTrue(createdAgency.isPresent());
+
         Agency updatedAgency = new Agency(
                 "updated name",
                 "updated address",
-                "0524993432"
+                "052499432"
         );
 
-        Optional<Agency> optionalAgency = agencyDao.update(agency_code, updatedAgency);
+        Optional<Agency> optionalAgency = agencyDao.update(createdAgency.get().get_code(), updatedAgency);
         assertTrue(optionalAgency.isPresent());
 
-        Optional<Agency> retrievedAgency = agencyDao.findByID(agency_code);
+        Optional<Agency> retrievedAgency = agencyDao.findByID(createdAgency.get().get_code());
         assertTrue(retrievedAgency.isPresent());
 
         assertEquals(updatedAgency.get_name(), retrievedAgency.get().get_name());

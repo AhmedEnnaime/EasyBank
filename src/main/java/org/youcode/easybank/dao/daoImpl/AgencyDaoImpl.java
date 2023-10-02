@@ -62,7 +62,7 @@ public class AgencyDaoImpl implements AgencyDao {
             ps.setString(1, agency.get_name());
             ps.setString(2, agency.get_address());
             ps.setString(3, agency.get_phone());
-            ps.setInt(1, id);
+            ps.setInt(4, id);
 
             int affectedRows = ps.executeUpdate();
 
