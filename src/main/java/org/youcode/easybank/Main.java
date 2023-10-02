@@ -346,31 +346,33 @@ public class Main {
 
 
     private static void agencyManagementMenu() {
-        Scanner sc = new Scanner(System.in);
-        AgencyView agencyView = new AgencyView(agencyService);
-
-        System.out.println("Agency Management Menu:");
-        System.out.println("1. Create Agency");
-        System.out.println("2. Get Agency By code");
-        System.out.println("3. Delete Agency");
-        System.out.println("4. Get All agencies");
-        System.out.println("5. Update agency");
-        System.out.println("6. Get agency by address");
-        System.out.println("7. Get agency by employee");
-        System.out.println("8. Back to Main menu");
-        System.out.print("Enter your choice: ");
-
-        int choice = sc.nextInt();
-        sc.nextLine();
-
-        switch (choice) {
-            case 1:
-                agencyView.createAgency();
-            case 8:
-                return;
-            default:
-                System.out.println("Invalid choice. Please select a valid option.");
-                break;
-        }
+//        Scanner sc = new Scanner(System.in);
+//        AgencyView agencyView = new AgencyView(agencyService);
+//
+//        System.out.println("Agency Management Menu:");
+//        System.out.println("1. Create Agency");
+//        System.out.println("2. Get Agency By code");
+//        System.out.println("3. Delete Agency");
+//        System.out.println("4. Get All agencies");
+//        System.out.println("5. Update agency");
+//        System.out.println("6. Get agency by address");
+//        System.out.println("7. Get agency by employee");
+//        System.out.println("8. Back to Main menu");
+//        System.out.print("Enter your choice: ");
+//
+//        int choice = sc.nextInt();
+//        sc.nextLine();
+//
+//        switch (choice) {
+//            case 1:
+//                agencyView.createAgency();
+//            case 2:
+//                agencyView.getAgencyByID();
+//            case 8:
+//                return;
+//            default:
+//                System.out.println("Invalid choice. Please select a valid option.");
+//                break;
+//        }
     }
 }

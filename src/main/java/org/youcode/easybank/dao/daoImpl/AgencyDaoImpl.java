@@ -60,7 +60,28 @@ public class AgencyDaoImpl implements AgencyDao {
 
     @Override
     public Optional<Agency> findByID(Integer id) {
-        return Optional.empty();
+        String selectSQL = "SELECT * FROM agencies WHERE code = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(selectSQL)){
+            ps.setInt(1, id);
+
+            try(ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Agency agency = new Agency();
+                    agency.set_code(rs.getInt("code"));
+                    agency.set_name(rs.getString("name"));
+                    agency.set_address(rs.getString("address"));
+                    agency.set_phone(rs.getString("phone"));
+
+                    return Optional.of(agency);
+                }else {
+                    return Optional.empty();
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -75,6 +96,17 @@ public class AgencyDaoImpl implements AgencyDao {
 
     @Override
     public boolean deleteAll() {
-        return false;
+        boolean deleted = false;
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM clients");
+            int rows = ps.executeUpdate();
+
+            if (rows > 0) {
+                deleted = true;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return deleted;
     }
 }

@@ -27,4 +27,25 @@ public class AgencyView {
         Agency agency = new Agency(name, address, phone);
         agencyService.createAgency(agency);
     }
+
+    public void getAgencyByID() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Enter agency's code : ");
+            String codeInput = sc.nextLine();
+
+            if (codeInput.equalsIgnoreCase("q")) {
+                break;
+            }
+
+            int code = Integer.parseInt(codeInput);
+
+            if (agencyService.getAgencyByID(code)) {
+                break;
+            }else {
+                System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
+            }
+        }
+    }
 }

@@ -162,7 +162,7 @@ Credit "*" *-- "1" Client
 Simulation "1" *-- "1" Credit
 Agency -- Transfer : "1" *-- "0..*" Employee
 Employee -- Transfer : "1" *-- "0..*" Agency
-Payment "*" -- "1" Employee
+Payment "*" -- "1" Operation
 Payment "1" -- "1" Account: from
 Payment "1" -- "1" Account: to
 @enduml

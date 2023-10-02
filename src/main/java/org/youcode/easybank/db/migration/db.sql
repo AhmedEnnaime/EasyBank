@@ -111,3 +111,14 @@ CREATE TABLE credits (
     FOREIGN KEY (simulation_id) REFERENCES simulations(id)
 );
 
+CREATE TABLE payments (
+    id SERIAL PRIMARY KEY,
+    transaction_time TIMESTAMP NOT NULL,
+    from_account INT NOT NULL,
+    to_account INT NOT NULL,
+    operationNumber INT NOT NULL,
+    FOREIGN KEY (from_account) REFERENCES accounts(accountNumber),
+    FOREIGN KEY (to_account) REFERENCES accounts(accountNumber),
+    FOREIGN KEY (operationNumber) REFERENCES operations(operationNumber)
+);
+
