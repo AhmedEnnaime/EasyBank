@@ -213,6 +213,7 @@ public class ClientDaoImplTest {
 
     @AfterEach
     public void tearDown() {
+        agencyDao.deleteAll();
         clientDao.deleteAll();
         employeeDao.deleteAll();
     }

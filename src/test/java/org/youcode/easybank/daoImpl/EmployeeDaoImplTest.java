@@ -208,6 +208,35 @@ public class EmployeeDaoImplTest {
     }
 
     @Test
+    public void testChangeAgency() {
+        Agency newAgency = new Agency(
+                "NewAgency",
+                "new agency address",
+                "1234567890"
+        );
+
+        agencyDao.create(newAgency);
+
+        Employee employee = new Employee(
+                "EmployeeName",
+                "EmployeeLastName",
+                LocalDate.of(1990, 1, 15),
+                "1234567890",
+                "123 Main St",
+                LocalDate.of(2023, 9, 21),
+                "employee@example.com",
+                agency
+        );
+
+        Optional<Employee> createdEmployee = employeeDao.create(employee);
+        assertTrue(createdEmployee.isPresent());
+
+        Optional<Employee> updatedEmployeeOptional = employeeDao.changeAgency(createdEmployee.get(), newAgency.get_code());
+        assertTrue(updatedEmployeeOptional.isPresent());
+    }
+
+
+    @Test
     public void testValidateMatricule() throws EmployeeException {
         boolean isValid = employeeDao.validateMatricule(testMatricule);
 
@@ -218,6 +247,7 @@ public class EmployeeDaoImplTest {
     @AfterEach
     public void tearDown() {
         employeeDao.deleteAll();
+        agencyDao.deleteAll();
     }
 
 }

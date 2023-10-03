@@ -238,6 +238,7 @@ public class MissionAssignmentDaoImplTest {
 
     @AfterEach
     public void tearDown() {
+        agencyDao.deleteAll();
         missionDao.deleteAll();
         employeeDao.deleteAll();
         missionAssignmentDao.deleteAll();

@@ -377,4 +377,23 @@ public class Main {
 //                break;
 //        }
     }
+
+    public static void transferEmployeeAgencyManagement() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Transfer Employee Agency Management Menu:");
+            System.out.println("1. Transfer Employee to new Agency");
+            System.out.println("2. Display historical of employee's transfers between agencies");
+            System.out.println("3. Back to Main Menu");
+            System.out.print("Enter your choice: ");
+
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+            }
+        }
+    }
 }

@@ -18,4 +18,11 @@ public class Transfer {
     private Employee _employee;
 
     private Agency _agency;
+
+    public Transfer(LocalDate transfer_date, Employee employee, Agency agency) {
+        this._transfer_date = transfer_date;
+        this._employee = employee;
+        this._agency = agency;
+    }
+
 }

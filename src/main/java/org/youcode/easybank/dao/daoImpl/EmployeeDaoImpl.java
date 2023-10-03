@@ -234,4 +234,25 @@ public class EmployeeDaoImpl implements EmployeeDao {
         }
     }
 
+    @Override
+    public Optional<Employee> changeAgency(Employee employee, Integer agency_code) {
+        String updateSQL = "UPDATE employees SET agency_code = ? WHERE matricule = ?";
+        try (PreparedStatement ps = conn.prepareStatement(updateSQL)){
+            ps.setInt(1, agency_code);
+            ps.setInt(2, employee.get_matricule());
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new Exception("Updating employee failed, no rows affected.");
+            }
+
+            return Optional.of(employee);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+
+    }
+
 }

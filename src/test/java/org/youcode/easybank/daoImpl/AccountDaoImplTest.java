@@ -329,6 +329,7 @@ public class AccountDaoImplTest {
 
     @AfterEach
     public void tearDown() {
+        agencyDao.deleteAll();
         accountDao.deleteAll();
         clientDao.deleteAll();
         employeeDao.deleteAll();

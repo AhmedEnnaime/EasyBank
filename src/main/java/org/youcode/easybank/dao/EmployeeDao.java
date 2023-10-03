@@ -11,4 +11,6 @@ public interface EmployeeDao extends IData<Employee, Integer>{
     public List<Employee> findByAttribute(String attr) throws EmployeeException;
 
     public boolean validateMatricule(int matricule) throws EmployeeException;
+
+    public Optional<Employee> changeAgency(Employee employee, Integer agency_code);
 }
