@@ -6,6 +6,7 @@ import org.youcode.easybank.entities.Agency;
 import org.youcode.easybank.entities.Employee;
 import org.youcode.easybank.entities.Transfer;
 
+import java.util.List;
 import java.util.Optional;
 
 public class TransferService {
@@ -27,5 +28,9 @@ public class TransferService {
         }else {
             return false;
         }
+    }
+
+    public List<Transfer> getEmployeeHistoricalTransfers(Employee employee) {
+        return transferDao.getEmployeeHistoricalTransfers(employee);
     }
 }

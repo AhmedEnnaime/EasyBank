@@ -9,6 +9,7 @@ import org.youcode.easybank.services.TransferService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -74,5 +75,35 @@ public class TransferView {
 
         }
 
+    }
+
+    public void getEmployeeHistoricalTransfers() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Enter employee's matricule you want to transfer : ");
+            String matriculeInput = sc.nextLine();
+
+            if (matriculeInput.equalsIgnoreCase("q")) {
+                break;
+            }
+
+            int matricule = Integer.parseInt(matriculeInput);
+
+            Optional<Employee> retrievedEmployee = employeeDao.findByID(matricule);
+
+            if (retrievedEmployee.isPresent()) {
+                List<Transfer> historicalTransfers = transferService.getEmployeeHistoricalTransfers(retrievedEmployee.get());
+                for (Transfer transfer : historicalTransfers) {
+                    System.out.println("Transfer date : " + transfer.get_transfer_date());
+                    System.out.println("Agency name : " + transfer.get_agency().get_name());
+                    System.out.println("Agency address : " + transfer.get_agency().get_address());
+                    System.out.println("Agency phone : " + transfer.get_agency().get_phone());
+                    break;
+                }
+            }else {
+                System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public class TransferDaoImplTest {
@@ -80,6 +81,36 @@ public class TransferDaoImplTest {
 
         assertNotNull(createdTransfer.get().get_id());
     }
+
+//    @Test
+//    public void testGetEmployeeHistoricalTransfers() {
+//        Agency newAgency = new Agency(
+//                "NewAgency",
+//                "New Agency Address",
+//                "1234567890"
+//        );
+//        agencyDao.create(newAgency);
+//
+//        Transfer transfer = new Transfer(
+//                LocalDate.now(),
+//                employee,
+//                newAgency
+//        );
+//
+//        Optional<Transfer> createdTransfer = transferDao.transferEmployee(transfer);
+//        assertTrue(createdTransfer.isPresent());
+//
+//        System.out.println("employee matricule " + employee.get_matricule());
+//
+//        List<Transfer> historicalTransfers = transferDao.getEmployeeHistoricalTransfers(employee);
+//
+//        assertFalse(historicalTransfers.isEmpty());
+//
+//        Transfer retrievedTransfer = historicalTransfers.get(0);
+//        assertEquals(createdTransfer.get().get_id(), retrievedTransfer.get_id());
+//        assertEquals(createdTransfer.get().get_transfer_date(), retrievedTransfer.get_transfer_date());
+//    }
+
 
     @AfterEach
     public void tearDown() {

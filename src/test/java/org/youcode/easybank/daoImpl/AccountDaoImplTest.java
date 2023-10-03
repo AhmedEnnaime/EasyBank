@@ -147,7 +147,7 @@ public class AccountDaoImplTest {
     }
 
     @Test
-    public void testDelete() throws AccountException {
+    public void testDelete() {
         boolean isDeleted = accountDao.delete(testAccountNumber);
         assertTrue(isDeleted);
 
