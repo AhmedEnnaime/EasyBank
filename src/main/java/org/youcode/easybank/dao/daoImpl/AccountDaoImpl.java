@@ -27,11 +27,12 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Optional<Account> create(Account account) {
-        String insertSQL = "INSERT INTO accounts (balance, clientCode, employeeMatricule) VALUES (?, ?, ?) RETURNING accountNumber";
+        String insertSQL = "INSERT INTO accounts (balance, clientCode, employeeMatricule, agency_code) VALUES (?, ?, ?, ?) RETURNING accountNumber";
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setDouble(1, account.get_balance());
             preparedStatement.setInt(2, account.get_client().get_code());
             preparedStatement.setInt(3, account.get_employee().get_matricule());
+            preparedStatement.setInt(4, account.get_agency().get_code());
 
             int affectedRows = preparedStatement.executeUpdate();
 

@@ -33,6 +33,12 @@ public class Account {
         this._agency = agency;
     }
 
+    public Account(double balance, Employee employee, Client client) {
+        this._balance = balance;
+        this._employee = employee;
+        this._client = client;
+    }
+
     public Account(Account account) {
         this._accountNumber = account.get_accountNumber();
         this._balance = account.get_balance();
