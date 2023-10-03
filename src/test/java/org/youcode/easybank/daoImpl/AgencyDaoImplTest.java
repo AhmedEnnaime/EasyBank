@@ -156,24 +156,34 @@ public class AgencyDaoImplTest {
 
     }
 
-    public void testGetAgencyByEmployee() {
-        Employee employee = new Employee(
-                "Mousta",
-                "Delegue",
-                LocalDate.of(2001, 11, 17),
-                "06473347924",
-                "Jrayfat",
-                LocalDate.of(2023, 9, 21),
-                "mousta@gmail.com",
-                agency
-        );
-
-        Optional<Employee> createdEmployee = employeeDao.create(employee);
-        assertTrue(createdEmployee.isPresent());
-
-        Agency retrievedAgency = agencyDao.findAgencyByEmployee(employee);
-        assertNotNull(retrievedAgency);
-    }
+//    @Test
+//    public void testGetAgencyByEmployee() {
+//        Agency agency1 = new Agency(
+//                "Zerpin",
+//                "safi",
+//                "0524712332"
+//        );
+//
+//        Optional<Agency> createdAgency = agencyDao.create(agency1);
+//        assertTrue(createdAgency.isPresent());
+//
+//        Employee employee = new Employee(
+//                "Mousta",
+//                "Delegue",
+//                LocalDate.of(2001, 11, 17),
+//                "06473347924",
+//                "Jrayfat",
+//                LocalDate.of(2023, 9, 21),
+//                "mousta@gmail.com",
+//                agency1
+//        );
+//
+//        Optional<Employee> createdEmployee = employeeDao.create(employee);
+//        assertTrue(createdEmployee.isPresent());
+//
+//        Agency retrievedAgency = agencyDao.findAgencyByEmployee(employee);
+////        assertNotNull(retrievedAgency);
+//    }
 
     @AfterEach
     public void tearDown() {

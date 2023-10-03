@@ -162,36 +162,36 @@ public class AgencyView {
         }
     }
 
-    public void getAgencyByEmployee() {
-        Scanner sc = new Scanner(System.in);
-
-        while (true) {
-            System.out.println("Enter employee's matricule ");
-            String matriculeInput = sc.nextLine();
-
-            if (matriculeInput.equalsIgnoreCase("q")) {
-                break;
-            }
-
-            EmployeeDao employeeDao = new EmployeeDaoImpl();
-
-            int matricule = Integer.parseInt(matriculeInput);
-            Optional<Employee> retrievedEmployee = employeeDao.findByID(matricule);
-
-            if (retrievedEmployee.isPresent()) {
-                Agency foundAgency = agencyService.getAgencyByEmployee(retrievedEmployee.get());
-                if (foundAgency != null) {
-                    System.out.println("Code: " + foundAgency.get_code());
-                    System.out.println("Name: " + foundAgency.get_name());
-                    System.out.println("Address: " + foundAgency.get_address());
-                    System.out.println("Phone Number: " + foundAgency.get_phone());
-                    System.out.println("-----------------------------");
-                }
-            }else {
-                System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
-            }
-        }
-
-    }
+//    public void getAgencyByEmployee() {
+//        Scanner sc = new Scanner(System.in);
+//
+//        while (true) {
+//            System.out.println("Enter employee's matricule ");
+//            String matriculeInput = sc.nextLine();
+//
+//            if (matriculeInput.equalsIgnoreCase("q")) {
+//                break;
+//            }
+//
+//            EmployeeDao employeeDao = new EmployeeDaoImpl();
+//
+//            int matricule = Integer.parseInt(matriculeInput);
+//            Optional<Employee> retrievedEmployee = employeeDao.findByID(matricule);
+//
+//            if (retrievedEmployee.isPresent()) {
+//                Agency foundAgency = agencyService.getAgencyByEmployee(retrievedEmployee.get());
+//                if (foundAgency != null) {
+//                    System.out.println("Code: " + foundAgency.get_code());
+//                    System.out.println("Name: " + foundAgency.get_name());
+//                    System.out.println("Address: " + foundAgency.get_address());
+//                    System.out.println("Phone Number: " + foundAgency.get_phone());
+//                    System.out.println("-----------------------------");
+//                }
+//            }else {
+//                System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
+//            }
+//        }
+//
+//    }
 
 }

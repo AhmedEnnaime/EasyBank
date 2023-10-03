@@ -183,30 +183,29 @@ public class AgencyDaoImpl implements AgencyDao {
         return allAgencies;
     }
 
-    @Override
-    public Agency findAgencyByEmployee(Employee employee) {
-        String selectSQL = "SELECT * FROM agencies a JOIN employees e ON a.code = e.agency_code WHERE a.code = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(selectSQL)){
-            ps.setInt(1, employee.get_matricule());
-
-            try (ResultSet rs = ps.executeQuery()){
-                if (rs.next()) {
-                    Agency agency = new Agency();
-
-                    agency.set_code(rs.getInt("code"));
-                    agency.set_name(rs.getString("name"));
-                    agency.set_address(rs.getString("address"));
-                    agency.set_phone(rs.getString("phone"));
-
-                    return agency;
-                }else {
-                    return null;
-                }
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    @Override
+//    public Agency findAgencyByEmployee(Employee employee) {
+//        String selectSQL = "SELECT * FROM agencies a JOIN employees e ON a.code = e.agency_code WHERE a.code = ?";
+//
+//        try (PreparedStatement ps = conn.prepareStatement(selectSQL)){
+//            ps.setInt(1, employee.get_matricule());
+//
+//            try (ResultSet rs = ps.executeQuery()){
+//                if (rs.next()) {
+//                    Agency agency = new Agency();
+//
+//                    agency.set_code(rs.getInt("code"));
+//                    agency.set_name(rs.getString("name"));
+//                    agency.set_address(rs.getString("address"));
+//                    agency.set_phone(rs.getString("phone"));
+//
+//                    return agency;
+//                }
+//            }
+//        }catch (SQLException e) {
+//            e.printStackTrace();
+//
+//        }
+//        return null;
+//    }
 }

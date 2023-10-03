@@ -61,7 +61,7 @@ public class AgencyService {
         return agencyDao.findByAddress(address);
     }
 
-    public Agency getAgencyByEmployee(Employee employee) {
-        return agencyDao.findAgencyByEmployee(employee);
-    }
+//    public Agency getAgencyByEmployee(Employee employee) {
+//        return agencyDao.findAgencyByEmployee(employee);
+//    }
 }

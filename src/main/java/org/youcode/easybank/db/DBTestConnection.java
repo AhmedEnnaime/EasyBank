@@ -50,7 +50,8 @@ public class DBTestConnection {
                 + "birthDate DATE,"
                 + "email VARCHAR(255),"
                 + "phone VARCHAR(255),"
-                + "address VARCHAR(255)"
+                + "address VARCHAR(255),"
+                + "agency_code INT"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);
@@ -79,7 +80,8 @@ public class DBTestConnection {
                 + "creationDate DATE DEFAULT CURRENT_DATE,"
                 + "status VARCHAR(255) DEFAULT 'ACTIVE',"
                 + "clientCode INT,"
-                + "employeeMatricule INT"
+                + "employeeMatricule INT,"
+                + "agency_code INT"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);

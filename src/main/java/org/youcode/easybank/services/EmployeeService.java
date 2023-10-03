@@ -205,6 +205,9 @@ public class EmployeeService {
                     System.out.println("Address: " + employee.get_address());
                     System.out.println("Recruitment Date: " + employee.get_recruitmentDate());
                     System.out.println("Email: " + employee.get_email());
+                    System.out.println("Agency name: " + employee.get_agency().get_name());
+                    System.out.println("Agency address: " + employee.get_agency().get_address());
+                    System.out.println("Agency phone: " + employee.get_agency().get_phone());
                     break;
                 } else {
                     System.out.println("Employee not found with matricule: " + matricule);
