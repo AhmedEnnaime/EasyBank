@@ -92,23 +92,15 @@ CREATE TABLE transfers (
     FOREIGN KEY (employee_matricule) REFERENCES employees(matricule)
 );
 
-CREATE TABLE simulations (
-    id SERIAL PRIMARY KEY,
-    monthly_payment DOUBLE PRECISION,
-    borrowed_capital DOUBLE PRECISION,
-    monthly_payment_num INT,
-    state VARCHAR(255) DEFAULT 'PENDING',
-    result DOUBLE PRECISION
-);
-
 CREATE TABLE requests (
     number SERIAL PRIMARY KEY,
     credit_date DATE DEFAULT CURRENT_DATE,
     amount DOUBLE PRECISION,
     remarks VARCHAR(255),
     duration VARCHAR(255),
-    simulation_id INT,
-    FOREIGN KEY (simulation_id) REFERENCES simulations(id)
+    state VARCHAR(255) DEFAULT 'PENDING',
+    client_code INT,
+    FOREIGN KEY (client_code) REFERENCES clients(code)
 );
 
 CREATE TABLE payments (

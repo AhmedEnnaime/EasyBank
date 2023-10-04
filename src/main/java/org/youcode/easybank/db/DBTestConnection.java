@@ -30,7 +30,7 @@ public class DBTestConnection {
                     createMissionsTable(conn);
                     createMissionAssignmentsTable(conn);
                     createTransfersTable(conn);
-                    createSimulationsTable(conn);
+                    createPaymentsTable(conn);
                     createRequestsTable(conn);
                 }
 
@@ -170,20 +170,6 @@ public class DBTestConnection {
         }
     }
 
-    public static void createSimulationsTable(Connection conn) throws SQLException {
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS simulations ("
-                + "id SERIAL PRIMARY KEY,"
-                + "monthly_payment DOUBLE PRECISION,"
-                + "borrowed_capital DOUBLE PRECISION,"
-                + "monthly_payment_num INT,"
-                + "state VARCHAR(255) DEFAULT 'PENDING',"
-                + "result DOUBLE PRECISION"
-                + ");";
-        try (Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(createTableSQL);
-        }
-    }
-
     public static void createRequestsTable(Connection conn) throws SQLException {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS requests ("
                 + "number SERIAL PRIMARY KEY,"
@@ -191,7 +177,8 @@ public class DBTestConnection {
                 + "amount DOUBLE PRECISION,"
                 + "remarks VARCHAR(255),"
                 + "duration VARCHAR(255),"
-                + "simulation_id INT"
+                + "state VARCHAR(255) DEFAULT 'PENDING',"
+                + "client_code INT"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);

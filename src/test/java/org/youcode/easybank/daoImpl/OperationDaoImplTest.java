@@ -7,9 +7,6 @@ import org.youcode.easybank.dao.daoImpl.*;
 import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.*;
 import org.youcode.easybank.enums.OPERATION;
-import org.youcode.easybank.exceptions.AccountException;
-import org.youcode.easybank.exceptions.ClientException;
-import org.youcode.easybank.exceptions.EmployeeException;
 import org.youcode.easybank.exceptions.OperationException;
 import static org.junit.jupiter.api.Assertions.*;
 

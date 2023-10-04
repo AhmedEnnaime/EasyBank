@@ -17,10 +17,15 @@ public class Simulation {
 
     private Integer _monthly_payment_num;
 
-    private Double _result;
-
     private Client _client;
 
     private Employee _employee;
+
+    public Simulation(Double monthly_payment, Double borrowed_capital, Integer monthly_payment_num, Client client) {
+        this._monthly_payment = monthly_payment;
+        this._borrowed_capital = borrowed_capital;
+        this._monthly_payment_num = monthly_payment_num;
+        this._client = client;
+    }
 
 }
