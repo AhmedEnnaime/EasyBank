@@ -101,7 +101,7 @@ CREATE TABLE simulations (
     result DOUBLE PRECISION
 );
 
-CREATE TABLE credits (
+CREATE TABLE requests (
     number SERIAL PRIMARY KEY,
     credit_date DATE DEFAULT CURRENT_DATE,
     amount DOUBLE PRECISION,

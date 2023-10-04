@@ -31,7 +31,7 @@ public class DBTestConnection {
                     createMissionAssignmentsTable(conn);
                     createTransfersTable(conn);
                     createSimulationsTable(conn);
-                    createCreditsTable(conn);
+                    createRequestsTable(conn);
                 }
 
             } catch (ClassNotFoundException | SQLException e) {
@@ -184,8 +184,8 @@ public class DBTestConnection {
         }
     }
 
-    public static void createCreditsTable(Connection conn) throws SQLException {
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS credits ("
+    public static void createRequestsTable(Connection conn) throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS requests ("
                 + "number SERIAL PRIMARY KEY,"
                 + "credit_date DATE DEFAULT CURRENT_DATE,"
                 + "amount DOUBLE PRECISION,"

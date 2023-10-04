@@ -4,7 +4,7 @@ import org.youcode.easybank.enums.STATE;
 
 import java.time.LocalDate;
 
-public class Credit {
+public class Request {
 
     private Integer _number;
 
