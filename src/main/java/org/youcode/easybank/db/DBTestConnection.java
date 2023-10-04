@@ -198,6 +198,19 @@ public class DBTestConnection {
         }
     }
 
+    public static void createPaymentsTable(Connection conn) throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS payments ("
+                + "id SERIAL PRIMARY KEY,"
+                + "transaction_time TIMESTAMP NOT NULL,"
+                + "from_account INT NOT NULL,"
+                + "to_account INT NOT NULL,"
+                + "operationNumber INT NOT NULL"
+                + ");";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(createTableSQL);
+        }
+    }
+
     public static void closeConnection() {
         if (conn != null) {
             try {

@@ -68,11 +68,9 @@ class Operation {
   -operationNumber: int
   -creationDate: Date
   -amount: double
-  -type: OPERATIONTYPE
   +getOperationNumber(): int
   +getCreationDate(): Date
   +getAmount(): double
-  +getType(): OPERATIONTYPE
 }
 
 class Agency {
@@ -122,10 +120,16 @@ class Credit {
 class Payment {
   -id: int
   -transaction_time: TIMESTAMP
+  -type: OPERATIONTYPE
   +getId(): int
   +getTransaction_time(): TIMESTAMP
 }
 
+class SimpleOperation {
+  -id: int
+  -type: OPERATIONTYPE
+  +getId(): int
+}
 
 Enum OPERATIONTYPE {
   PAYMENT
@@ -162,7 +166,8 @@ Credit "*" *-- "1" Client
 Simulation "1" *-- "1" Credit
 Agency -- Transfer : "1" *-- "0..*" Employee
 Employee -- Transfer : "1" *-- "0..*" Agency
-Payment "*" -- "1" Operation
+Operation <|-- Payment : extends
+Operation <|-- SimpleOperation : extends
 Payment "1" -- "1" Account: from
 Payment "1" -- "1" Account: to
 @enduml
