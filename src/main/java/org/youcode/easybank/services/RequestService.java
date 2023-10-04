@@ -17,4 +17,9 @@ public class RequestService {
         Optional<Request> optionalRequest = requestDao.create(request);
         return optionalRequest.orElse(null);
     }
+
+    public Request getRequestByID(Integer number) {
+        Optional<Request> retrievedRequest = requestDao.findByID(number);
+        return retrievedRequest.orElse(null);
+    }
 }

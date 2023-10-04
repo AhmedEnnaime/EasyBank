@@ -55,34 +55,34 @@ public class RequestDaoImpl implements RequestDao {
         return Optional.empty();
     }
 
-//    @Override
-//    public Optional<Request> findByID(Integer number) {
-//        String selectSQL = "SELECT * FROM requests WHERE number = ?";
-//
-//        try (PreparedStatement ps =conn.prepareStatement(selectSQL)){
-//            ps.setInt(1, number);
-//
-//            try (ResultSet rs = ps.executeQuery()){
-//                if (rs.next()) {
-//                    Request request = new Request();
-//                    request.set_number(rs.getInt("number"));
-//                    request.set_credit_date(rs.getDate("credit_date").toLocalDate());
-//                    request.set_amount(rs.getDouble("amount"));
-//                    request.set_remarks(rs.getString("remarks"));
-//                    request.set_state(STATE.valueOf(rs.getString("state")));
-//                    request.set_duration(rs.getString("duration"));
-//
-//                    return Optional.of(request);
-//                }else {
-//                    return Optional.empty();
-//                }
-//            }
-//
-//        }catch (SQLException e) {
-//            e.printStackTrace();
-//            return Optional.empty();
-//        }
-//    }
+    @Override
+    public Optional<Request> findByID(Integer number) {
+        String selectSQL = "SELECT * FROM requests WHERE number = ?";
+
+        try (PreparedStatement ps =conn.prepareStatement(selectSQL)){
+            ps.setInt(1, number);
+
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()) {
+                    Request request = new Request();
+                    request.set_number(rs.getInt("number"));
+                    request.set_credit_date(rs.getDate("credit_date").toLocalDate());
+                    request.set_amount(rs.getDouble("amount"));
+                    request.set_remarks(rs.getString("remarks"));
+                    request.set_state(STATE.valueOf(rs.getString("state")));
+                    request.set_duration(rs.getString("duration"));
+
+                    return Optional.of(request);
+                }else {
+                    return Optional.empty();
+                }
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
 
     @Override
     public List<Request> getAll() {

@@ -88,4 +88,32 @@ public class RequestView {
         }
 
     }
+
+    public void getRequestByID() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Enter request's number");
+            String numberInput = sc.nextLine();
+
+            if (numberInput.equalsIgnoreCase("q")) {
+                break;
+            }
+
+            int number = Integer.parseInt(numberInput);
+
+            Request request = requestService.getRequestByID(number);
+
+            if (request != null) {
+                System.out.println("Request Found");
+                System.out.println("Request date " + request.get_credit_date());
+                System.out.println("Request amount " + request.get_amount());
+                System.out.println("Request state " + request.get_state());
+                System.out.println("Request remarks " + request.get_remarks());
+                break;
+            }else {
+                System.out.println("Request with number " + number + "not found try again");
+            }
+        }
+    }
 }
