@@ -2,6 +2,7 @@ package org.youcode.easybank.services;
 
 import org.youcode.easybank.dao.daoImpl.RequestDaoImpl;
 import org.youcode.easybank.entities.Request;
+import org.youcode.easybank.enums.STATE;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,5 +27,13 @@ public class RequestService {
 
     public List<Request> getAllRequests() {
         return requestDao.getAll();
+    }
+
+    public boolean updateRequestState(Integer number, STATE state) {
+        if (number.toString().isEmpty() || requestDao.findByID(number).isEmpty()) {
+            return false;
+        }else {
+            return requestDao.updateState(number, state);
+        }
     }
 }

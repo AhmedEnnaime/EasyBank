@@ -110,7 +110,18 @@ public class RequestDaoImpl implements RequestDao {
 
     @Override
     public boolean updateState(Integer number, STATE state) {
-        return false;
+        String updateSQL = "UPDATE requests SET state = ? WHERE number = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(updateSQL)){
+            ps.setString(1, String.valueOf(state));
+            ps.setInt(2, number);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

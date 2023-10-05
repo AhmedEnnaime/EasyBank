@@ -134,4 +134,29 @@ public class RequestView {
 
         }
     }
+
+    public void updateRequestState() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Enter number of request you want to update it's state ");
+            String  numberInput = sc.nextLine();
+
+            System.out.println("Enter the new state (PENDING | APPROVED | DECLINED) ");
+            String state = sc.nextLine();
+
+            if (numberInput.equalsIgnoreCase("q")) {
+                break;
+            }
+
+            int number = Integer.parseInt(numberInput);
+
+            if(requestService.updateRequestState(number, STATE.valueOf(state))) {
+                System.out.println("Request state updated successfully");
+                break;
+            }else {
+                System.out.println("Invalid number try again or press 'q' to quit");
+            }
+        }
+    }
 }

@@ -155,6 +155,34 @@ public class RequestDaoImplTest {
         assertTrue(allRequests.stream().anyMatch(e -> e.get_remarks().equals("remarks")));
     }
 
+    public void testUpdateState() {
+        Simulation simulation = new Simulation(
+                5000.00,
+                5,
+                client
+        );
+
+        Request request = new Request(
+                LocalDate.now(),
+                simulation.get_borrowed_capital(),
+                STATE.PENDING,
+                "remarks",
+                5,
+                simulation
+        );
+
+        Optional<Request> createdRequest = requestDao.create(request);
+        assertTrue(createdRequest.isPresent());
+
+        boolean isUpdated = requestDao.updateState(createdRequest.get().get_number(), STATE.APPROVED);
+        assertTrue(isUpdated);
+
+        Optional<Request> retrievedRequest = requestDao.findByID(createdRequest.get().get_number());
+        assertTrue(retrievedRequest.isPresent());
+
+        assertEquals(STATE.APPROVED, retrievedRequest.get().get_state());
+    }
+
     @AfterEach
     public void tearDown() {
         agencyDao.deleteAll();
