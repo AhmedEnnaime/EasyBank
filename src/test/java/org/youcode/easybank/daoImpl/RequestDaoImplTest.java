@@ -155,6 +155,8 @@ public class RequestDaoImplTest {
         assertTrue(allRequests.stream().anyMatch(e -> e.get_remarks().equals("remarks")));
     }
 
+    @Test
+
     public void testUpdateState() {
         Simulation simulation = new Simulation(
                 5000.00,
@@ -181,6 +183,33 @@ public class RequestDaoImplTest {
         assertTrue(retrievedRequest.isPresent());
 
         assertEquals(STATE.APPROVED, retrievedRequest.get().get_state());
+    }
+
+    @Test
+    public void testGetByState() {
+        Simulation simulation = new Simulation(
+                5000.00,
+                5,
+                client
+        );
+
+        Request request = new Request(
+                LocalDate.now(),
+                simulation.get_borrowed_capital(),
+                STATE.PENDING,
+                "remarks",
+                5,
+                simulation
+        );
+
+        Optional<Request> createdRequest = requestDao.create(request);
+        assertTrue(createdRequest.isPresent());
+
+        List<Request> requests = requestDao.getByState(STATE.PENDING);
+        assertNotNull(requests);
+        assertFalse(requests.isEmpty());
+
+        assertEquals(STATE.PENDING, requests.get(0).get_state());
     }
 
     @AfterEach

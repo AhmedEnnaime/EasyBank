@@ -126,7 +126,29 @@ public class RequestDaoImpl implements RequestDao {
 
     @Override
     public List<Request> getByState(STATE state) {
-        return null;
+        List<Request> requests = new ArrayList<>();
+        String selectSQL = "SELECT * FROM requests WHERE state = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(selectSQL)){
+            ps.setString(1, String.valueOf(state));
+
+           try (ResultSet rs = ps.executeQuery()){
+               while (rs.next()) {
+                   Request request = new Request();
+                   request.set_number(rs.getInt("number"));
+                   request.set_amount(rs.getDouble("amount"));
+                   request.set_state(STATE.valueOf(rs.getString("state")));
+                   request.set_remarks(rs.getString("remarks"));
+                   request.set_duration(rs.getInt("duration"));
+
+                   requests.add(request);
+               }
+           }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return requests;
     }
 
     @Override

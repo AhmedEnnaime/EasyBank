@@ -36,4 +36,8 @@ public class RequestService {
             return requestDao.updateState(number, state);
         }
     }
+
+    public List<Request> getRequestsByState(STATE state) {
+        return requestDao.getByState(state);
+    }
 }

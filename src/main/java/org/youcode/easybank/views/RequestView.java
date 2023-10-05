@@ -159,4 +159,27 @@ public class RequestView {
             }
         }
     }
+
+    public void getRequestsByState() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter the state of requests you wanna search for (PENDING | APPROVED | DECLINED) ");
+        String state = sc.nextLine();
+
+        List<Request> requests = requestService.getRequestsByState(STATE.valueOf(state));
+
+        if (requests.isEmpty()) {
+            System.out.println("No request available with that state");
+        }else {
+            for (Request request : requests) {
+                System.out.println("Request number " + request.get_number());
+                System.out.println("Request date " + request.get_credit_date());
+                System.out.println("Request amount " + request.get_amount());
+                System.out.println("Request remarks " + request.get_remarks());
+                System.out.println("Request duration " + request.get_duration());
+                System.out.println("Request state " + request.get_state());
+                System.out.println("----------------------------");
+            }
+        }
+    }
 }
