@@ -97,7 +97,7 @@ CREATE TABLE requests (
     credit_date DATE DEFAULT CURRENT_DATE,
     amount DOUBLE PRECISION,
     remarks VARCHAR(255),
-    duration VARCHAR(255),
+    duration INT,
     state VARCHAR(255) DEFAULT 'PENDING',
     client_code INT,
     FOREIGN KEY (client_code) REFERENCES clients(code)

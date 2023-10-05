@@ -176,7 +176,7 @@ public class DBTestConnection {
                 + "credit_date DATE DEFAULT CURRENT_DATE,"
                 + "amount DOUBLE PRECISION,"
                 + "remarks VARCHAR(255),"
-                + "duration VARCHAR(255),"
+                + "duration INT,"
                 + "state VARCHAR(255) DEFAULT 'PENDING',"
                 + "client_code INT"
                 + ");";

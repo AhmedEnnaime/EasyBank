@@ -22,11 +22,11 @@ public class Request {
 
     private String _remarks;
 
-    private String _duration;
+    private Integer _duration;
 
     private Simulation _simulation;
 
-    public Request(LocalDate credit_date, Double amount, STATE state, String remarks, String duration, Simulation simulation) {
+    public Request(LocalDate credit_date, Double amount, STATE state, String remarks, Integer duration, Simulation simulation) {
         this._credit_date = credit_date;
         this._amount = amount;
         this._state = state;

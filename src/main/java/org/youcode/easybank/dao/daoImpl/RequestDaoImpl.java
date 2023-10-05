@@ -7,6 +7,7 @@ import org.youcode.easybank.enums.STATE;
 import org.youcode.easybank.exceptions.ClientException;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class RequestDaoImpl implements RequestDao {
             ps.setDate(1, Date.valueOf(request.get_credit_date()));
             ps.setDouble(2, request.get_amount());
             ps.setString(3, request.get_remarks());
-            ps.setString(4, request.get_duration());
+            ps.setInt(4, request.get_duration());
             ps.setInt(5, request.get_simulation().get_client().get_code());
 
             int affectedRows = ps.executeUpdate();
@@ -70,7 +71,7 @@ public class RequestDaoImpl implements RequestDao {
                     request.set_amount(rs.getDouble("amount"));
                     request.set_remarks(rs.getString("remarks"));
                     request.set_state(STATE.valueOf(rs.getString("state")));
-                    request.set_duration(rs.getString("duration"));
+                    request.set_duration(rs.getInt("duration"));
 
                     return Optional.of(request);
                 }else {
@@ -86,7 +87,25 @@ public class RequestDaoImpl implements RequestDao {
 
     @Override
     public List<Request> getAll() {
-        return null;
+        List<Request> allRequests = new ArrayList<>();
+        String selectSQL = "SELECT * FROM requests";
+
+        try (PreparedStatement ps = conn.prepareStatement(selectSQL)){
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Request request = new Request();
+                request.set_number(rs.getInt("number"));
+                request.set_amount(rs.getDouble("amount"));
+                request.set_state(STATE.valueOf(rs.getString("state")));
+                request.set_remarks(rs.getString("remarks"));
+                request.set_duration(rs.getInt("duration"));
+
+                allRequests.add(request);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allRequests;
     }
 
     @Override

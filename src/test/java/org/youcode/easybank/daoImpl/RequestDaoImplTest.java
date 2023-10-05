@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public class RequestDaoImplTest {
@@ -82,7 +83,6 @@ public class RequestDaoImplTest {
     @Test
     public void testCreate() {
         Simulation simulation = new Simulation(
-                1000.00,
                 5000.00,
                 5,
                 client
@@ -93,7 +93,7 @@ public class RequestDaoImplTest {
                 simulation.get_borrowed_capital(),
                 STATE.PENDING,
                 "remarks",
-                "10 days",
+                5,
                 simulation
         );
 
@@ -108,7 +108,6 @@ public class RequestDaoImplTest {
     @Test
     public void testFindByID() {
         Simulation simulation = new Simulation(
-                1000.00,
                 5000.00,
                 5,
                 client
@@ -119,7 +118,7 @@ public class RequestDaoImplTest {
                 simulation.get_borrowed_capital(),
                 STATE.PENDING,
                 "remarks",
-                "10 days",
+                5,
                 simulation
         );
 
@@ -129,6 +128,33 @@ public class RequestDaoImplTest {
         Optional<Request> retrievedRequest = requestDao.findByID(request.get_number());
         assertTrue(retrievedRequest.isPresent());
     }
+
+    @Test
+    public void testGetAll() {
+        Simulation simulation = new Simulation(
+                5000.00,
+                5,
+                client
+        );
+
+        Request request = new Request(
+                LocalDate.now(),
+                simulation.get_borrowed_capital(),
+                STATE.PENDING,
+                "remarks",
+                5,
+                simulation
+        );
+
+        Optional<Request> createdRequest = requestDao.create(request);
+        assertTrue(createdRequest.isPresent());
+        List<Request> allRequests = requestDao.getAll();
+        assertNotNull(allRequests);
+        assertFalse(allRequests.isEmpty());
+
+        assertTrue(allRequests.stream().anyMatch(e -> e.get_remarks().equals("remarks")));
+    }
+
     @AfterEach
     public void tearDown() {
         agencyDao.deleteAll();
