@@ -499,29 +499,29 @@ public class AccountService {
         }
     }
 
-    public static void getAccountByOperationNumber() {
-        Scanner sc = new Scanner(System.in);
-
-        try {
-            System.out.println("Enter the operation number to retrieve the associated account: ");
-            int operationNumber = sc.nextInt();
-            sc.nextLine();
-
-            AccountDao accountDao = new AccountDaoImpl();
-            Optional<Account> account = accountDao.getByOperationNumber(operationNumber);
-
-            if (account.isPresent()) {
-                System.out.println("Account Number: " + account.get().get_accountNumber());
-                System.out.println("Balance: " + account.get().get_balance());
-                System.out.println("Creation Date: " + account.get().get_creationDate());
-                System.out.println("Status: " + account.get().get_status());
-                System.out.println("---------------------------");
-            } else {
-                System.out.println("Account not found for operation number: " + operationNumber);
-            }
-        } catch (Exception e) {
-            System.out.println("Error retrieving associated account: " + e.getMessage());
-        }
-    }
+//    public static void getAccountByOperationNumber() {
+//        Scanner sc = new Scanner(System.in);
+//
+//        try {
+//            System.out.println("Enter the operation number to retrieve the associated account: ");
+//            int operationNumber = sc.nextInt();
+//            sc.nextLine();
+//
+//            AccountDao accountDao = new AccountDaoImpl();
+//            Optional<Account> account = accountDao.getByOperationNumber(operationNumber);
+//
+//            if (account.isPresent()) {
+//                System.out.println("Account Number: " + account.get().get_accountNumber());
+//                System.out.println("Balance: " + account.get().get_balance());
+//                System.out.println("Creation Date: " + account.get().get_creationDate());
+//                System.out.println("Status: " + account.get().get_status());
+//                System.out.println("---------------------------");
+//            } else {
+//                System.out.println("Account not found for operation number: " + operationNumber);
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Error retrieving associated account: " + e.getMessage());
+//        }
+//    }
 
 }

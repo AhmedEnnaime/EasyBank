@@ -32,6 +32,7 @@ public class DBTestConnection {
                     createTransfersTable(conn);
                     createPaymentsTable(conn);
                     createRequestsTable(conn);
+                    createSimpleOperationsTable(conn);
                 }
 
             } catch (ClassNotFoundException | SQLException e) {
@@ -113,9 +114,18 @@ public class DBTestConnection {
                 + "operationNumber SERIAL PRIMARY KEY,"
                 + "creationDate DATE DEFAULT CURRENT_DATE,"
                 + "amount DOUBLE PRECISION,"
-                + "type VARCHAR(255),"
-                + "accountNumber INT,"
                 + "employeeMatricule INT"
+                + ");";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(createTableSQL);
+        }
+    }
+
+    public static void createSimpleOperationsTable(Connection conn) throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS simpleOperations ("
+                + "type VARCHAR(255),"
+                + "operationNumber SERIAL PRIMARY KEY,"
+                + "accountNumber INT"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(createTableSQL);

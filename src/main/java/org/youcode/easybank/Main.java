@@ -198,9 +198,9 @@ public class Main {
                     case 2:
                         AccountService.updateAccount();
                         break;
-                    case 3:
-                        AccountService.getAccountByOperationNumber();
-                        break;
+//                    case 3:
+//                        AccountService.getAccountByOperationNumber();
+//                        break;
                     case 4:
                         AccountService.updateAccountStatus();
                         break;

@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class OperationDaoImplTest {
@@ -34,6 +35,8 @@ public class OperationDaoImplTest {
 
     private Agency agency;
 
+    private SimpleOperationDaoImpl simpleOperationDao;
+
     private int testAccountNumber;
 
     private int testOperationNumber;
@@ -51,6 +54,8 @@ public class OperationDaoImplTest {
         operationDao = new OperationDaoImpl(testConnection);
 
         agencyDao = new AgencyDaoImpl(testConnection);
+
+        simpleOperationDao = new SimpleOperationDaoImpl(testConnection);
 
         agency = new Agency(
                 "YouCode",
@@ -95,9 +100,7 @@ public class OperationDaoImplTest {
 
         Operation operation = new Operation(
                 300,
-                OPERATION.DEPOSIT,
-                employee,
-                account
+                employee
         );
 
         operationDao.create(operation);
@@ -107,26 +110,38 @@ public class OperationDaoImplTest {
 
     }
 
-    public void assertOperationsEquals(Operation expected, Operation actual) {
-        assertEquals(expected.get_amount(), actual.get_amount());
-        assertEquals(expected.get_type(), actual.get_type());
-        assertEquals(LocalDate.now(), actual.get_creationDate());
+    @Test
+    public void testCreateSimpleOperation() throws OperationException {
+        Operation operation = new Operation(
+                600,
+                employee
+        );
+
+        Optional<Operation> createdOperation = operationDao.create(operation);
+        assertTrue(createdOperation.isPresent());
+
+        SimpleOperation simpleOperation = new SimpleOperation(
+                createdOperation.get(),
+                OPERATION.DEPOSIT,
+                account
+        );
+
+        Optional<SimpleOperation> createdSimpleOperation = simpleOperationDao.create(simpleOperation);
+        assertTrue(createdSimpleOperation.isPresent());
+
     }
 
     @Test
     public void testCreate() throws OperationException {
         Operation operation = new Operation(
                 600,
-                OPERATION.WITHDRAWAL,
-                employee,
-                account
+                employee
         );
 
         Optional<Operation> createdOperation = operationDao.create(operation);
         assertTrue(createdOperation.isPresent());
 
         assertEquals(operation.get_amount(), createdOperation.get().get_amount());
-        assertEquals(operation.get_type(), createdOperation.get().get_type());
     }
 
     @Test
@@ -143,9 +158,7 @@ public class OperationDaoImplTest {
     public void testGetByNumber() throws OperationException {
         Operation operation = new Operation(
                 1300,
-                OPERATION.DEPOSIT,
-                employee,
-                account
+                employee
         );
 
         Optional<Operation> createdOperation = operationDao.create(operation);
@@ -153,7 +166,6 @@ public class OperationDaoImplTest {
 
         Optional<Operation> retrievedOperation = operationDao.getByNumber(createdOperation.get().get_operationNumber());
         assertTrue(retrievedOperation.isPresent());
-        assertOperationsEquals(createdOperation.get(), retrievedOperation.get());
     }
 
 

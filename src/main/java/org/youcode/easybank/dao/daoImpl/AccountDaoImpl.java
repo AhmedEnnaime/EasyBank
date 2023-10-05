@@ -265,7 +265,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public boolean updateBalance(Account account, Operation operation) {
+    public boolean updateBalance(Account account, SimpleOperation operation) {
         String updateBalanceSQL = "UPDATE accounts SET balance = ? WHERE accountNumber = ?";
 
         double newBalance;
@@ -290,33 +290,34 @@ public class AccountDaoImpl implements AccountDao {
         }
     }
 
-    @Override
-    public Optional<Account> getByOperationNumber(int operationNumber) throws AccountException {
-        String selectSQL = "SELECT a.* " +
-                "FROM accounts a " +
-                "JOIN operations o ON a.accountNumber = o.accountNumber " +
-                "WHERE o.operationNumber = ?";
-
-        try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
-            preparedStatement.setInt(1, operationNumber);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    Account account = new Account();
-                    account.set_accountNumber(resultSet.getInt("accountNumber"));
-                    account.set_balance(resultSet.getDouble("balance"));
-                    account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
-                    account.set_status(STATUS.valueOf(resultSet.getString("status")));
-
-                    return Optional.of(account);
-                } else {
-                    return Optional.empty();
-                }
-            }
-        } catch (SQLException e) {
-            throw new AccountException("Error retrieving account by operation number: " + e.getMessage());
-        }
-    }
+//    @Override
+//    public Optional<Account> getByOperationNumber(int operationNumber) throws AccountException {
+//        String selectSQL = "SELECT a.* " +
+//                "FROM accounts a " +
+//                "JOIN simpleOperations so ON a.accountNumber = so.accountNumber " +
+//                "JOIN payments p ON so.operationNumber = p.operationNumber " +
+//                "WHERE p.operationNumber = ?";
+//
+//        try (PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
+//            preparedStatement.setInt(1, operationNumber);
+//
+//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+//                if (resultSet.next()) {
+//                    Account account = new Account();
+//                    account.set_accountNumber(resultSet.getInt("accountNumber"));
+//                    account.set_balance(resultSet.getDouble("balance"));
+//                    account.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+//                    account.set_status(STATUS.valueOf(resultSet.getString("status")));
+//
+//                    return Optional.of(account);
+//                } else {
+//                    return Optional.empty();
+//                }
+//            }
+//        } catch (SQLException e) {
+//            throw new AccountException("Error retrieving account by operation number: " + e.getMessage());
+//        }
+//    }
 
 
     @Override

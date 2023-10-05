@@ -62,10 +62,7 @@ CREATE TABLE operations (
     operationNumber SERIAL PRIMARY KEY,
     creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     amount DOUBLE PRECISION,
-    type VARCHAR(255),
-    accountNumber INT,
     employeeMatricule INT,
-    FOREIGN KEY (accountNumber) REFERENCES accounts(accountNumber),
     FOREIGN KEY (employeeMatricule) REFERENCES employees(matricule)
 );
 
@@ -105,12 +102,19 @@ CREATE TABLE requests (
 
 CREATE TABLE payments (
     id SERIAL PRIMARY KEY,
-    transaction_time TIMESTAMP NOT NULL,
     from_account INT NOT NULL,
     to_account INT NOT NULL,
     operationNumber INT NOT NULL,
     FOREIGN KEY (from_account) REFERENCES accounts(accountNumber),
     FOREIGN KEY (to_account) REFERENCES accounts(accountNumber),
+    FOREIGN KEY (operationNumber) REFERENCES operations(operationNumber)
+);
+
+CREATE TABLE simpleOperations (
+    type VARCHAR(255),
+    accountNumber INT,
+    operationNumber INT NOT NULL,
+    FOREIGN KEY (accountNumber) REFERENCES accounts(accountNumber),
     FOREIGN KEY (operationNumber) REFERENCES operations(operationNumber)
 );
 

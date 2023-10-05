@@ -23,15 +23,13 @@ public class OperationDaoImpl implements OperationDao {
 
     @Override
     public Optional<Operation> create(Operation operation) throws OperationException {
-        String insertSql = "INSERT INTO operations (amount, type, accountNumber, employeeMatricule) " +
-                "VALUES (?, ?, ?, ?) RETURNING operationNumber";
+        String insertSql = "INSERT INTO operations (amount, employeeMatricule) " +
+                "VALUES (?, ?) RETURNING operationNumber";
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setDouble(1, operation.get_amount());
-            preparedStatement.setString(2, operation.get_type().toString());
-            preparedStatement.setInt(3, operation.get_account().get_accountNumber());
-            preparedStatement.setInt(4, operation.get_employee().get_matricule());
+            preparedStatement.setInt(2, operation.get_employee().get_matricule());
 
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -81,9 +79,8 @@ public class OperationDaoImpl implements OperationDao {
             if (resultSet.next()) {
                 Operation operation = new Operation();
                 operation.set_operationNumber(resultSet.getInt("operationNumber"));
-                operation.set_creationDate(resultSet.getDate("creationDate").toLocalDate());
+                operation.set_creationDate(resultSet.getTimestamp("creationDate").toLocalDateTime());
                 operation.set_amount(resultSet.getDouble("amount"));
-                operation.set_type(OPERATION.valueOf(resultSet.getString("type")));
 
                 return Optional.of(operation);
             } else {

@@ -6,27 +6,30 @@ import lombok.NoArgsConstructor;
 import org.youcode.easybank.enums.OPERATION;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Operation {
-    private int _operationNumber;
 
-    private LocalDate _creationDate;
+    protected int _operationNumber;
 
-    private double _amount;
+    protected LocalDateTime _creationDate;
 
-    private OPERATION _type;
+    protected double _amount;
 
-    private Employee _employee;
+    protected Employee _employee;
 
-    private Account _account;
-
-    public Operation(double amount, OPERATION type, Employee employee, Account account) {
+    public Operation(double amount, Employee employee) {
         this._amount = amount;
-        this._type = type;
         this._employee = employee;
-        this._account = account;
+    }
+
+    public Operation(Operation operation) {
+        this._operationNumber = operation.get_operationNumber();
+        this._creationDate = operation.get_creationDate();
+        this._amount = operation.get_amount();
+        this._employee = operation.get_employee();
     }
 }

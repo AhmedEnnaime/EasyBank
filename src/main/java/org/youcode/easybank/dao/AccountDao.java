@@ -3,6 +3,7 @@ package org.youcode.easybank.dao;
 import org.youcode.easybank.entities.Account;
 import org.youcode.easybank.entities.Client;
 import org.youcode.easybank.entities.Operation;
+import org.youcode.easybank.entities.SimpleOperation;
 import org.youcode.easybank.enums.STATUS;
 import org.youcode.easybank.exceptions.AccountException;
 
@@ -20,7 +21,7 @@ public interface AccountDao extends IData<Account, Integer>{
 
     public List<Optional<Account>> getClientAccounts(Client client) throws AccountException;
 
-    public boolean updateBalance(Account account, Operation operation);
+    public boolean updateBalance(Account account, SimpleOperation operation);
 
-    public Optional<Account> getByOperationNumber(int operationNumber) throws AccountException;
+//    public Optional<Account> getByOperationNumber(int operationNumber) throws AccountException;
 }
