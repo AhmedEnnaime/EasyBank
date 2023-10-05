@@ -52,14 +52,7 @@ public class OperationService {
                         System.out.println("Invalid operation type. Please enter 'D' for deposit or 'W' for withdrawal.");
                         continue;
                     }
-                    OPERATION operationType = null;
-                    if (operationTypeInput.equalsIgnoreCase("D")) {
-                        operationType = OPERATION.DEPOSIT;
-                    } else if (operationTypeInput.equalsIgnoreCase("W")) {
-                        operationType = OPERATION.WITHDRAWAL;
-                    } else if (operationTypeInput.equalsIgnoreCase("P")) {
-                        operationType = OPERATION.PAYMENT;
-                    }
+                    OPERATION operationType = operationTypeInput.equalsIgnoreCase("D") ? OPERATION.DEPOSIT : OPERATION.WITHDRAWAL;
 
                     System.out.println("Enter the account number: ");
                     int accountNumber;
@@ -102,29 +95,25 @@ public class OperationService {
                             continue;
                         }
 
-                        try {
-                            OperationDao operationDao = new OperationDaoImpl();
+                        OperationDao operationDao = new OperationDaoImpl();
 
-                            Optional<Operation> createdOperation = operationDao.create(operation);
+                        Optional<Operation> createdOperation = operationDao.create(operation);
 
 
-                            if (createdOperation.isPresent()) {
-                                SimpleOperation simpleOperation = new SimpleOperation(createdOperation.get(), operationType, accountOptional.get());
-                                SimpleOperationDao simpleOperationDao = new SimpleOperationDaoImpl();
-                                Optional<SimpleOperation> createdSimpleOperation = simpleOperationDao.create(simpleOperation);
-                                if(createdSimpleOperation.isPresent()) {
-                                    boolean updated = accountDao.updateBalance(account, createdSimpleOperation.get());
-                                    if (updated) {
-                                        System.out.println("Operation completed successfully.");
-                                        break;
-                                    }
+                        if (createdOperation.isPresent()) {
+                            SimpleOperation simpleOperation = new SimpleOperation(createdOperation.get(), operationType, accountOptional.get());
+                            SimpleOperationDao simpleOperationDao = new SimpleOperationDaoImpl();
+                            Optional<SimpleOperation> createdSimpleOperation = simpleOperationDao.create(simpleOperation);
+                            if(createdSimpleOperation.isPresent()) {
+                                boolean updated = accountDao.updateBalance(account, createdSimpleOperation.get());
+                                if (updated) {
+                                    System.out.println("Operation completed successfully.");
+                                    break;
                                 }
-
-                            } else {
-                                System.out.println("Operation failed to update the account balance.");
                             }
-                        } catch (OperationException e) {
-                            System.out.println("Error creating the operation: " + e.getMessage());
+
+                        } else {
+                            System.out.println("Operation failed to update the account balance.");
                         }
 
                     } catch (NumberFormatException e) {

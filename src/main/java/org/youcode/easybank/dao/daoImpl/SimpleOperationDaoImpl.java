@@ -41,4 +41,20 @@ public class SimpleOperationDaoImpl implements SimpleOperationDao {
         }
         return Optional.empty();
     }
+
+    @Override
+    public boolean deleteAll() {
+        boolean deleted = false;
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM simpleOperations");
+            int rows = ps.executeUpdate();
+
+            if (rows > 0) {
+                deleted = true;
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return deleted;
+    }
 }

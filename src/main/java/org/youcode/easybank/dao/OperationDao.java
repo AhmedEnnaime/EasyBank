@@ -6,7 +6,7 @@ import org.youcode.easybank.exceptions.OperationException;
 import java.util.Optional;
 
 public interface OperationDao {
-    public Optional<Operation> create(Operation operation) throws OperationException;
+    public Optional<Operation> create(Operation operation);
 
     public boolean delete(int operationNumber);
 

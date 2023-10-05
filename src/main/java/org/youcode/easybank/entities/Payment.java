@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Payment extends Operation{
 
+    private Integer id;
+
     private Account from_account;
 
     private Account to_account;

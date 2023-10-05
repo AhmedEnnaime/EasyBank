@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface SimpleOperationDao {
 
     public Optional<SimpleOperation> create(SimpleOperation simpleOperation);
+
+    public boolean deleteAll();
 }

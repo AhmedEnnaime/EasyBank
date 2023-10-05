@@ -8,15 +8,15 @@ import org.youcode.easybank.db.DBTestConnection;
 import org.youcode.easybank.entities.*;
 import org.youcode.easybank.enums.OPERATION;
 import org.youcode.easybank.exceptions.OperationException;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class OperationDaoImplTest {
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+public class PaymentDaoImplTest {
     private ClientDaoImpl clientDao;
 
     private EmployeeDaoImpl employeeDao;
@@ -35,7 +35,7 @@ public class OperationDaoImplTest {
 
     private Agency agency;
 
-    private SimpleOperationDaoImpl simpleOperationDao;
+    private PaymentDaoImpl paymentDao;
 
     private int testAccountNumber;
 
@@ -55,7 +55,7 @@ public class OperationDaoImplTest {
 
         agencyDao = new AgencyDaoImpl(testConnection);
 
-        simpleOperationDao = new SimpleOperationDaoImpl(testConnection);
+        paymentDao = new PaymentDaoImpl(testConnection);
 
         agency = new Agency(
                 "YouCode",
@@ -111,48 +111,6 @@ public class OperationDaoImplTest {
     }
 
     @Test
-    public void testCreateSimpleOperation() throws OperationException {
-        Operation operation = new Operation(
-                600,
-                employee
-        );
-
-        Optional<Operation> createdOperation = operationDao.create(operation);
-        assertTrue(createdOperation.isPresent());
-
-        SimpleOperation simpleOperation = new SimpleOperation(
-                createdOperation.get(),
-                OPERATION.DEPOSIT,
-                account
-        );
-
-        Optional<SimpleOperation> createdSimpleOperation = simpleOperationDao.create(simpleOperation);
-        assertTrue(createdSimpleOperation.isPresent());
-
-    }
-
-//    @Test
-//    public void testCreatePaymentOperation() throws OperationException {
-//        Operation operation = new Operation(
-//                600,
-//                employee
-//        );
-//
-//        Optional<Operation> createdOperation = operationDao.create(operation);
-//        assertTrue(createdOperation.isPresent());
-//
-//        SimpleOperation simpleOperation = new SimpleOperation(
-//                createdOperation.get(),
-//                OPERATION.DEPOSIT,
-//                account
-//        );
-//
-//        Optional<SimpleOperation> createdSimpleOperation = simpleOperationDao.create(simpleOperation);
-//        assertTrue(createdSimpleOperation.isPresent());
-//
-//    }
-
-    @Test
     public void testCreate() throws OperationException {
         Operation operation = new Operation(
                 600,
@@ -162,38 +120,41 @@ public class OperationDaoImplTest {
         Optional<Operation> createdOperation = operationDao.create(operation);
         assertTrue(createdOperation.isPresent());
 
-        assertEquals(operation.get_amount(), createdOperation.get().get_amount());
-    }
-
-    @Test
-    public void testDelete() throws OperationException {
-        boolean isDeleted = operationDao.delete(testOperationNumber);
-
-        System.out.println("Operation number : " + testOperationNumber);
-        assertTrue(isDeleted);
-        Optional<Operation> deletedOperation = operationDao.getByNumber(testOperationNumber);
-        assertFalse(deletedOperation.isPresent());
-    }
-
-    @Test
-    public void testGetByNumber() throws OperationException {
-        Operation operation = new Operation(
-                1300,
-                employee
+        Account destination_account = new Account(
+                8700,
+                employee,
+                client,
+                agency
         );
 
-        Optional<Operation> createdOperation = operationDao.create(operation);
-        assertTrue(createdOperation.isPresent());
+        Account from_account = new Account(
+                10000,
+                employee,
+                client,
+                agency
+        );
 
-        Optional<Operation> retrievedOperation = operationDao.getByNumber(createdOperation.get().get_operationNumber());
-        assertTrue(retrievedOperation.isPresent());
+        Optional<Account> createdFromAccount = accountDao.create(from_account);
+        Optional<Account> createdDestinationAccount = accountDao.create(destination_account);
+
+        assertTrue(createdFromAccount.isPresent());
+        assertTrue(createdDestinationAccount.isPresent());
+
+        Payment payment = new Payment(
+                createdOperation.get(),
+                createdFromAccount.get(),
+                createdDestinationAccount.get()
+        );
+
+        Optional<Payment> createdPayment = paymentDao.create(payment);
+        assertTrue(createdPayment.isPresent());
     }
 
 
     @AfterEach
     public void tearDown() {
         operationDao.deleteAll();
-        simpleOperationDao.deleteAll();
+        paymentDao.deleteAll();
         accountDao.deleteAll();
         clientDao.deleteAll();
         employeeDao.deleteAll();

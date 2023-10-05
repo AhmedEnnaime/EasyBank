@@ -22,7 +22,7 @@ public class OperationDaoImpl implements OperationDao {
     }
 
     @Override
-    public Optional<Operation> create(Operation operation) throws OperationException {
+    public Optional<Operation> create(Operation operation) {
         String insertSql = "INSERT INTO operations (amount, employeeMatricule) " +
                 "VALUES (?, ?) RETURNING operationNumber";
 
@@ -48,9 +48,9 @@ public class OperationDaoImpl implements OperationDao {
             }
 
             return Optional.of(operation);
-        } catch (SQLException e) {
+        } catch (SQLException | OperationException e) {
             e.printStackTrace();
-            throw new OperationException("Error creating operation." + e.getMessage());
+            return Optional.empty();
         }
     }
     @Override
