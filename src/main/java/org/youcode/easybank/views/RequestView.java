@@ -23,9 +23,10 @@ public class RequestView {
 
     private ClientDaoImpl clientDao;
 
-    public RequestView(RequestService requestService, ClientDaoImpl clientDao) {
+    public RequestView(RequestService requestService, ClientDaoImpl clientDao, SimulationService simulationService) {
         this.requestService = requestService;
         this.clientDao = clientDao;
+        this.simulationService = simulationService;
     }
 
     public void createRequest() {
@@ -45,14 +46,16 @@ public class RequestView {
             if (retrievedClient.isPresent()) {
                 System.out.println("Enter the amount of money you wanna borrow ");
                 Double amount = sc.nextDouble();
+                sc.nextLine();
 
-                System.out.println("Enter the date of making that credit");
+                System.out.println("Enter the date of making that credit (yyyy-MM-dd):");
                 String dateStr = sc.nextLine();
 
-                System.out.println("Enter how many months you wanna keep paying your debts");
+                System.out.println("Enter how many months you wanna keep paying your debts:");
                 Integer monthly_payment_num = sc.nextInt();
 
                 System.out.println("Enter remarks if you have some or leave it empty");
+                sc.nextLine();
                 String remarks = sc.nextLine();
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -64,27 +67,27 @@ public class RequestView {
                     double result = simulationService.createSimulation(simulation);
 
                     if (result > 0) {
-                        System.out.println("This is the amount of money you will pay each month :" + result + "DH do you wanna proceed with request ? press 'y' if you want or 'q' to quit");
+                        System.out.println("This is the amount of money you will pay each month: " + String.format("%.2f", result) + " DH. Do you want to proceed with the request? Press 'y' if you want or 'q' to quit");
                         String choice = sc.nextLine();
                         if (choice.equalsIgnoreCase("q")) {
                             break;
-                        }else if (choice.equalsIgnoreCase("y")) {
+                        } else if (choice.equalsIgnoreCase("y")) {
                             Request request = new Request(request_date, amount, STATE.PENDING, remarks, monthly_payment_num, simulation);
                             Request createdRequest = requestService.createRequest(request);
                             if (createdRequest != null) {
                                 System.out.println("Request created successfully");
-                            }else {
+                                break;
+                            } else {
                                 System.out.println("Failed to create request");
                             }
                         }
                     }
 
-                }catch (DateTimeParseException e) {
+                } catch (DateTimeParseException e) {
                     System.out.println("Invalid date format. Please enter the date in yyyy-MM-dd format. Please try again.");
                 }
             }
         }
-
     }
 
     public void getRequestByID() {
@@ -123,12 +126,12 @@ public class RequestView {
         }else {
             System.out.println("List of requests");
             for (Request request : requests) {
-                System.out.println("Request number " + request.get_number());
-                System.out.println("Request date " + request.get_credit_date());
-                System.out.println("Request amount " + request.get_amount());
-                System.out.println("Request remarks " + request.get_remarks());
-                System.out.println("Request duration " + request.get_duration());
-                System.out.println("Request state " + request.get_state());
+                System.out.println("Request number : " + request.get_number());
+                System.out.println("Request date : " + request.get_credit_date());
+                System.out.println("Request amount : " + request.get_amount());
+                System.out.println("Request remarks : " + request.get_remarks());
+                System.out.println("Request duration : " + request.get_duration());
+                System.out.println("Request state : " + request.get_state());
                 System.out.println("----------------------------");
             }
 
@@ -142,12 +145,13 @@ public class RequestView {
             System.out.println("Enter number of request you want to update it's state ");
             String  numberInput = sc.nextLine();
 
-            System.out.println("Enter the new state (PENDING | APPROVED | DECLINED) ");
-            String state = sc.nextLine();
-
             if (numberInput.equalsIgnoreCase("q")) {
                 break;
             }
+
+            System.out.println("Enter the new state (PENDING | APPROVED | DECLINED) ");
+            String state = sc.nextLine();
+
 
             int number = Integer.parseInt(numberInput);
 
@@ -172,12 +176,12 @@ public class RequestView {
             System.out.println("No request available with that state");
         }else {
             for (Request request : requests) {
-                System.out.println("Request number " + request.get_number());
-                System.out.println("Request date " + request.get_credit_date());
-                System.out.println("Request amount " + request.get_amount());
-                System.out.println("Request remarks " + request.get_remarks());
-                System.out.println("Request duration " + request.get_duration());
-                System.out.println("Request state " + request.get_state());
+                System.out.println("Request number : " + request.get_number());
+                System.out.println("Request date : " + request.get_credit_date());
+                System.out.println("Request amount : " + request.get_amount());
+                System.out.println("Request remarks : " + request.get_remarks());
+                System.out.println("Request duration : " + request.get_duration());
+                System.out.println("Request state : " + request.get_state());
                 System.out.println("----------------------------");
             }
         }

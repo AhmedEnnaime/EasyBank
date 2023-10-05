@@ -99,6 +99,7 @@ public class RequestDaoImpl implements RequestDao {
                 request.set_state(STATE.valueOf(rs.getString("state")));
                 request.set_remarks(rs.getString("remarks"));
                 request.set_duration(rs.getInt("duration"));
+                request.set_credit_date(rs.getDate("credit_date").toLocalDate());
 
                 allRequests.add(request);
             }
