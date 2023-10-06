@@ -28,6 +28,10 @@ public class PaymentService {
                     throw new Exception("Amount insufficient in your account");
                 }
                 Optional<Payment> optionalPayment = paymentDao.create(payment);
+                if (optionalPayment.isPresent()) {
+                    paymentDao.updateFromAccountBalance(payment);
+                    paymentDao.updateDestinationBalance(payment);
+                }
                 return optionalPayment.get();
             }else {
                 return null;

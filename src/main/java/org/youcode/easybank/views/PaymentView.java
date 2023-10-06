@@ -36,43 +36,48 @@ public class PaymentView {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Enter employee's matricule");
+            System.out.println("Enter employee's matricule or 'q' to quit ");
             String matriculeInput = sc.nextLine();
 
             if (matriculeInput.equalsIgnoreCase("q")) {
                 break;
             }
 
-            int matricule = Integer.parseInt(matriculeInput);
-
-            Optional<Employee> retrievedEmployee = employeeDao.findByID(matricule);
-            System.out.println("Enter the number of account you wanna send money from : ");
-            Integer number = sc.nextInt();
-
-            Optional<Account> retrievedAccount = accountDao.findByID(number);
-            System.out.println("Enter the amount of money you wanna transfer ");
-            Double amount = sc.nextDouble();
-            sc.nextLine();
-            System.out.println("Enter the number of account you wanna send money from : ");
-            Integer destinationNumber = sc.nextInt();
-            Optional<Account> retrievedDestinationAccount = accountDao.findByID(destinationNumber);
-
-            operation.set_amount(amount);
-            operation.set_employee(retrievedEmployee.get());
-
-            operationDao.create(operation);
-
-            Payment payment = new Payment(operation, retrievedAccount.get(), retrievedDestinationAccount.get());
-
             try {
-                Payment createdPayment = paymentService.createPayment(payment, operation);
-                if (createdPayment != null) {
-                    System.out.println("Payment passed successfully");
+                int matricule = Integer.parseInt(matriculeInput);
+
+                Optional<Employee> retrievedEmployee = employeeDao.findByID(matricule);
+                System.out.println("Enter the number of account you want to send money from: ");
+                int number = sc.nextInt();
+                sc.nextLine();
+                Optional<Account> retrievedAccount = accountDao.findByID(number);
+                System.out.println("Enter the amount of money you want to transfer: ");
+                double amount = sc.nextDouble();
+                sc.nextLine();
+                System.out.println("Enter the number of destination account: ");
+                int destinationNumber = sc.nextInt();
+                sc.nextLine();
+                Optional<Account> retrievedDestinationAccount = accountDao.findByID(destinationNumber);
+
+                operation.set_amount(amount);
+                operation.set_employee(retrievedEmployee.get());
+
+                operationDao.create(operation);
+
+                Payment payment = new Payment(operation, retrievedAccount.get(), retrievedDestinationAccount.get());
+
+                try {
+                    Payment createdPayment = paymentService.createPayment(payment, operation);
+                    if (createdPayment != null) {
+                        System.out.println("Payment passed successfully");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }catch (Exception e) {
-                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
             }
         }
-
     }
+
 }

@@ -10,6 +10,7 @@ import org.youcode.easybank.exceptions.ClientException;
 import org.youcode.easybank.exceptions.EmployeeException;
 import org.youcode.easybank.exceptions.OperationException;
 import org.youcode.easybank.services.*;
+import org.youcode.easybank.utils.*;
 import org.youcode.easybank.views.AgencyView;
 import org.youcode.easybank.views.MissionAssignmentView;
 import org.youcode.easybank.views.MissionView;
@@ -31,7 +32,9 @@ public class Main {
                 System.out.println("6. Mission Assignment Management");
                 System.out.println("7. Agency Management");
                 System.out.println("8. Requests Management");
-                System.out.println("9. Exit");
+                System.out.println("9. Payments Management");
+                System.out.println("10. Transfer employee Management");
+                System.out.println("11. Exit");
                 System.out.print("Enter your choice: ");
 
                 int choice = sc.nextInt();
@@ -39,30 +42,36 @@ public class Main {
 
                 switch (choice) {
                     case 1:
-                        employeeManagementMenu();
+                        EmployeeUtils.employeeManagementMenu();
                         break;
                     case 2:
-                        clientManagementMenu();
+                        ClientUtils.clientManagementMenu();
                         break;
                     case 3:
-                        accountManagementMenu();
+                        AccountUtils.accountManagementMenu();
                         break;
                     case 4:
-                        operationManagementMenu();
+                        OperationUtils.operationManagementMenu();
                         break;
                     case 5:
-                        missionManagementMenu();
+                        MissionUtils.missionManagementMenu();
                         break;
                     case 6:
-                        missionAssignmentManagementMenu();
+                        MissionAssignmentUtils.missionAssignmentManagementMenu();
                         break;
                     case 7:
-                        agencyManagementMenu();
+                        AgencyUtils.agencyManagementMenu();
                         break;
                     case 8:
-                        requestsManagementMenu();
+                        RequestUtils.requestsManagementMenu();
                         break;
                     case 9:
+                        PaymentUtils.PaymentManagementMenu();
+                        break;
+                    case 10:
+                        TransferEmployeeUtils.transferEmployeeAgencyManagement();
+                        break;
+                    case 11:
                         System.out.println("Exiting the application. Goodbye!");
                         DBConnection.closeConnection();
                         sc.close();
@@ -73,383 +82,4 @@ public class Main {
                 }
             }
         }
-
-        private static void employeeManagementMenu() {
-            Scanner sc = new Scanner(System.in);
-
-            while (true) {
-                System.out.println("Employee Management Menu:");
-                System.out.println("1. Create Employee");
-                System.out.println("2. Update Employee");
-                System.out.println("3. Delete Employee");
-                System.out.println("4. Get Employee by Matricule");
-                System.out.println("5. Get All Employees");
-                System.out.println("6. Find Employee by Attribute");
-                System.out.println("7. Back to Main Menu");
-                System.out.print("Enter your choice: ");
-
-                int choice = sc.nextInt();
-                sc.nextLine();
-
-                switch (choice) {
-                    case 1:
-                        EmployeeService.createEmployee();
-                        break;
-                    case 2:
-                        EmployeeService.updateEmployee();
-                        break;
-                    case 3:
-                        EmployeeService.deleteEmployee();
-                        break;
-                    case 4:
-                        EmployeeService.getEmployeeByMatricule();
-                        break;
-                    case 5:
-                        EmployeeService.getAllEmployees();
-                        break;
-                    case 6:
-                        EmployeeService.findEmployeeByAttribute();
-                        break;
-                    case 7:
-                        return;
-                    default:
-                        System.out.println("Invalid choice. Please select a valid option.");
-                        break;
-                }
-            }
-        }
-
-        private static void clientManagementMenu() {
-            Scanner sc = new Scanner(System.in);
-
-            while (true) {
-                System.out.println("Client Management Menu:");
-                System.out.println("1. Create Client");
-                System.out.println("2. Update Client");
-                System.out.println("3. Delete Client");
-                System.out.println("4. Get Client by Code");
-                System.out.println("5. Get All Clients");
-                System.out.println("6. Find Client by Attribute");
-                System.out.println("7. Back to Main Menu");
-                System.out.print("Enter your choice: ");
-
-                int choice = sc.nextInt();
-                sc.nextLine();
-
-                switch (choice) {
-                    case 1:
-                        ClientService.createClient();
-                        break;
-                    case 2:
-                        ClientService.updateClient();
-                        break;
-                    case 3:
-                        ClientService.deleteClient();
-                        break;
-                    case 4:
-                        ClientService.getClientByCode();
-                        break;
-                    case 5:
-                        ClientService.getAllClients();
-                        break;
-                    case 6:
-                        ClientService.findClientByAttribute();
-                        break;
-                    case 7:
-                        return;
-                    default:
-                        System.out.println("Invalid choice. Please select a valid option.");
-                        break;
-                }
-            }
-        }
-
-        private static void accountManagementMenu() {
-            Scanner sc = new Scanner(System.in);
-
-            while (true) {
-                System.out.println("Account Management Menu:");
-                System.out.println("1. Create Account");
-                System.out.println("2. Update Account");
-                System.out.println("3. Get Account by Operation Number");
-                System.out.println("4. Update Account Status");
-                System.out.println("5. Display all savings accounts");
-                System.out.println("6. Display all current accounts");
-                System.out.println("7. Display accounts by their creation date");
-                System.out.println("8. Delete Account");
-                System.out.println("9. Get Accounts By Their Status");
-                System.out.println("10. Get Account By Account Number");
-                System.out.println("11. Get Accounts By Client");
-                System.out.println("12. Get All Accounts (Current and Savings)");
-                System.out.println("13. Back to Main Menu");
-                System.out.print("Enter your choice: ");
-
-                int choice = sc.nextInt();
-                sc.nextLine();
-
-                switch (choice) {
-                    case 1:
-                        try {
-                            AccountService.createAccount();
-                        } catch (ClientException | EmployeeException a) {
-                            a.printStackTrace();
-                        }
-                        break;
-                    case 2:
-                        AccountService.updateAccount();
-                        break;
-//                    case 3:
-//                        AccountService.getAccountByOperationNumber();
-//                        break;
-                    case 4:
-                        AccountService.updateAccountStatus();
-                        break;
-                    case 5:
-                        AccountService.getAllSavingsAccounts();
-                        break;
-                    case 6:
-                        AccountService.getAllCurrentAccounts();
-                        break;
-                    case 7:
-                        AccountService.getAllAccountsByCreationDate();
-                        break;
-                    case 8:
-                        AccountService.deleteAccount();
-                        break;
-                    case 9:
-                        AccountService.getAccountsByStatus();
-                        break;
-                    case 10:
-                        AccountService.getAccountByAccountNumber();
-                        break;
-                    case 11:
-                        try {
-                            AccountService.getAccountsByClient();
-                        } catch (AccountException e) {
-                            throw new RuntimeException(e);
-                        }
-                        break;
-                    case 12:
-                        AccountService.getAllAccounts();
-                        break;
-                    case 13:
-                        return;
-                    default:
-                        System.out.println("Invalid choice. Please select a valid option.");
-                        break;
-                }
-            }
-        }
-
-        private static void operationManagementMenu() {
-            Scanner sc = new Scanner(System.in);
-
-            while (true) {
-                System.out.println("Operation Management Menu:");
-                System.out.println("1. Create Operation");
-                System.out.println("2. Get Operation By Number");
-                System.out.println("3. Delete Operation");
-                System.out.println("4. Back to Main Menu");
-                System.out.print("Enter your choice: ");
-
-                int choice = sc.nextInt();
-                sc.nextLine();
-
-                switch (choice) {
-                    case 1:
-                        try {
-                            OperationService.createOperation();
-                        } catch (AccountException | EmployeeException e) {
-                            throw new RuntimeException(e);
-                        }
-                        break;
-                    case 2:
-                        OperationService.getOperationByNumber();
-                        break;
-                    case 3:
-                        OperationService.deleteOperation();
-                        break;
-                    case 4:
-                        return;
-                    default:
-                        System.out.println("Invalid choice. Please select a valid option.");
-                        break;
-                }
-            }
-        }
-
-        private static void missionManagementMenu() {
-            Scanner sc = new Scanner(System.in);
-            MissionView missionView = new MissionView();
-            while (true) {
-                System.out.println("Mission Management Menu:");
-                System.out.println("1. Create Mission");
-                System.out.println("2. Get Mission By Number");
-                System.out.println("3. Delete Mission");
-                System.out.println("4. Back to Main Menu");
-                System.out.print("Enter your choice: ");
-
-                int choice = sc.nextInt();
-                sc.nextLine();
-
-                switch (choice) {
-                    case 1:
-                        missionView.createMission();
-                        break;
-                    case 2:
-                        missionView.getMissionByNumber();
-                        break;
-                    case 3:
-                        missionView.deleteMission();
-                        break;
-                    case 4:
-                        return;
-                    default:
-                        System.out.println("Invalid choice. Please select a valid option.");
-                        break;
-                }
-            }
-        }
-    private static void missionAssignmentManagementMenu() {
-        Scanner sc = new Scanner(System.in);
-        MissionAssignmentView missionAssignmentView = new MissionAssignmentView();
-
-        while (true) {
-            System.out.println("Mission Assignment Management Menu:");
-            System.out.println("1. Assign Mission");
-            System.out.println("2. Get Assignment By ID");
-            System.out.println("3. Delete Mission Assignment");
-            System.out.println("4. Get Employees Assignments");
-            System.out.println("5. Display Statistics");
-            System.out.println("6. Back to Main Menu");
-            System.out.print("Enter your choice: ");
-
-            int choice = sc.nextInt();
-            sc.nextLine();
-
-            switch (choice) {
-                case 1:
-                    MissionAssignmentService.createMissionAssignment();
-                    break;
-                case 2:
-                    MissionAssignmentService.getAssignmentByID();
-                    break;
-                case 3:
-                    MissionAssignmentService.deleteAssignment();
-                    break;
-                case 4:
-                    MissionAssignmentService.getEmployeesAssignments();
-                    break;
-                case 5:
-                    missionAssignmentView.displayStats();
-                    break;
-                case 6:
-                    return;
-                default:
-                    System.out.println("Invalid choice. Please select a valid option.");
-                    break;
-            }
-        }
-    }
-
-
-
-    private static void agencyManagementMenu() {
-//        Scanner sc = new Scanner(System.in);
-//        AgencyView agencyView = new AgencyView(agencyService);
-//
-//        System.out.println("Agency Management Menu:");
-//        System.out.println("1. Create Agency");
-//        System.out.println("2. Get Agency By code");
-//        System.out.println("3. Delete Agency");
-//        System.out.println("4. Get All agencies");
-//        System.out.println("5. Update agency");
-//        System.out.println("6. Get agency by address");
-//        System.out.println("7. Get agency by employee");
-//        System.out.println("8. Back to Main menu");
-//        System.out.print("Enter your choice: ");
-//
-//        int choice = sc.nextInt();
-//        sc.nextLine();
-//
-//        switch (choice) {
-//            case 1:
-//                agencyView.createAgency();
-//            case 2:
-//                agencyView.getAgencyByID();
-//            case 3:
-//                agencyView.deleteAgencyByID();
-//            case 8:
-//                return;
-//            default:
-//                System.out.println("Invalid choice. Please select a valid option.");
-//                break;
-//        }
-    }
-
-    public static void transferEmployeeAgencyManagement() {
-        Scanner sc = new Scanner(System.in);
-
-        while (true) {
-            System.out.println("Transfer Employee Agency Management Menu:");
-            System.out.println("1. Transfer Employee to new Agency");
-            System.out.println("2. Display historical of employee's transfers between agencies");
-            System.out.println("3. Back to Main Menu");
-            System.out.print("Enter your choice: ");
-
-            int choice = sc.nextInt();
-            sc.nextLine();
-
-            switch (choice) {
-                case 1:
-            }
-        }
-    }
-
-    public static void requestsManagementMenu() {
-        Scanner sc = new Scanner(System.in);
-        RequestDaoImpl requestDao = new RequestDaoImpl();
-        RequestService requestService = new RequestService(requestDao);
-        ClientDaoImpl clientDao = new ClientDaoImpl();
-        EmployeeDaoImpl employeeDao = new EmployeeDaoImpl();
-        SimulationService simulationService = new SimulationService(employeeDao);
-        RequestView requestView = new RequestView(requestService, clientDao, simulationService);
-
-        while (true) {
-            System.out.println("Requests Management Menu:");
-            System.out.println("1. Create request");
-            System.out.println("2. Display request By number");
-            System.out.println("3. Display all requests");
-            System.out.println("4. Display requests by state");
-            System.out.println("5. Update state of a request");
-            System.out.println("6. Back to Main Menu");
-            System.out.print("Enter your choice: ");
-
-            int choice = sc.nextInt();
-            sc.nextLine();
-
-            switch (choice) {
-                case 1:
-                    requestView.createRequest();
-                    break;
-                case 2:
-                    requestView.getRequestByID();
-                    break;
-                case 3:
-                    requestView.getAllRequests();
-                    break;
-                case 4:
-                    requestView.getRequestsByState();
-                    break;
-                case 5:
-                    requestView.updateRequestState();
-                    break;
-                case 6:
-                    return;
-                default:
-                    System.out.println("Invalid choice. Please select a valid option.");
-                    break;
-            }
-        }
-    }
 }

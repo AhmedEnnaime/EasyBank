@@ -2,7 +2,10 @@ package org.youcode.easybank.dao.daoImpl;
 
 import org.youcode.easybank.dao.PaymentDao;
 import org.youcode.easybank.db.DBConnection;
+import org.youcode.easybank.entities.Account;
 import org.youcode.easybank.entities.Payment;
+import org.youcode.easybank.entities.SimpleOperation;
+import org.youcode.easybank.enums.OPERATION;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,6 +47,44 @@ public class PaymentDaoImpl implements PaymentDao {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public boolean updateDestinationBalance(Payment payment) {
+        String updateBalanceSQL = "UPDATE accounts SET balance = ? WHERE accountNumber = ?";
+
+        double newBalance;
+        newBalance = payment.getTo_account().get_balance() + payment.get_amount();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(updateBalanceSQL)) {
+            preparedStatement.setDouble(1, newBalance);
+            preparedStatement.setInt(2, payment.getTo_account().get_accountNumber());
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateFromAccountBalance(Payment payment) {
+        String updateBalanceSQL = "UPDATE accounts SET balance = ? WHERE accountNumber = ?";
+
+        double newBalance;
+        newBalance = payment.getFrom_account().get_balance() - payment.get_amount();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(updateBalanceSQL)) {
+            preparedStatement.setDouble(1, newBalance);
+            preparedStatement.setInt(2, payment.getFrom_account().get_accountNumber());
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 

@@ -150,6 +150,97 @@ public class PaymentDaoImplTest {
         assertTrue(createdPayment.isPresent());
     }
 
+    @Test
+    public void testUpdateDestinationBalance() {
+
+        Operation operation = new Operation(
+                300,
+                employee
+        );
+
+        Optional<Operation> createdOperation = operationDao.create(operation);
+
+
+        Account destinationAccount = new Account(
+                5000,
+                employee,
+                client,
+                agency
+        );
+
+        Optional<Account> createdDestinationAccount = accountDao.create(destinationAccount);
+        assertTrue(createdDestinationAccount.isPresent());
+
+        Account fromAccount = new Account(
+                5000,
+                employee,
+                client,
+                agency
+        );
+
+        Optional<Account> createdFromAccount = accountDao.create(fromAccount);
+        assertTrue(createdFromAccount.isPresent());
+
+        Payment payment = new Payment(
+                createdOperation.get(),
+                createdFromAccount.get(),
+                createdDestinationAccount.get()
+        );
+
+        Optional<Payment> createdPayment = paymentDao.create(payment);
+        assertTrue(createdPayment.isPresent());
+
+        boolean updated = paymentDao.updateDestinationBalance(createdPayment.get());
+
+        assertTrue(updated);
+    }
+
+    @Test
+    public void testUpdateFromAccountBalance() {
+
+        Operation operation = new Operation(
+                300,
+                employee
+        );
+
+        Optional<Operation> createdOperation = operationDao.create(operation);
+
+
+        Account destinationAccount = new Account(
+                5000,
+                employee,
+                client,
+                agency
+        );
+
+        Optional<Account> createdDestinationAccount = accountDao.create(destinationAccount);
+        assertTrue(createdDestinationAccount.isPresent());
+
+        Account fromAccount = new Account(
+                5000,
+                employee,
+                client,
+                agency
+        );
+
+        Optional<Account> createdFromAccount = accountDao.create(fromAccount);
+        assertTrue(createdFromAccount.isPresent());
+
+        Payment payment = new Payment(
+                createdOperation.get(),
+                createdFromAccount.get(),
+                createdDestinationAccount.get()
+        );
+
+        Optional<Payment> createdPayment = paymentDao.create(payment);
+        assertTrue(createdPayment.isPresent());
+
+        boolean updated = paymentDao.updateFromAccountBalance(createdPayment.get());
+
+        assertTrue(updated);
+    }
+
+
 
     @AfterEach
     public void tearDown() {
