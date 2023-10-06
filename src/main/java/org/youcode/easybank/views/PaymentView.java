@@ -80,4 +80,24 @@ public class PaymentView {
         }
     }
 
+    public void deletePayment() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Enter payment's id or 'q' to quit ");
+            String idInput = sc.nextLine();
+
+            if (idInput.equalsIgnoreCase("q")) {
+                break;
+            }
+            int id = Integer.parseInt(idInput);
+
+            if (paymentService.deletePayment(id)) {
+                System.out.println("Payment deleted successfully");
+            }else {
+                System.out.println("Payment failed to delete");
+            }
+        }
+    }
+
 }

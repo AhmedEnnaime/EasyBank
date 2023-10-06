@@ -13,5 +13,7 @@ public interface PaymentDao {
 
     public boolean updateFromAccountBalance(Payment payment);
 
+    public boolean delete(Integer id);
+
     public boolean deleteAll();
 }

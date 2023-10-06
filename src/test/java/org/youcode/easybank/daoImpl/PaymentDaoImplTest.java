@@ -240,6 +240,49 @@ public class PaymentDaoImplTest {
         assertTrue(updated);
     }
 
+    @Test
+    public void testDelete() {
+        Operation operation = new Operation(
+                300,
+                employee
+        );
+
+        Optional<Operation> createdOperation = operationDao.create(operation);
+
+        Account fromAccount = new Account(
+                5000,
+                employee,
+                client,
+                agency
+        );
+
+        Optional<Account> createdFromAccount = accountDao.create(fromAccount);
+        assertTrue(createdFromAccount.isPresent());
+
+        Account destinationAccount = new Account(
+                5000,
+                employee,
+                client,
+                agency
+        );
+
+        Optional<Account> createdDestinationAccount = accountDao.create(destinationAccount);
+        assertTrue(createdDestinationAccount.isPresent());
+
+        Payment payment = new Payment(
+                createdOperation.get(),
+                createdFromAccount.get(),
+                createdDestinationAccount.get()
+        );
+
+        Optional<Payment> createdPayment = paymentDao.create(payment);
+        assertTrue(createdPayment.isPresent());
+
+        boolean deleted = paymentDao.delete(createdPayment.get().getId());
+
+        assertTrue(deleted);
+
+    }
 
 
     @AfterEach

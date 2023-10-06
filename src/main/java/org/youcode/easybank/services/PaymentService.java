@@ -38,4 +38,12 @@ public class PaymentService {
             }
         }
     }
+
+    public boolean deletePayment(Integer id) {
+        if (id.toString().isEmpty()) {
+            return false;
+        }else {
+            return paymentDao.delete(id);
+        }
+    }
 }

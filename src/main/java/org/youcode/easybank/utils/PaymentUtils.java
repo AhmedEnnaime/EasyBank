@@ -24,9 +24,9 @@ public class PaymentUtils {
         while (true) {
             System.out.println("Transfer Employee Agency Management Menu:");
             System.out.println("1. Make a payment ");
-            System.out.println("2. Get payment by id");
-            System.out.println("3. Display all payments");
-            System.out.println("4. Delete a payment");
+            System.out.println("2. Delete a payment");
+            System.out.println("3. Get payment by id");
+            System.out.println("4. Display all payments");
             System.out.println("5. Back to main menu");
             System.out.print("Enter your choice: ");
 
@@ -36,8 +36,8 @@ public class PaymentUtils {
             switch (choice) {
                 case 1:
                     paymentView.createPayment();
-//                case 2:
-//                    transferView.getEmployeeHistoricalTransfers();
+                case 2:
+                    paymentView.deletePayment();
                 case 5:
                     return;
                 default:

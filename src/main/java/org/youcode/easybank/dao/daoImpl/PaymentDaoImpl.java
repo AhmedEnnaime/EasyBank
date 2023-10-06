@@ -87,6 +87,22 @@ public class PaymentDaoImpl implements PaymentDao {
         }
     }
 
+    @Override
+    public boolean delete(Integer id) {
+        try {
+            String deleteSQL = "DELETE FROM payments WHERE id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL);
+            preparedStatement.setInt(1, id);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
     @Override
     public boolean deleteAll() {
