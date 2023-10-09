@@ -32,8 +32,10 @@ public class TransferEmployeeUtils {
             switch (choice) {
                 case 1:
                     transferView.transferEmployeeToAgency();
+                    break;
                 case 2:
                     transferView.getEmployeeHistoricalTransfers();
+                    break;
                 case 3:
                     return;
                 default:

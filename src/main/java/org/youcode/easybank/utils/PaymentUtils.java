@@ -36,8 +36,10 @@ public class PaymentUtils {
             switch (choice) {
                 case 1:
                     paymentView.createPayment();
+                    break;
                 case 2:
                     paymentView.deletePayment();
+                    break;
                 case 5:
                     return;
                 default:

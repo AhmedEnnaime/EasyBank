@@ -59,26 +59,26 @@ public class TransferDaoImpl implements TransferDao {
         List<Transfer> historicalTransfers = new ArrayList<>();
         String selectSQL = "SELECT * FROM transfers WHERE employee_matricule = ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(selectSQL)){
+        try (PreparedStatement ps = conn.prepareStatement(selectSQL)) {
             ps.setInt(1, employee.get_matricule());
 
-            try (ResultSet rs = ps.executeQuery()){
-                if (rs.next()) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
                     Transfer transfer = new Transfer();
                     transfer.set_id(rs.getInt("id"));
                     transfer.set_transfer_date(rs.getDate("transfer_date").toLocalDate());
-                    transfer.set_employee(new EmployeeDaoImpl().findByID(rs.getInt("employee_matricule")).get());
+                    transfer.set_employee(employee);
                     transfer.set_agency(new AgencyDaoImpl().findByID(rs.getInt("agency_code")).get());
 
                     historicalTransfers.add(transfer);
                 }
             }
-
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return historicalTransfers;
     }
+
 
 
     @Override

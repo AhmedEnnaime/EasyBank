@@ -29,16 +29,22 @@ public class AgencyUtils {
         switch (choice) {
             case 1:
                 agencyView.createAgency();
+                break;
             case 2:
                 agencyView.getAgencyByID();
+                break;
             case 3:
                 agencyView.deleteAgencyByID();
+                break;
             case 4:
                 agencyView.getAllAgencies();
+                break;
             case 5:
                 agencyView.updateAgency();
+                break;
             case 6:
-                agencyView.getAgencyByID();
+                agencyView.getAgenciesByAddress();
+                break;
             case 7:
                 return;
             default:

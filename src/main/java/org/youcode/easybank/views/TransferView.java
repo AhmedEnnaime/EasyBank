@@ -81,7 +81,7 @@ public class TransferView {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Enter employee's matricule you want to transfer : ");
+            System.out.println("Enter employee's matricule you want to see it's transfers or 'q' to quit : ");
             String matriculeInput = sc.nextLine();
 
             if (matriculeInput.equalsIgnoreCase("q")) {
@@ -99,7 +99,7 @@ public class TransferView {
                     System.out.println("Agency name : " + transfer.get_agency().get_name());
                     System.out.println("Agency address : " + transfer.get_agency().get_address());
                     System.out.println("Agency phone : " + transfer.get_agency().get_phone());
-                    break;
+                    System.out.println("---------------------------------------");
                 }
             }else {
                 System.out.println("Invalid input. Please enter a valid code or 'q' to quit.");
